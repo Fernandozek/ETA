@@ -39,8 +39,17 @@ const Itens = styled.div`
     }
     
 `
-class Home extends Component {
-    render() {
+interface LineTopografia {
+
+} 
+export default function Home(props:any) {
+    const points = props.location.state.points as LineTopografia[];
+    const azimuteG = props.location.state.azimuteG;
+    const azimuteM = props.location.state.azimuteM;
+    const azimuteS = props.location.state.azimuteS;
+    const altura = props.location.state.altura;
+    const cota = props.location.state.cota;
+    
         return (
             <PageTemplate>
                 <HomeContainer>
@@ -52,7 +61,12 @@ class Home extends Component {
                     </Menu>
                     <Itens>
                         <div id="canal1">
-                            <Eta1 />
+                            <Eta1 
+                                points={props.points} 
+                                azimuteG={props.azimuteG}
+                                azimuteM={props.azimuteM}
+                                azimuteS={props.azimuteS}
+                            />
                         </div>
                         <div id="canal2" >
                             <Eta2 />
@@ -67,8 +81,4 @@ class Home extends Component {
                 </HomeContainer>
             </PageTemplate>
         );
-
-    }
 }
-
-export default Home;
