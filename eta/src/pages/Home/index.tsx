@@ -1,29 +1,71 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import PageTemplate from '../PageTemplate';
+import Eta1 from '../../components/Home/ETA1';
+import Eta2 from '../../components/Home/ETA2';
+import Eta3 from '../../components/Home/ETA3';
+import Eta4 from '../../components/Home/ETA4';
 
+const HomeContainer = styled.div`
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    padding: 50px 0;
+`
+
+const Menu = styled.div`
+    a{
+        padding: 10px 30px;
+        font-size: 1.2rem;
+        color: var(--branco);
+        text-decoration: none;
+        background-color: var(--gray);
+        border-radius: 8px 8px 0 0;
+    }
+    
+`
 const Itens = styled.div`
-    p {display: none}
-    p:target {display: block}
-    p:not(:target) {display: none}
-    p:target {display: block}
+    
+    div {display: none}
+    div:target {display: block}
+    div:not(:target) {display: none}
+    div:target {
+        display: block;
+        width: 600px;
+        height: 400px;
+        background-color: red;
+    }
+    
 `
 class Home extends Component {
     render() {
         return (
-            <>
-                <p>
-                    <a href="#item1">item 1</a>
-                    <a href="#item2">item 2</a>
-                    <a href="#item3">item 3</a>
-                    <a href="#default">clear</a>
-                </p>
-                <Itens className="items">
-                    <p id="item1">... item 1...</p>
-                    <p id="item2">... item 2...</p>
-                    <p id="item3">...</p>
-                    <p id="default"> by default, show no text</p>
-                </Itens>
-            </>
+            <PageTemplate>
+                <HomeContainer>
+                    <Menu>
+                        <a href="#canal1">Un. de Coagulação</a>
+                        <a href="#canal2">Un de Decantação</a>
+                        <a href="#canal3">Un de Floculação</a>
+                        <a href="#canal4">Un. de Filtração</a>
+                    </Menu>
+                    <Itens>
+                        <div id="canal1">
+                            <Eta1 />
+                        </div>
+                        <div id="canal2" >
+                            <Eta2 />
+                        </div>
+                        <div id="canal3">
+                            <Eta3  />
+                        </div>
+                        <div id="canal4">
+                            <Eta4  />
+                        </div>
+                    </Itens>
+                </HomeContainer>
+            </PageTemplate>
         );
 
     }
