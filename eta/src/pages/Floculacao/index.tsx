@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import PageTemplate from '../../../pages/PageTemplate';
+import PageTemplate from '../PageTemplate';
+import Floc from '../../Utils/Floc';
 
 const ETA3Container = styled.div`
     width: 100%;
@@ -107,6 +108,7 @@ const Button = styled.button`
 `
 class Eta3 extends Component {
     render() {
+        var teste = Floc.floc(0.8, 25, 4, 4.5, 4, 11, 70, 50, 30, 15);
         return (
             <PageTemplate>
                 <ETA3Container>
@@ -160,7 +162,7 @@ class Eta3 extends Component {
                             <Fator>
                                 <Op>
                                     <Title>Fator de correção (%)</Title>
-                                    <Input />
+                                    <Input type="number"/>
                                 </Op>
                                 <Button>Dimensionar</Button>
                             </Fator>

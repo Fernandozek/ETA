@@ -4,10 +4,10 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Error404 from './pages/Error404';
-import Eta1 from './components/Home/ETA1';
-import Eta2 from './components/Home/ETA2';
-import Eta3 from './components/Home/ETA3';
-import Eta4 from './components/Home/ETA4';
+import Eta1 from './pages/Coagulacao';
+import Eta2 from './pages/Decantacao';
+import Eta3 from './pages/Floculacao';
+import Eta4 from './pages/Filtracao';
 
 function App() {
   return (

@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import styled from 'styled-components';
 import PageTemplate from '../PageTemplate';
 import Eta1 from '../../components/Home/ETA1';
 import Eta2 from '../../components/Home/ETA2';
 import Eta3 from '../../components/Home/ETA3';
 import Eta4 from '../../components/Home/ETA4';
-
 const HomeContainer = styled.div`
     display: flex;
     align-items: center;
@@ -39,17 +38,8 @@ const Itens = styled.div`
     }
     
 `
-interface LineTopografia {
 
-} 
 export default function Home(props:any) {
-    const points = props.location.state.points as LineTopografia[];
-    const azimuteG = props.location.state.azimuteG;
-    const azimuteM = props.location.state.azimuteM;
-    const azimuteS = props.location.state.azimuteS;
-    const altura = props.location.state.altura;
-    const cota = props.location.state.cota;
-    
         return (
             <PageTemplate>
                 <HomeContainer>
@@ -61,12 +51,7 @@ export default function Home(props:any) {
                     </Menu>
                     <Itens>
                         <div id="canal1">
-                            <Eta1 
-                                points={props.points} 
-                                azimuteG={props.azimuteG}
-                                azimuteM={props.azimuteM}
-                                azimuteS={props.azimuteS}
-                            />
+                            
                         </div>
                         <div id="canal2" >
                             <Eta2 />

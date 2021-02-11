@@ -1,6 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import styled from 'styled-components';
 import PageTemplate from '../../../pages/PageTemplate';
+import Coag from '../../../Utils/Coag';
+import Floc from '../../../Utils/Floc';
+import Dec from '../../../Utils/Dec';
+import Filtr from '../../../Utils/Filtr';
 
 const EtaContainer = styled.div`
     display: flex;
@@ -156,14 +160,13 @@ const Button = styled.button`
 
 `
 interface Table1Props {
-    points: number[],
-    azimuteG: string,
-    azimuteM: string,
-    azimuteS: string
+    Q: number
 }
+
+
 const Tr1: React.FC<Table1Props> = (props) => {
     var tmp = [];
-    var pontos = 1;
+    var pontos = 4;
     for (var i = 0; i < pontos; i++) {
         tmp.push(i);
     }
@@ -192,62 +195,117 @@ const Tr1: React.FC<Table1Props> = (props) => {
 }
 
 const Eta1: React.FC<Table1Props> = (props) => {
+    var pontos = 4;
+    var tmp = [];
+    for (var i = 0; i < pontos; i++) {
+        tmp.push(i);
+    }
+    const [Q, setQ] = useState("");
+    const [V, H, O] = Coag.coag(0.8);
 
+    function handlerFile(e: any) {
+        e.preventDefault()
+    }
     return (
-        <PageTemplate>
-            <EtaContainer>
-                <Card>
-                    <Parshall>
-                        <Title>Selecione o Medidor Parshall</Title>
-                        <Selecione>
-                            <option value="0">3. W15,2 (cm)</option>
-                            <option value="1">3. W15,2 (cm)</option>
-                            <option value="2">3. W15,2 (cm)</option>
-                            <option value="3">3. W15,2 (cm)</option>
-                            <option value="4">3. W15,2 (cm)</option>
-                            <option value="5">3. W15,2 (cm)</option>
-                            <option value="6">3. W15,2 (cm)</option>
-                            <option value="7">3. W15,2 (cm)</option>
-                            <option value="8">3. W15,2 (cm)</option>
-                            <option value="9">3. W15,2 (cm)</option>
-                            <option value="10">3. W15,2 (cm)</option>
-                            <option value="11">3. W15,2 (cm)</option>
-                        </Selecione>
-                    </Parshall>
-                    <Section>
-                        <Entrada>
-                            <h3>Q (I/s)</h3>
-                            <Input type="number" />
-                        </Entrada>
-                        <Table>
-                            <TableHeadContainer>
-                                <TableHead>W (cm)</TableHead>
-                                <TableHead>k</TableHead>
-                                <TableHead>n</TableHead>
-                                <TableHead>N</TableHead>
-                                <TableHead>D</TableHead>
-                                <TableHead>K</TableHead>
-                                <TableHead>G'</TableHead>
-                                <TableHead>C</TableHead>
-                            </TableHeadContainer>
-                            <Tr1
-                                points={props.points}
-                                azimuteG={props.azimuteG}
-                                azimuteM={props.azimuteM}
-                                azimuteS={props.azimuteS}
-                            />
-                        </Table>
-                    </Section>
-                    <Dimensionar>
-                        <Checkbox>
-                            <input type="checkbox" />
-                            <p>Mostrar modelo</p>
-                        </Checkbox>
-                        <Button>Dimensionar</Button>
-                    </Dimensionar>
-                </Card>
-            </EtaContainer>
-        </PageTemplate>
+        <EtaContainer>
+            <Card>
+                <Parshall>
+                    <Title>Selecione o Medidor Parshall</Title>
+                    <Selecione>
+                        <option value="0">3. W15,2 (cm)</option>
+                        <option value="1">3. W15,2 (cm)</option>
+                        <option value="2">3. W15,2 (cm)</option>
+                        <option value="3">3. W15,2 (cm)</option>
+                        <option value="4">3. W15,2 (cm)</option>
+                        <option value="5">3. W15,2 (cm)</option>
+                        <option value="6">3. W15,2 (cm)</option>
+                        <option value="7">3. W15,2 (cm)</option>
+                        <option value="8">3. W15,2 (cm)</option>
+                        <option value="9">3. W15,2 (cm)</option>
+                        <option value="10">3. W15,2 (cm)</option>
+                        <option value="11">3. W15,2 (cm)</option>
+                    </Selecione>
+                </Parshall>
+                <Section>
+                    <Entrada>
+                        <h3>Q (I/s)</h3>
+                        <Input type="number" />
+                    </Entrada>
+                    <Table>
+                        <TableHeadContainer>
+                            <TableHead>W (cm)</TableHead>
+                            <TableHead>k</TableHead>
+                            <TableHead>n</TableHead>
+                            <TableHead>N</TableHead>
+                            <TableHead>D</TableHead>
+                            <TableHead>K</TableHead>
+                            <TableHead>G'</TableHead>
+                            <TableHead>C</TableHead>
+                        </TableHeadContainer>
+                        <Tr1
+                            Q={props.Q}
+                        />
+                    </Table>
+                </Section>
+                <Dimensionar>
+                    <Checkbox>
+                        <input type="checkbox" />
+                        <p>Mostrar modelo</p>
+                    </Checkbox>
+                    <Button>Dimensionar</Button>
+                </Dimensionar>
+            </Card>
+            <TableRowContainer>
+                <TableData>
+                    {
+                        <p>
+                            {/*{Number(V[i])}*/}
+                            {
+                                V.map((ponto, index) => {
+                                    return (
+                                        <p>Velocidade = {ponto}</p>
+                                    )
+                                })
+                            }
+                        </p>
+                    }
+                </TableData>
+                <TableData>
+                    {
+                        <p>
+                            {/*{Number(V[i])}*/}
+                            {
+                                H.map((ponto, index) => {
+                                    return (
+                                        <p>Altura = {ponto}</p>
+                                    )
+                                })
+                            }
+                        </p>
+                    }
+                </TableData>
+                <TableData>
+                    {
+                        <p>
+
+
+                            {
+                                <>
+                                    <p>D'm = {O[0]}</p>
+                                    <p>Dq(m²/s/m) = {O[1]}</p>
+                                    <p>EO = {O[2]}</p>
+                                    <p>Fr1 = {O[3]}</p>
+                                    <p>hf = {O[4]}</p>
+                                    <p>T = {O[5]}</p>
+                                    <p>G = {O[6]}</p>
+                                </>
+
+                            }
+                        </p>
+                    }
+                </TableData>
+            </TableRowContainer>
+        </EtaContainer>
     );
 }
 
