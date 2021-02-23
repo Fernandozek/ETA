@@ -124,6 +124,9 @@ const Left = styled.div`
         width: 65%;
         margin-right: 20px;
     }
+    @media(min-width: 768px){
+        width: 75%;
+    }
 `
 const Right = styled.div`
     display: flex;

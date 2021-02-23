@@ -263,8 +263,8 @@ export default function Menu() {
                 <MenuList>
                     <Lista><Link to="/" className="MenuLink" >início</Link></Lista>
                     <Lista><Link to="/coagulacao" className="MenuLink" >Coagulação</Link></Lista>
-                    <Lista><Link to="/decantacao" className="MenuLink" >Decantação</Link></Lista>
                     <Lista><Link to="/floculacao" className="MenuLink" >Floculação</Link></Lista>
+                    <Lista><Link to="/decantacao" className="MenuLink" >Decantação</Link></Lista>
                     <Lista><Link to="/filtracao" className="MenuLink" >Filtração</Link></Lista>
 
                 </MenuList>

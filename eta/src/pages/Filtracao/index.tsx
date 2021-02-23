@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
 import styled from 'styled-components';
-import Coag from '../../Utils/Coag';
+import Filtr from '../../Utils/Filtr';
 import PageTemplate from '../PageTemplate';
 import Eta1 from '../../components/Home/ETA1';
 import { Link } from 'react-router-dom';
@@ -26,31 +26,43 @@ const Card = styled.div`
         padding: 15px 20px 40px 20px;
     }
 `
-const Parshall = styled.div`
+
+const TopCard = styled.div`
     width: 100%;
-    display: flex;
-    align-items:center;
-    justify-content: space-around;
+    padding: 0 20px;
+    display: grid;
+    grid-gap: 30px;
+    grid-template-columns: auto auto;
+    padding: 10px;
+    align-items: center;
+    justify-content: space-between;
     @media(min-width: 768px){
-        justify-content: initial;
-        font-size: 1.2rem;
-        min-width: 600px;
-        max-width: 100%;
+        grid-gap: 20px;
+        grid-template-columns: auto auto auto auto;
     }
 `
-const Selecione = styled.select`
-    border-radius: 8px;
-    color: var(--gray-dark);
-    height: 30px;
-    @media(min-width: 768px){
-        margin-left: 10px;
-        width: 135px;
-        height: 35px;
-        font-size: 1.2rem;
-    }
+const Item = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content:center;
 `
 const Title = styled.h2`
-    color: var(--h2);
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--gray-dark);
+`
+
+const InputCard = styled.input`
+    min-width: 60px;
+    max-width: 90px;
+    height: 40px;
+    border-radius: 8px;
+    border: 2px solid var(--gray);
+    outline: none;
+    padding: 10px;
+    font-size: 16px;
+    text-align: center;
 `
 const Section = styled.section`
     margin-top: 20px;
@@ -59,27 +71,11 @@ const Section = styled.section`
         display: flex;
         align-items: center;
         justify-content: center;
-
-    }
-`
-const Entrada = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    h3{
-        color: var(--gray-dark);
-    }
-    @media(min-width: 768px){
-        margin-top: 25px;
-        margin-right: 20px;
-        h3{
-            font-size: 1.4rem;
-        }
     }
 `
 const TableHead = styled.th`
     padding: 10px 5px; 
+    font-size: 0.7rem;
     color: var(--gray-dark);
     background-color: var(--gray-light);
     @media(min-width: 768px){
@@ -102,16 +98,6 @@ const TableHeadContainer = styled.thead`
     }
 
 `
-const Input = styled.input`
-    margin-top: 10px;
-    width: 80px;
-    padding: 5px;
-    font-size: 1.4rem;
-    border: 1px solid var(--gray-dark);  
-    border-radius: 8px;
-    outline: none;
-    text-align: center;
-`
 const TableData = styled.td`
     padding: 10px 5px; 
     font-size: 0.8rem;
@@ -123,6 +109,9 @@ const TableData = styled.td`
 const TableRowContainer = styled.tr`
     background-color: var(--gray-light);
     border-radius: 0 0 8px 8px;    
+
+`
+const BottomCard = styled.div`
 
 `
 const Dimensionar = styled.div`
@@ -157,6 +146,56 @@ const Button = styled.button`
     justify-content: center;
 
 `
+const Resultados = styled.div`
+    margin-top: 100px;
+    padding: 0 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    @media(min-width: 768px){
+        display: grid;
+        grid-gap: 50px;
+        grid-template-columns: auto auto;
+    }
+`
+const Left = styled.div`
+    display: flex;
+    flex-direction: column;
+`
+const CardResultados = styled.div`
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 30px;
+    background-color: var(--branco);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+`
+const TitleCard = styled.h2`
+    margin-bottom: 30px;
+    text-align: left;
+    color: var(--primaria-dark);
+
+`
+const Grid = styled.div`
+    display: grid;
+    grid-gap: 30px;
+    grid-template-columns: auto auto auto auto;
+`
+const Name = styled.h2`
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    color: var(--gray-dark);
+`
+const Value = styled.p`
+    color: var(--gray-dark);
+`
+const Right = styled.div`
+    display: flex;
+    flex-direction: column;
+`
 interface Table1Props {
     points: number
 }
@@ -172,17 +211,28 @@ const Tr1: React.FC<Table1Props> = (props) => {
                 tmp.map((i, index) => {
 
                     return (
-
-                        <TableRowContainer >
-                            <TableData>0.1520</TableData>
-                            <TableData>1.8420</TableData>
-                            <TableData>0.8360</TableData>
-                            <TableData>0.1140</TableData>
-                            <TableData>0.4030</TableData>
-                            <TableData>0.0760</TableData>
-                            <TableData>0.6100</TableData>
-                            <TableData>0.3940</TableData>
-                        </TableRowContainer>
+                        <>
+                            <TableRowContainer >
+                                <TableData>Areia</TableData>
+                                <TableData>1.8420</TableData>
+                                <TableData>0.8360</TableData>
+                                <TableData>0.1140</TableData>
+                                <TableData>0.4030</TableData>
+                                <TableData>0.0760</TableData>
+                                <TableData>0.6100</TableData>
+                                <TableData>0.3940</TableData>
+                            </TableRowContainer>
+                            <TableRowContainer >
+                                <TableData>Antracito</TableData>
+                                <TableData>1.8420</TableData>
+                                <TableData>0.8360</TableData>
+                                <TableData>0.1140</TableData>
+                                <TableData>0.4030</TableData>
+                                <TableData>0.0760</TableData>
+                                <TableData>0.6100</TableData>
+                                <TableData>0.3940</TableData>
+                            </TableRowContainer>
+                        </>
                     );
                 })
             }
@@ -190,43 +240,48 @@ const Tr1: React.FC<Table1Props> = (props) => {
     )
 }
 
-export default function Coagulacao(props:any)  {
+export default function Coagulacao(props: any) {
+    var pontos = 4;
+    var tmp = [];
+    for (var i = 0; i < pontos; i++) {
+        tmp.push(i);
+    }
+    const [Q, setQ] = useState("");
+    const [hf, vMf, V1, V2, V3, V4] = Filtr.filtr(0.8, 270.000000, 4.000000, 11.000000,1.000000, 0.500000, 1.000000, 0.500000, 1.000000, 1.500000, 1.500000, 2750.000000, 1600.000000, 0.450000 , 0.550000, 0.390000, 15.000000, 5.000000, 0.300000, 0.500000, 0.350000, 0.800000, 0.550000, 0.940000, 1.600000, 19.000000);
     return (
         <PageTemplate>
             <EtaContainer>
                 <Card>
-                    <Parshall>
-                        <Title>Selecione o Medidor Parshall</Title>
-                        <Selecione>
-                            <option value="0">3. W15,2 (cm)</option>
-                            <option value="1">3. W15,2 (cm)</option>
-                            <option value="2">3. W15,2 (cm)</option>
-                            <option value="3">3. W15,2 (cm)</option>
-                            <option value="4">3. W15,2 (cm)</option>
-                            <option value="5">3. W15,2 (cm)</option>
-                            <option value="6">3. W15,2 (cm)</option>
-                            <option value="7">3. W15,2 (cm)</option>
-                            <option value="8">3. W15,2 (cm)</option>
-                            <option value="9">3. W15,2 (cm)</option>
-                            <option value="10">3. W15,2 (cm)</option>
-                            <option value="11">3. W15,2 (cm)</option>
-                        </Selecione>
-                    </Parshall>
+                    <TopCard>
+                        <Item>
+                            <Title>Vazão (m³/s)</Title>
+                            <InputCard type="number" />
+                        </Item>
+                        <Item>
+                            <Title>Taxa de Filtração (m³/m²dia)</Title>
+                            <InputCard type="number" />
+                        </Item>
+                        <Item>
+                            <Title>Nº de decantadores</Title>
+                            <InputCard type="number" />
+                        </Item>
+                        <Item>
+                            <Title>Largura do decantador (m)</Title>
+                            <InputCard type="number" />
+                        </Item>
+                    </TopCard>
                     <Section>
-                        <Entrada>
-                            <h3>Q (I/s)</h3>
-                            <Input type="number" />
-                        </Entrada>
+
                         <Table>
                             <TableHeadContainer>
-                                <TableHead>W (cm)</TableHead>
-                                <TableHead>k</TableHead>
-                                <TableHead>n</TableHead>
-                                <TableHead>N</TableHead>
-                                <TableHead>D</TableHead>
-                                <TableHead>K</TableHead>
-                                <TableHead>G'</TableHead>
-                                <TableHead>C</TableHead>
+                                <TableHead></TableHead>
+                                <TableHead>Altura (m)</TableHead>
+                                <TableHead>Def (mm)</TableHead>
+                                <TableHead>C.U</TableHead>
+                                <TableHead>Massa Específica (Kg/m²)</TableHead>
+                                <TableHead>Porosidade</TableHead>
+                                <TableHead>C. esfericidade</TableHead>
+                                <TableHead>d10 (mm)</TableHead>
                             </TableHeadContainer>
                             <Tr1
                                 points={props.points}
@@ -243,8 +298,146 @@ export default function Coagulacao(props:any)  {
                     </Dimensionar>
                 </Card>
                 <TableRowContainer>
-                
-            </TableRowContainer>
+
+                </TableRowContainer>
+                <Resultados>
+                    <Left>
+                        <CardResultados>
+                            <TitleCard>Velocidades Obtidas (m/s)</TitleCard>
+                            <Grid>
+                                <Item>
+                                    <Name>Área total de filtração (m²)</Name>
+                                    <Value>{V4[0]}</Value>
+                                </Item>
+                                <Item>
+                                    <Name>Número de filtros</Name>
+                                    <Value>{V4[1]}</Value>
+                                </Item>
+                                <Item>
+                                    <Name>Área de cada filtro (m²)</Name>
+                                    <Value>{V4[2]}</Value>
+                                </Item>
+                                <Item>
+                                    <Name>Dimensões do filtro L e Y (m)</Name>
+                                    <Value>{V4[3]}</Value><br/>
+                                    <Value>{V4[4]}</Value>
+                                </Item>
+                            </Grid>
+                        </CardResultados>
+                        <CardResultados>
+                            <TitleCard>Lavagem de filtros / Lâmina mínima de água sobre o leito filtrante</TitleCard>
+                            <Grid>
+                                <Item>
+                                    <Name>Vazão de água de lavagem (m³/s)</Name>
+                                    <Value>{V1[0]}</Value>
+                                </Item>
+                                <Item>
+                                    <Name>Volume de lavagem (m³)</Name>
+                                    <Value>{V1[1]}</Value>
+                                </Item>
+                                
+                                <Item>
+                                    <Name>Volume de reservação (m³)</Name>
+                                    <Value>{V1[2]}</Value>
+                                </Item>
+                                <Item>
+                                    <Name>Tubulação de água de lavagem (mm)</Name>
+                                    <Value>{V1[3]}</Value>
+                                </Item>
+                                <Item>
+                                    <Name>Vazão de ar (L/s)</Name>
+                                    <Value>{V1[4]}</Value>
+                                </Item>
+                                <Item>
+                                    <Name>Lâmina da água (m)</Name>
+                                    <Value>{V1[0]}</Value>
+                                </Item>
+                            </Grid>
+                        </CardResultados>
+                        <CardResultados>
+                            <TitleCard>Calhas de água de lavagem</TitleCard>
+                            <Grid>
+                                <Item>
+                                    <Name>Dimenssões de calha B e h (m)</Name>
+                                    <Value>{}</Value><br/>
+                                    <Value>{}</Value>
+                                </Item>
+                                <Item>
+                                    <Name>Consideração</Name>
+                                    <Value>{}</Value><br/>
+                                    <Value>{}</Value><br/>
+                                    <Value>{}</Value>
+                                </Item>
+                                <Item>
+                                    <Name>Consideração</Name>
+                                    <Value>{}</Value><br/>
+                                    <Value>{}</Value><br/>
+                                    <Value>{}</Value>
+                                </Item>
+                                <Item>
+                                    <Name>S entre calhas (m)</Name>
+                                    <Value>{}</Value>
+                                </Item>
+                            </Grid>
+                        </CardResultados>
+                        <CardResultados>
+                            <TitleCard>Vertedor de saída</TitleCard>
+                            <Grid>
+                                <Item>
+                                    <Name>Dimenssões de vertedor B e h (m)</Name>
+                                    <Value>{}</Value><br/>
+                                    <Value>{}</Value>
+                                </Item>
+                                <Item>
+                                    <Name>Consideração</Name>
+                                    <Value>{}</Value><br/>
+                                    <Value>{}</Value>
+                                </Item>
+                            </Grid>
+                        </CardResultados>
+                        <CardResultados>
+                            <TitleCard>Perdas de carga</TitleCard>
+                            <Grid>
+                                <Item>
+                                    <Name>Areia</Name>
+                                    <Value>{hf[0]}</Value>
+                                </Item>
+                                <Item>
+                                    <Name>Antracito</Name>
+                                    <Value>{hf[1]}</Value>
+                                </Item>
+                                <Item>
+                                    <Name>Total</Name>
+                                    <Value>{hf[2]}</Value>
+                                </Item>
+                                <Item>
+                                    <Name>Camada Suporte</Name>
+                                    <Value>{hf[3]}</Value>
+                                </Item>
+                            </Grid>
+                        </CardResultados>
+                        <CardResultados>
+                            <TitleCard>Velocidade mpinima de fluidificação (m/s)</TitleCard>
+                            <Grid>
+                                <Item>
+                                    <Name>Areia</Name>
+                                    <Value>{vMf[0]}</Value>
+                                </Item>
+                                <Item>
+                                    <Name>Antracito</Name>
+                                    <Value>{vMf[1]}</Value>
+                                </Item>
+                                <Item>
+                                    <Name>Bifásico</Name>
+                                    <Value>{vMf[2]}</Value>
+                                </Item>
+                            </Grid>
+                        </CardResultados>
+                    </Left>
+                    <Right>
+
+                    </Right>
+                </Resultados>
             </EtaContainer>
         </PageTemplate>
     );

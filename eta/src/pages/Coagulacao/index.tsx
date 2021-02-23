@@ -225,12 +225,6 @@ const TitleValue = styled.h2`
     margin-bottom: 10px;
     color: var(--primaria);
 `
-const Satisfeita = styled.div`
-
-`
-const NSatisfeita = styled.div`
-
-`
 const CardRow = styled.div`
     margin-bottom: 10px;
     border-bottom: 1px solid var(--gray);
@@ -295,23 +289,23 @@ export default function Coagulacao(props: any) {
                     <Parshall>
                         <Title>Selecione o Medidor Parshall</Title>
                         <Selecione>
-                            <option value="0">3. W15,2 (cm)</option>
-                            <option value="1">3. W15,2 (cm)</option>
-                            <option value="2">3. W15,2 (cm)</option>
-                            <option value="3">3. W15,2 (cm)</option>
-                            <option value="4">3. W15,2 (cm)</option>
-                            <option value="5">3. W15,2 (cm)</option>
-                            <option value="6">3. W15,2 (cm)</option>
-                            <option value="7">3. W15,2 (cm)</option>
-                            <option value="8">3. W15,2 (cm)</option>
-                            <option value="9">3. W15,2 (cm)</option>
-                            <option value="10">3. W15,2 (cm)</option>
-                            <option value="11">3. W15,2 (cm)</option>
+                            <option value="0">W7,6 (cm) / Q: 0,8 - 53,8</option>
+                            <option value="1">W15,2 (cm) / Q: 1,4 - 110,4</option>
+                            <option value="2">W22,9 (cm) / Q: 2,5 - 252,0</option>
+                            <option value="3">W30,5 (cm) / Q: 3,1 - 455,9</option>
+                            <option value="4">W45,7 (cm) / Q: 4,2 - 696,6</option>
+                            <option value="5">W61,0 (cm) / Q: 11,9 - 937,0</option>
+                            <option value="6">W91,5 (cm) / Q: 17,3 - 1427,2</option>
+                            <option value="7">W122,0 (cm) / Q: 36,8 - 1922,7</option>
+                            <option value="8">W152,5 (cm) / Q: 45,3 - 2423,9</option>
+                            <option value="9">W183,0 (cm) / Q: 73,6 - 2930,8</option>
+                            <option value="10">W213,5 (cm) / Q: 85,0 - 3437,7</option>
+                            <option value="11">W244,0 (cm) / Q: 99,1 - 3950,2</option>
                         </Selecione>
                     </Parshall>
                     <Section>
                         <Entrada>
-                            <h3>Q (I/s)</h3>
+                            <h3>Q (m³/s)</h3>
                             <Input type="number" />
                         </Entrada>
                         <Table>
@@ -345,19 +339,19 @@ export default function Coagulacao(props: any) {
                             <TitleCard>Velocidades Obtidas (m/s)</TitleCard>
                             <Grid>
                                 <Item>
-                                    <Name>Vs</Name>
+                                    <Name>V<sub>s</sub></Name>
                                     <Value>{V[0].toFixed(4)}</Value>
                                 </Item>
                                 <Item>
-                                    <Name>V1</Name>
+                                    <Name>V<sub>1</sub></Name>
                                     <Value>{V[1].toFixed(4)}</Value>
                                 </Item>
                                 <Item>
-                                    <Name>V2</Name>
+                                    <Name>V<sub>2</sub></Name>
                                     <Value>{V[2].toFixed(4)}</Value>
                                 </Item>
                                 <Item>
-                                    <Name>V3</Name>
+                                    <Name>V<sub>3</sub></Name>
                                     <Value>{V[3].toFixed(4)}</Value>
                                 </Item>
                             </Grid>
@@ -366,19 +360,19 @@ export default function Coagulacao(props: any) {
                             <TitleCard>Alturas obtidas (m)</TitleCard>
                             <Grid>
                                 <Item>
-                                    <Name>h0</Name>
+                                    <Name>h<sub>0</sub></Name>
                                     <Value>{H[0].toFixed(4)}</Value>
                                 </Item>
                                 <Item>
-                                    <Name>h1</Name>
+                                    <Name>h<sub>1</sub></Name>
                                     <Value>{H[1].toFixed(4)}</Value>
                                 </Item>
                                 <Item>
-                                    <Name>h2</Name>
+                                    <Name>h<sub>2</sub></Name>
                                     <Value>{H[2].toFixed(4)}</Value>
                                 </Item>
                                 <Item>
-                                    <Name>h3</Name>
+                                    <Name>h<sub>3</sub></Name>
                                     <Value>{H[3].toFixed(4)}</Value>
                                 </Item>
                             </Grid>
@@ -420,56 +414,8 @@ export default function Coagulacao(props: any) {
                                     <Value>{O[6].toFixed(4)}</Value>
                                 </Item>
                             </GridRight>
-                            {
-
-                            }
                         </CardResultados>
-                        <CardResultados>
-                            <CardRow>
-                                <P1>1</P1>
-                                <P2>0,3  -  5,0</P2>
-                            </CardRow>
-                            <CardRow>
-                                <P1>2</P1>
-                                <P2>0,58  -  53,8</P2>
-                            </CardRow>
-                            <CardRow>
-                                <P1>3</P1>
-                                <P2>1,4  -  110,4</P2>
-                            </CardRow>
-                            <CardRow>
-                                <P1>4</P1>
-                                <P2>2,5  -  252,0</P2>
-                            </CardRow>
-                            <CardRow>
-                                <P1>5</P1>
-                                <P2>3,1  -  445,9</P2>
-                            </CardRow>
-                            <CardRow>
-                                <P1>6</P1>
-                                <P2>4,2  -  696,6</P2>
-                            </CardRow>
-                            <CardRow>
-                                <P1>7</P1>
-                                <P2>11,9  -  937,3</P2>
-                            </CardRow>
-                            <CardRow>
-                                <P1>8</P1>
-                                <P2>17,3  -  1427,2</P2>
-                            </CardRow>
-                            <CardRow>
-                                <P1>9</P1>
-                                <P2>36,8  -  1922,7</P2>
-                            </CardRow>
-                            <CardRow>
-                                <P1>10</P1>
-                                <P2>45,3  -  2423,9</P2>
-                            </CardRow>
-                            <CardRow>
-                                <P1>11</P1>
-                                <P2>73,6  -  2930,4</P2>
-                            </CardRow>
-                        </CardResultados>
+                        
                     </Right>
                 </Resultados>
             </EtaContainer>

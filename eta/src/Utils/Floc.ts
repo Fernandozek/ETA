@@ -100,8 +100,66 @@ export default {
 
         var M1 = [[n1, n2, n3, n4], [e1, e2, e3, e4], [V11, V12, V13, V14], [V21, V22, V23, V24], [dhd1, dhd2, dhd3, dhd4], [dhl1, dhl2, dhl3, dhl4], [dh1, dh2, dh3, dh4], [Gg1, Gg2, Gg3, Gg4]];
         var M11 = M1;
+        var warndlg;
+        if (Gg1 <= 70 && Gg2 <= 70 && Gg3 <= 70 && Gg4 <= 70) {
+            warndlg = "Dimensionamento realizado com sucesso";
+        }
 
-        return 0;
+        var M22;
+        if (Gg1 > 70) {
+            warndlg = "Dimensionamento não foi realizado com sucesso";
+            var GG1 = 70 - (70 * (FC / 100));
+            var nnn1 = 0.045 * Math.pow((Math.pow((a * L * GG1 / q), 2) * t1), (1 / 3));
+            var nn1 = Math.ceil(nnn1);
+            var ee1 = L / nn1;
+            var Vv11 = q / (a * ee1);
+            var Vv21 = (2 / 3) * Vv11
+            var ll1 = t1 * 60 * Vv11;
+            var rrh1 = a * ee1 / (2 * (a + ee1));
+            var ddhd1 = Math.pow(((q * 0.013) / ((a * ee1) * (Math.pow(rrh1, (2 / 3))))), 2) * ll1;
+            var ddhl1 = ((nn1 * Math.pow(Vv11, 2)) + (nn1 - 1) * (Math.pow(Vv21, 2))) / (2 * 9.81);
+            var ddh1 = ddhd1 + ddhl1;
+            var GGg1 = Math.sqrt((9.81 * ddh1) / (Math.pow(10, -6) * t1 * 60));
+            var M2 = [[nn1, n2, n3, n4], [ee1, e2, e3, e4], [Vv11, V12, V13, V14], [Vv21, V22, V23, V24], [ddhd1, dhd2, dhd3, dhd4], [ddhl1, dhl2, dhl3, dhl4], [ddh1, dh2, dh3, dh4], [GGg1, Gg2, Gg3, Gg4]];
+            M22 = M2;
+        }
+
+        if (Gg2 > 70) {
+            warndlg = "Dimensionamento não foi realizado com sucesso";
+            var GG2 = 70 - (70 * (FC / 100));
+            var nnn2 = 0.045 * Math.pow((Math.pow((a * L * GG2 / q), 2) * t2), (1 / 3));
+            var nn2 = Math.ceil(nnn2);
+            var ee2 = L / nn2;
+            var Vv12 = q / (a * ee2);
+            var Vv22 = (2 / 3) * Vv12;
+            var ll2 = t2 * 60 * Vv12;
+            var rrh2 = a * ee2 / (2 * (a + ee2));
+            var ddhd2 = Math.pow(((q * 0.013) / ((a * ee2) * Math.pow(rrh2, (2 / 3)))), 2) * ll2;
+            var ddhl2 = ((nn2 * Math.pow(Vv12, 2)) + (nn2 - 1) * (Math.pow(Vv22, 2))) / (2 * 9.81);
+            var ddh2 = ddhd2 + ddhl2;
+            var GGg2 = Math.sqrt((9.81 * ddh2) / (Math.pow(10, -6) * t2 * 60));
+            M2 = [[n1, nn2, n3, n4], [e1, ee2, e3, e4], [V11, Vv12, V13, V14], [V21, Vv22, V23, V24], [dhd1, ddhd2, dhd3, dhd4], [dhl1, ddhl2, dhl3, dhl4], [dh1, ddh2, dh3, dh4], [Gg1, GGg2, Gg3, Gg4]];
+            M22 = M2;
+        }
+        if (Gg3 > 70) {
+            warndlg = "Dimensionamento não foi realizado com sucesso";
+            var GG3 = 70 - (70 * (FC / 100));
+            var nnn3 = 0.045 * Math.pow((Math.pow((a * L * GG3 / q), 2) * t3), (1 / 3));
+            var nn3 = Math.ceil(nnn3);
+            var ee3 = L / nn3;
+            var Vv13 = q / (a * ee3);
+            var Vv23 = (2 / 3) * Vv13;
+            var ll3 = t3 * 60 * Vv13;
+            var rrh3 = a * ee3 / (2 * (a + ee3));
+            var ddhd3 = Math.pow(((q * 0.013) / ((a * ee3) * Math.pow(rrh3, (2 / 3)))), 2) * ll3;
+            var ddhl3 = ((nn3 * Math.pow(Vv13, 2)) + (nn3 - 1) * (Math.pow(Vv23, 2))) / (2 * 9.81);
+            var ddh3 = ddhd3 + ddhl3;
+            var GGg3 = Math.sqrt((9.81 * ddh3) / (Math.pow(10, -6) * t3 * 60));
+            var M2 = [[n1, n2, nn3, n4],[e1, e2, ee3, e4],[V11, V12, Vv13, V14],[V21, V22, Vv23, V24],[dhd1, dhd2, ddhd3, dhd4],[dhl1, dhl2, ddhl3, dhl4],[dh1, dh2, ddh3, dh4],[Gg1, Gg2, GGg3, Gg4]];
+            M22 = M1;
+        }
+        
+        return [M22,M11,Q,Vol,A,B,a];
     }
 
 }
