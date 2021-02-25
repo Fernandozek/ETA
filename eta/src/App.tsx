@@ -4,7 +4,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Error404 from './pages/Error404';
-import Eta1 from './pages/Coagulacao';
+import Coagulacao from './pages/Coagulacao';
 import Eta2 from './pages/Decantacao';
 import Eta3 from './pages/Floculacao';
 import Eta4 from './pages/Filtracao';
@@ -15,7 +15,9 @@ function App() {
       <Switch>
         <Route path="/" component={Home} exact />
         <Route path="/login" component={Login} />
-        <Route path="/coagulacao" component={Eta1} />
+        <Route path="/coagulacao" 
+          render={(props) => <Coagulacao {...props} /> }
+        />
         <Route path="/decantacao" component={Eta2} />
         <Route path="/floculacao" component={Eta3} />
         <Route path="/filtracao" component={Eta4} />

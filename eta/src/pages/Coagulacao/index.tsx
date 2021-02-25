@@ -143,7 +143,7 @@ const Checkbox = styled.div`
         margin-right: 10px;
     }
 `
-const Button = styled.button`
+const Button = styled(Link)`
     width: 150px;
     background-color: var(--secundaria);
     border: none;
@@ -280,8 +280,10 @@ export default function Coagulacao(props: any) {
     for (var i = 0; i < pontos; i++) {
         tmp.push(i);
     }
-    const [Q, setQ] = useState("");
-    const [V, H, O] = Coag.coag(0.8);
+    const [q, setQ] = useState("");
+    //const Q = props.location.state.q;
+    
+    const [V, H, O] = Coag.coag(props.q);
     return (
         <PageTemplate>
             <EtaContainer>
@@ -306,7 +308,11 @@ export default function Coagulacao(props: any) {
                     <Section>
                         <Entrada>
                             <h3>Q (m³/s)</h3>
-                            <Input type="number" />
+                            <Input 
+                                type="number" 
+                                value={q}
+                                onChange={e => setQ(e.target.value)}
+                            />
                         </Entrada>
                         <Table>
                             <TableHeadContainer>
@@ -330,7 +336,14 @@ export default function Coagulacao(props: any) {
                             <input type="checkbox" />
                             <p>Mostrar modelo</p>
                         </Checkbox>
-                        <Button>Dimensionar</Button>
+                        <Button to={{
+                            pathname:"/coagulacao",
+                            state: {
+                                q
+                            }
+                        }}>
+                            Dimensionar
+                        </Button>
                     </Dimensionar>
                 </Card>
                 <Resultados>

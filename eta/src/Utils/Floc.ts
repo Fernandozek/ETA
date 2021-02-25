@@ -1,33 +1,22 @@
-import math from 'mathjs';
+import { divide, multiply, inv } from 'mathjs';
 
 export default {
-    multi(a: any, b: any) {
-        var aNumRows = a.length, aNumCols = a[0].length,
-            bNumRows = b.length, bNumCols = b[0].length,
-            m = new Array(aNumRows);  // initialize array of rows
-        for (var r = 0; r < aNumRows; ++r) {
-            m[r] = new Array(bNumCols); // initialize the current row
-            for (var c = 0; c < bNumCols; ++c) {
-                m[r][c] = 0;             // initialize the current cell
-                for (var i = 0; i < aNumCols; ++i) {
-                    m[r][c] += a[r][i] * b[i][c];
-                }
-            }
-        }
-        return m;
-    },
-    floc(Q: number, Ttf: number, H: number, Nd: number, L: number, G1: number, G2: number, G3: number, G4: number, FC: number) {
-        var Nc = 4;
+    floc(Q: number, Ttf: number,Nc: number, H: number, Nd: number, L: number, G1: number, G2: number, G3: number, G4: number, FC: number) {
         var Tf = Ttf * 60;
-
         var am = [[1, 1, 1, 1],
-        [G1, -G2, 0, 0],
-        [0, G2, -G3, 0],
-        [0, 0, G3, -G4]];
+                [G1, -G2, 0, 0],
+                [0, G2, -G3, 0],
+                [0, 0, G3, -G4]];
+        
         var bm = [[Ttf], [0], [0], [0]];
+        
+
+        var inve = inv(am);
+        var teste = multiply(inve, bm);
         var oq = FC;
 
-        var rm = [4];
+        var rm = <any>[];
+        rm = teste;
         var t1 = rm[0];
         var t2 = rm[1];
         var t3 = rm[2];
@@ -106,6 +95,7 @@ export default {
         }
 
         var M22;
+        var M2;
         if (Gg1 > 70) {
             warndlg = "Dimensionamento não foi realizado com sucesso";
             var GG1 = 70 - (70 * (FC / 100));
@@ -113,14 +103,14 @@ export default {
             var nn1 = Math.ceil(nnn1);
             var ee1 = L / nn1;
             var Vv11 = q / (a * ee1);
-            var Vv21 = (2 / 3) * Vv11
+            var Vv21 = (2 / 3) * Vv11;
             var ll1 = t1 * 60 * Vv11;
             var rrh1 = a * ee1 / (2 * (a + ee1));
             var ddhd1 = Math.pow(((q * 0.013) / ((a * ee1) * (Math.pow(rrh1, (2 / 3))))), 2) * ll1;
             var ddhl1 = ((nn1 * Math.pow(Vv11, 2)) + (nn1 - 1) * (Math.pow(Vv21, 2))) / (2 * 9.81);
             var ddh1 = ddhd1 + ddhl1;
             var GGg1 = Math.sqrt((9.81 * ddh1) / (Math.pow(10, -6) * t1 * 60));
-            var M2 = [[nn1, n2, n3, n4], [ee1, e2, e3, e4], [Vv11, V12, V13, V14], [Vv21, V22, V23, V24], [ddhd1, dhd2, dhd3, dhd4], [ddhl1, dhl2, dhl3, dhl4], [ddh1, dh2, dh3, dh4], [GGg1, Gg2, Gg3, Gg4]];
+            M2 = [[nn1, n2, n3, n4], [ee1, e2, e3, e4], [Vv11, V12, V13, V14], [Vv21, V22, V23, V24], [ddhd1, dhd2, dhd3, dhd4], [ddhl1, dhl2, dhl3, dhl4], [ddh1, dh2, dh3, dh4], [GGg1, Gg2, Gg3, Gg4]];
             M22 = M2;
         }
 
@@ -155,11 +145,22 @@ export default {
             var ddhl3 = ((nn3 * Math.pow(Vv13, 2)) + (nn3 - 1) * (Math.pow(Vv23, 2))) / (2 * 9.81);
             var ddh3 = ddhd3 + ddhl3;
             var GGg3 = Math.sqrt((9.81 * ddh3) / (Math.pow(10, -6) * t3 * 60));
-            var M2 = [[n1, n2, nn3, n4],[e1, e2, ee3, e4],[V11, V12, Vv13, V14],[V21, V22, Vv23, V24],[dhd1, dhd2, ddhd3, dhd4],[dhl1, dhl2, ddhl3, dhl4],[dh1, dh2, ddh3, dh4],[Gg1, Gg2, GGg3, Gg4]];
+            M2 = [[n1, n2, nn3, n4],[e1, e2, ee3, e4],[V11, V12, Vv13, V14],[V21, V22, Vv23, V24],[dhd1, dhd2, ddhd3, dhd4],[dhl1, dhl2, ddhl3, dhl4],[dh1, dh2, ddh3, dh4],[Gg1, Gg2, GGg3, Gg4]];
             M22 = M1;
         }
-        
-        return [M22,M11,Q,Vol,A,B,a];
+        this.m22(M22);
+        return [M22,M2,M11,q,Vol,A,B,a];
+    },
+    m22(M22: any){
+        var V1 = M22[0];
+        var V2 = M22[1];
+        var V3 = M22[2];
+        var V4 = M22[3];
+        var V5 = M22[3];
+        var V6 = M22[3];
+        var V7 = M22[3];
+        var V8 = M22[3];
+        return [V1,V2,V3,V4,V5,V6,V7,V8];
     }
 
 }
