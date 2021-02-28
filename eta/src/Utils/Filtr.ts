@@ -1,7 +1,7 @@
 export default {
-    filtr(Q:number, q:number, Nd:number, L:number, Lcl:number, deefar:number, deefant:number, d10ar:number, d10ant:number, cuar:number, cuant:number, roar:number, roant:number, e0ar:number, e0ant:number, ecs:number, qdar:number, ncalhas:number, lar:number, lant:number, lcs:number, twar:number, twant:number, twcs:number, d10cs:number, d90cs:number) {
-        
-            
+    filtr(Q: number, q: number, Nd: number, L: number, Lcl: number, deefar: number, deefant: number, d10ar: number, d10ant: number, cuar: number, cuant: number, roar: number, roant: number, e0ar: number, e0ant: number, ecs: number, qdar: number, ncalhas: number, lar: number, lant: number, lcs: number, twar: number, twant: number, twcs: number, d10cs: number, d90cs: number) {
+
+
         var At = (Q * 86400) / q;
 
 
@@ -9,9 +9,9 @@ export default {
         var NN = Math.ceil(N);
         var Nn = 2 * Nd;
         var nad;
-        if (Nn > NN){ 
-                nad = Nn;
-        }else{
+        if (Nn > NN) {
+            nad = Nn;
+        } else {
             nad = NN;
         }
 
@@ -24,7 +24,7 @@ export default {
 
 
 
-        var areia1 = lar / (deefar * Math.pow(10,-3));
+        var areia1 = lar / (deefar * Math.pow(10, -3));
         var antracito1 = lant / (deefant * Math.pow(10, -3));
         var Vg = areia1 + antracito1;
 
@@ -40,11 +40,11 @@ export default {
 
         var d90ant = d10ant * Math.pow(10, (1.67 * Math.log10(cuant)));
 
-        var Gaant = ((d90ant * 10 ^ -3) ^ 3 * 1000 * (roant - 1000) * 9.81) / Math.pow((1.01 * 10 ^ -3), 2);
+        var Gaant = (Math.pow((d90ant * Math.pow(10, -3)), 3) * 1000 * (roant - 1000) * 9.81) / Math.pow((1.01 * Math.pow(10, -3)), 2);
 
         var Remfant = Math.sqrt(Math.pow(33.7, 2) + (0.048 * Gaant)) - 33.7;
 
-        var Vmfant = (Remfant * 10 ^ -6) / (d90ant * 10 ^ -3);
+        var Vmfant = (Remfant * Math.pow(10, -6)) / (d90ant * Math.pow(10, -3));
 
         var vtar = lar * Af;
 
@@ -60,12 +60,12 @@ export default {
         var vmf1;
         var vmf2;
         var VMF;
-        if (Vmfar > Vmfant){
+        if (Vmfar > Vmfant) {
             vmf1 = Vmfar;
             vmf2 = Vmfant;
             VMF = vmf1 * Math.pow(Math.pow((vmf2 / vmf1), X2), 1.69);
         }
-        if (Vmfant > Vmfar){
+        if (Vmfant > Vmfar) {
             vmf1 = Vmfant;
             vmf2 = Vmfar;
             VMF = vmf1 * Math.pow(Math.pow((vmf2 / vmf1), X2), 1.69);
@@ -108,7 +108,7 @@ export default {
 
         var deqar = Math.sqrt(d10ar * d90ar);
 
-        var hfar = (180) * (1.01 * Math.pow(10, -3)) * Math.pow((1 - e0ar), 2) * (q / 86400) * lar / ((9810) * Math.pow(e0ar, 3) * Math.pow(twar, 2) * Math.pow(Math.pow(deqar * 10, -3), 2));
+        var hfar = (180) * (1.01 * Math.pow(10, -3)) * Math.pow((1 - e0ar), 2) * (q / 86400) * lar / ((9810) * Math.pow(e0ar, 3) * Math.pow(twar, 2) * Math.pow(deqar * Math.pow(10, -3), 2));
 
         var deqant = Math.sqrt(d10ant * d90ant);
 
@@ -128,15 +128,16 @@ export default {
         var hv0 = Math.pow(((Q / nad) / (1.84 * Bv)), (1 / 1.5));
 
 
-        
+
 
         var hf = [hfar, hfant, hft, hfcs];
+        //alert("hf = " + hfar + ", " + hfant + ", " + hft + ", " + hfcs);
 
         var vMf = [Vmfar, Vmfant, VMF];
-        var V1 = [Qal, Vl, Vr, D, Qdar];
-        var V2 = [B,h0, liinf,lisup,sliinf,slisup, S];
-        var V3 = [hla, Bv, hv0];
-        var V4 = [At, nad, Af, Lb, y, Vg]
+        var V1 = [Qal, Vl, Vr, D, Qdar,hla];
+        var V2 = [B, h0, liinf, lisup, sliinf, slisup, S];
+        var V3 = [Bv, hv0, Vg];
+        var V4 = [At, nad, Af, Lb, y];
         return [hf, vMf, V1, V2, V3, V4];
     }
 }

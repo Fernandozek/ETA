@@ -320,7 +320,7 @@ export default function Coagulacao(props: any) {
                                 <Item>
                                     <Name>Dimensões do filtro L e Y (m)</Name>
                                     <Value>{V4[3]}</Value><br/>
-                                    <Value>{V4[4]}</Value>
+                                    <Value>{V4[4]?.toFixed(5)}</Value>
                                 </Item>
                             </Grid>
                         </CardResultados>
@@ -329,16 +329,16 @@ export default function Coagulacao(props: any) {
                             <Grid>
                                 <Item>
                                     <Name>Vazão de água de lavagem (m³/s)</Name>
-                                    <Value>{V1[0]}</Value>
+                                    <Value>{V1[0]?.toFixed(3)}</Value>
                                 </Item>
                                 <Item>
                                     <Name>Volume de lavagem (m³)</Name>
-                                    <Value>{V1[1]}</Value>
+                                    <Value>{V1[1]?.toFixed(1)}</Value>
                                 </Item>
                                 
                                 <Item>
                                     <Name>Volume de reservação (m³)</Name>
-                                    <Value>{V1[2]}</Value>
+                                    <Value>{V1[2]?.toFixed(1)}</Value>
                                 </Item>
                                 <Item>
                                     <Name>Tubulação de água de lavagem (mm)</Name>
@@ -350,7 +350,7 @@ export default function Coagulacao(props: any) {
                                 </Item>
                                 <Item>
                                     <Name>Lâmina da água (m)</Name>
-                                    <Value>{V1[0]}</Value>
+                                    <Value>{V1[5]?.toFixed(5)}</Value>
                                 </Item>
                             </Grid>
                         </CardResultados>
@@ -359,24 +359,24 @@ export default function Coagulacao(props: any) {
                             <Grid>
                                 <Item>
                                     <Name>Dimenssões de calha B e h (m)</Name>
-                                    <Value>{}</Value><br/>
-                                    <Value>{}</Value>
+                                    <Value>{V2[0]}</Value><br/>
+                                    <Value>{V2[1]?.toFixed(6)}</Value>
                                 </Item>
                                 <Item>
                                     <Name>Consideração</Name>
-                                    <Value>{}</Value><br/>
-                                    <Value>{}</Value><br/>
-                                    <Value>{}</Value>
+                                    <Value>{V2[2]}</Value>
+                                    <Value>- H0 -</Value>
+                                    <Value>{V2[3]}</Value>
                                 </Item>
                                 <Item>
                                     <Name>Consideração</Name>
-                                    <Value>{}</Value><br/>
-                                    <Value>{}</Value><br/>
-                                    <Value>{}</Value>
+                                    <Value>{V2[4]?.toFixed(3)}</Value>
+                                    <Value>- S -</Value>
+                                    <Value>{V2[5]}</Value>
                                 </Item>
                                 <Item>
                                     <Name>S entre calhas (m)</Name>
-                                    <Value>{}</Value>
+                                    <Value>{V2[6]?.toFixed(5)}</Value>
                                 </Item>
                             </Grid>
                         </CardResultados>
@@ -385,13 +385,21 @@ export default function Coagulacao(props: any) {
                             <Grid>
                                 <Item>
                                     <Name>Dimenssões de vertedor B e h (m)</Name>
-                                    <Value>{}</Value><br/>
-                                    <Value>{}</Value>
+                                    <Value>{V3[0]}</Value><br/>
+                                    <Value>{V3[1]?.toFixed(6)}</Value>
                                 </Item>
                                 <Item>
                                     <Name>Consideração</Name>
-                                    <Value>{}</Value><br/>
-                                    <Value>{}</Value>
+                                    <Value>{V3[2]}</Value><br/>
+                                    <Value>{
+                                        (Number(V3[2]) > 1000) &&
+                                          <p>
+                                              Superior a 1000
+                                          </p>  ||
+                                          <p>
+                                              Inferior a 1000
+                                          </p>
+                                    }</Value>
                                 </Item>
                             </Grid>
                         </CardResultados>
@@ -400,19 +408,19 @@ export default function Coagulacao(props: any) {
                             <Grid>
                                 <Item>
                                     <Name>Areia</Name>
-                                    <Value>{hf[0]}</Value>
+                                    <Value>{hf[0]?.toFixed(4)}</Value>
                                 </Item>
                                 <Item>
                                     <Name>Antracito</Name>
-                                    <Value>{hf[1]}</Value>
+                                    <Value>{hf[1]?.toFixed(4)}</Value>
                                 </Item>
                                 <Item>
                                     <Name>Total</Name>
-                                    <Value>{hf[2]}</Value>
+                                    <Value>{hf[2]?.toFixed(4)}</Value>
                                 </Item>
                                 <Item>
                                     <Name>Camada Suporte</Name>
-                                    <Value>{hf[3]}</Value>
+                                    <Value>{hf[3]?.toFixed(4)}</Value>
                                 </Item>
                             </Grid>
                         </CardResultados>
@@ -421,15 +429,15 @@ export default function Coagulacao(props: any) {
                             <Grid>
                                 <Item>
                                     <Name>Areia</Name>
-                                    <Value>{vMf[0]}</Value>
+                                    <Value>{vMf[0]?.toFixed(4)}</Value>
                                 </Item>
                                 <Item>
                                     <Name>Antracito</Name>
-                                    <Value>{vMf[1]}</Value>
+                                    <Value>{vMf[1]?.toFixed(4)}</Value>
                                 </Item>
                                 <Item>
                                     <Name>Bifásico</Name>
-                                    <Value>{vMf[2]}</Value>
+                                    <Value>{vMf[2]?.toFixed(4)}</Value>
                                 </Item>
                             </Grid>
                         </CardResultados>
