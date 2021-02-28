@@ -247,7 +247,7 @@ export default function Coagulacao(props: any) {
         tmp.push(i);
     }
     const [Q, setQ] = useState("");
-    const [hf, vMf, V1, V2, V3, V4] = Filtr.filtr(0.8, 270.000000, 4.000000, 11.000000,1.000000, 0.500000, 1.000000, 0.500000, 1.000000, 1.500000, 1.500000, 2750.000000, 1600.000000, 0.450000 , 0.550000, 0.390000, 15.000000, 5.000000, 0.300000, 0.500000, 0.350000, 0.800000, 0.550000, 0.940000, 1.600000, 19.000000);
+    const [hf, vMf, V1, V2, V3, V4] = Filtr.filtr(0.8, 270.000000, 4.000000, 11.000000, 1.000000, 0.500000, 1.000000, 0.500000, 1.000000, 1.500000, 1.500000, 2750.000000, 1600.000000, 0.450000, 0.550000, 0.390000, 15.000000, 5.000000, 0.300000, 0.500000, 0.350000, 0.800000, 0.550000, 0.940000, 1.600000, 19.000000);
     return (
         <PageTemplate>
             <EtaContainer>
@@ -319,7 +319,7 @@ export default function Coagulacao(props: any) {
                                 </Item>
                                 <Item>
                                     <Name>Dimensões do filtro L e Y (m)</Name>
-                                    <Value>{V4[3]}</Value><br/>
+                                    <Value>{V4[3]}</Value><br />
                                     <Value>{V4[4]?.toFixed(5)}</Value>
                                 </Item>
                             </Grid>
@@ -335,7 +335,7 @@ export default function Coagulacao(props: any) {
                                     <Name>Volume de lavagem (m³)</Name>
                                     <Value>{V1[1]?.toFixed(1)}</Value>
                                 </Item>
-                                
+
                                 <Item>
                                     <Name>Volume de reservação (m³)</Name>
                                     <Value>{V1[2]?.toFixed(1)}</Value>
@@ -359,7 +359,7 @@ export default function Coagulacao(props: any) {
                             <Grid>
                                 <Item>
                                     <Name>Dimenssões de calha B e h (m)</Name>
-                                    <Value>{V2[0]}</Value><br/>
+                                    <Value>{V2[0]}</Value><br />
                                     <Value>{V2[1]?.toFixed(6)}</Value>
                                 </Item>
                                 <Item>
@@ -385,21 +385,23 @@ export default function Coagulacao(props: any) {
                             <Grid>
                                 <Item>
                                     <Name>Dimenssões de vertedor B e h (m)</Name>
-                                    <Value>{V3[0]}</Value><br/>
+                                    <Value>{V3[0]}</Value><br />
                                     <Value>{V3[1]?.toFixed(6)}</Value>
                                 </Item>
                                 <Item>
                                     <Name>Consideração</Name>
-                                    <Value>{V3[2]}</Value><br/>
-                                    <Value>{
-                                        (Number(V3[2]) > 1000) &&
-                                          <p>
-                                              Superior a 1000
-                                          </p>  ||
-                                          <p>
-                                              Inferior a 1000
-                                          </p>
-                                    }</Value>
+                                    <Value>{V3[2]}</Value><br />
+                                    <Value>
+                                        {
+                                            (Number(V3[2]) > 1000) &&
+                                            <p>
+                                                Superior a 1000
+                                            </p> ||
+                                            <p>
+                                                Inferior a 1000
+                                            </p>
+                                        }
+                                    </Value>
                                 </Item>
                             </Grid>
                         </CardResultados>
