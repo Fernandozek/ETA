@@ -43,6 +43,9 @@ export default function Home(props:any) {
         return (
             <PageTemplate>
                 <HomeContainer>
+                    {
+                        /*
+                         
                     <Menu>
                         <a href="#canal1">Un. de Coagulação</a>
                         <a href="#canal2">Un de Decantação</a>
@@ -63,6 +66,8 @@ export default function Home(props:any) {
                             <Eta4  />
                         </div>
                     </Itens>
+                    */
+                }
                 </HomeContainer>
             </PageTemplate>
         );

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, FormEvent, useEffect } from 'react';
 import styled from 'styled-components';
 import PageTemplate from '../PageTemplate';
 import Floc from '../../Utils/Floc';
@@ -142,6 +142,42 @@ const Name = styled.h2`
     font-size: 1.3rem;
     margin-bottom: 10px;
     color: var(--gray-dark);
+    position: relative;
+    display: inline-block;
+    
+    .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -60px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .tooltiptext::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+    }
+
+    :hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+    
 `
 const Value = styled.p`
     color: var(--gray-dark);
@@ -200,6 +236,9 @@ const TableRowContainer = styled.tr`
 `
 interface Table1Props {
     points: number
+}
+interface GProps {
+    in: number
 }
 const Tr1: React.FC<Table1Props> = (props) => {
     var tmp = [];
@@ -263,14 +302,73 @@ const Tr2: React.FC<Table1Props> = (props) => {
         </>
     )
 }
+const G: React.FC<GProps> = (props) => {
+    var tmp = [];
+    var pontos = props.in;
+
+    for (var i = 0; i < pontos; i++) {
+        tmp.push(i);
+    }
+
+    return (
+        <>
+            {
+                tmp.map((i, index) => {
+
+                    return (
+
+                        <Op>
+                            <Title>G{index + 1} (1/s)</Title>
+                            <Input type="number" />
+                        </Op>
+                    );
+                })
+            }
+        </>
+    )
+}
 export default function Coagulacao(props: any) {
     var [M22, M2, M11, q, Vol, A, B, a] = Floc.floc(0.8, 25, 4, 4.5, 4, 11, 70, 50, 30, 15, 10);
     var [V1, V2, V3, V4, V5, V6, V7, V8] = Floc.m22(M22);
+
     const [qms, setQms] = useState("");
+    const [gs, setGs] = useState("3");
+    const [gValues, setGValues] = useState<string[]>([]);
+
+    useEffect(() => {
+        var tmp = Array<string>();
+        var pontos = Number(gs);
+        
+        for (var i = 0; i < pontos; i++) {
+            tmp.push("");
+            
+        }
+        setGValues(tmp);
+    
+    }, [gs])
+    function handleGchange(i: number, value: string){
+        const updated = gValues.map((gvalue, index) => {
+            if(index === i){
+                return value;
+            }else{
+                return gvalue;
+            }
+        })
+        setGValues(updated);
+    }
+   
     return (
         <PageTemplate>
             <ETA3Container>
                 <Card>
+                    <select name="" id="" onChange={(e) => {
+                        const valor = e.target.value;
+                        setGs(valor);
+                    }}>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
                     <Entradas>
                         <Op>
                             <Title>Q (m³/s)</Title>
@@ -298,23 +396,27 @@ export default function Coagulacao(props: any) {
                             <Title>Largura (m)</Title>
                             <Input type="number" />
                         </Op>
-                        <Op>
-                            <Title>G1 (1/s)</Title>
-                            <Input type="number" />
-                        </Op>
-                        <Op>
-                            <Title>G2 (1/s)</Title>
-                            <Input type="number" />
-                        </Op>
-                        <Op>
-                            <Title>G3 (1/s)</Title>
-                            <Input type="number" />
-                        </Op>
-                        <Op>
-                            <Title>G4 (1/s)</Title>
-                            <Input type="number" />
-                        </Op>
+                        {
+                            gValues.map((gvalue, i) => {
 
+                                return (
+
+                                    <Op>
+                                        <Title>G{i + 1} (1/s)</Title>
+                                        <Input 
+                                            type="number" 
+                                            value={gvalue}
+                                            onChange={(e) => handleGchange(i, e.target.value)}
+                                        />
+                                    </Op>
+                                );
+                            })
+                        }
+                        {/*
+                            <G 
+                            in = {Number(gs)}
+                        />
+                        */}
                     </Entradas>
                     <Dimensionar>
                         <Fator>
@@ -331,19 +433,27 @@ export default function Coagulacao(props: any) {
                         <TitleCard>Velocidades Obtidas (m/s)</TitleCard>
                         <Grid>
                             <Item>
-                                <Name>ql (m³/s)</Name>
+                                <Name>ql (m³/s)
+                                    <span className="tooltiptext">Vazão da água</span>
+                                </Name>
                                 <Value>{Number(q).toFixed(2)}</Value>
                             </Item>
                             <Item>
-                                <Name>Volume (m³)</Name>
+                                <Name>Volume (m³)
+                                    <span className="tooltiptext">Volume de água</span>
+                                </Name>
                                 <Value>{Number(Vol).toFixed(0)}</Value>
                             </Item>
                             <Item>
-                                <Name>Area (m²)</Name>
+                                <Name>Area (m²)
+                                    <span className="tooltiptext">Volume de água</span>
+                                </Name>
                                 <Value>{Number(A).toFixed(4)}</Value>
                             </Item>
                             <Item>
-                                <Name>Largura (m)</Name>
+                                <Name>Largura (m)
+                                    <span className="tooltiptext">Comprimento do canal ou trecho considerado</span>
+                                </Name>
                                 <Value>{Number(B).toFixed(4)}</Value><br />
                             </Item>
                             <Item>
@@ -357,12 +467,12 @@ export default function Coagulacao(props: any) {
                             <Table>
                                 <TableHeadContainer>
                                     <TableHead>n</TableHead>
-                                    <TableHead>e</TableHead>
-                                    <TableHead>V1 (m/s)</TableHead>
-                                    <TableHead>V2 (m/s)</TableHead>
-                                    <TableHead>Dhd (m)</TableHead>
-                                    <TableHead>Dhl (m)</TableHead>
-                                    <TableHead>Dht (m)</TableHead>
+                                    <TableHead><i>e</i></TableHead>
+                                    <TableHead>V<sub>1</sub> (m/s)</TableHead>
+                                    <TableHead>V<sub>2</sub> (m/s)</TableHead>
+                                    <TableHead>Δhd (m)</TableHead>
+                                    <TableHead>Δhl (m)</TableHead>
+                                    <TableHead>Δht (m)</TableHead>
                                     <TableHead>G (1/s)</TableHead>
                                 </TableHeadContainer>
                                 <Tr1

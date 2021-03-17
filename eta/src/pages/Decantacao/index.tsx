@@ -51,6 +51,7 @@ const Title = styled.h3`
     color: var(--gray-dark);
     margin-bottom: 10px;
     text-align: center;
+
     @media(min-width: 768px){
         width: 130px;
         font-size: 0.8rem;
@@ -171,6 +172,41 @@ const Name = styled.h2`
     font-size: 1.3rem;
     margin-bottom: 10px;
     color: var(--gray-dark);
+    position: relative;
+    display: inline-block;
+    
+    .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -60px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .tooltiptext::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+    }
+
+    :hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
 `
 const Value = styled.p`
     color: var(--gray-dark);
@@ -222,15 +258,21 @@ class Eta2 extends Component {
                                 <TitleCard>Painel de resultados</TitleCard>
                                 <Grid>
                                     <Item>
-                                        <Name>ql (m³/s)</Name>
+                                        <Name>ql (m³/s)
+                                            <span className="tooltiptext">Vazão que passa pela unidade</span>  
+                                        </Name>
                                         <Value>{V1[0].toFixed(4)}</Value>
                                     </Item>
                                     <Item>
-                                        <Name>t (s)</Name>
+                                        <Name>t (s)
+                                            <span className="tooltiptext">Tempo de detenção</span>  
+                                        </Name>
                                         <Value>{V1[1].toFixed(0)}</Value>
                                     </Item>
                                     <Item>
-                                        <Name>B (m)</Name>
+                                        <Name>B (m)
+                                            <span className="tooltiptext">Tempo de detenção</span>  
+                                        </Name>
                                         <Value>{V1[2].toFixed(0)}</Value>
                                     </Item>
                                     <Item>
