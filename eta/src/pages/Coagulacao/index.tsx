@@ -44,7 +44,7 @@ const Selecione = styled.select`
     height: 30px;
     @media(min-width: 768px){
         margin-left: 10px;
-        width: 135px;
+        width: 235px;
         height: 35px;
         font-size: 1.2rem;
     }
@@ -351,174 +351,164 @@ const Tr1: React.FC<Table1Props> = (props) => {
         </>
     )
 }
-interface ResultsProps{
+interface ResultsProps {
     q: number
+    v: number[]
 }
 const Result: React.FC<ResultsProps> = (props) => {
-    var tmp = [];
-    var pontos = 1;
-    for (var i = 0; i < pontos; i++) {
-        tmp.push(i);
-    }
+
+    const [V, H, O] = Coag.coag(Number(props.q), props.v);
     return (
         <>
             {
-                tmp.map((i, index) => {
-                    const [V, H, O] = Coag.coag(Number(props.q));
-                    return (
-
-                        <Resultados>
-                            <Left>
-                                <CardResultados>
-                                    <TitleCard>Velocidades Obtidas (m/s)</TitleCard>
-                                    <Grid>
-                                        <Item>
-                                            <Name>V<sub>s</sub>
-                                                <span className="tooltiptext">Velocidade na seção de medição (m/s)</span>
-                                            </Name>
-                                            <Value>{V[0].toFixed(4)}</Value>
-                                        </Item>
-                                        <Item>
-                                            <Name>V<sub>1</sub>
-                                                <span className="tooltiptext">Velocidade antes do ressalto (m/s)</span>
-                                            </Name>
-                                            <Value>{V[1].toFixed(4)}</Value>
-                                        </Item>
-                                        <Item>
-                                            <Name>V<sub>2</sub>
-                                                <span className="tooltiptext">Velocidade no ressalto (m/s)</span>
-                                            </Name>
-                                            <Value>{V[2].toFixed(4)}</Value>
-                                        </Item>
-                                        <Item>
-                                            <Name>V<sub>3</sub>
-                                                <span className="tooltiptext">Velocidade na seção de saída do Parshall (m/s)</span>
-                                            </Name>
-                                            <Value>{V[3].toFixed(4)}</Value>
-                                        </Item>
-                                    </Grid>
-                                </CardResultados>
-                                <CardResultados>
-                                    <TitleCard>Alturas obtidas (m)</TitleCard>
-                                    <Grid>
-                                        <Item>
-                                            <Name>h<sub>0</sub>
-                                                <span className="tooltiptext">Altura de água na seção de medição</span>
-                                            </Name>
-                                            <Value>{H[0].toFixed(4)}</Value>
-                                        </Item>
-                                        <Item>
-                                            <Name>h<sub>1</sub>
-                                                <span className="tooltiptext">Altura de água antes do ressalto</span>
-                                            </Name>
-                                            <Value>{H[1].toFixed(4)}</Value>
-                                        </Item>
-                                        <Item>
-                                            <Name>h<sub>2</sub>
-                                                <span className="tooltiptext">Altura do ressalto (m)</span>
-                                            </Name>
-                                            <Value>{H[2].toFixed(4)}</Value>
-                                        </Item>
-                                        <Item>
-                                            <Name>h<sub>3</sub>
-                                                <span className="tooltiptext">Altura na seção de saída (m)</span>
-                                            </Name>
-                                            <Value>{H[3].toFixed(4)}</Value>
-                                        </Item>
-                                    </Grid>
-                                </CardResultados>
-                                <CardResultados>
-                                    <Grid>
-                                        <Item>
-                                            <Name>D' (m)
+                <Resultados>
+                    <Left>
+                        <CardResultados>
+                            <TitleCard>Velocidades Obtidas (m/s)</TitleCard>
+                            <Grid>
+                                <Item>
+                                    <Name>V<sub>s</sub>
+                                        <span className="tooltiptext">Velocidade na seção de medição</span>
+                                    </Name>
+                                    <Value>{V[0].toFixed(4)}</Value>
+                                </Item>
+                                <Item>
+                                    <Name>V<sub>1</sub>
+                                        <span className="tooltiptext">Velocidade antes do ressalto</span>
+                                    </Name>
+                                    <Value>{V[1].toFixed(4)}</Value>
+                                </Item>
+                                <Item>
+                                    <Name>V<sub>2</sub>
+                                        <span className="tooltiptext">Velocidade no ressalto</span>
+                                    </Name>
+                                    <Value>{V[2].toFixed(4)}</Value>
+                                </Item>
+                                <Item>
+                                    <Name>V<sub>3</sub>
+                                        <span className="tooltiptext">Velocidade na seção de saída do Parshall</span>
+                                    </Name>
+                                    <Value>{V[3].toFixed(4)}</Value>
+                                </Item>
+                            </Grid>
+                        </CardResultados>
+                        <CardResultados>
+                            <TitleCard>Alturas obtidas (m)</TitleCard>
+                            <Grid>
+                                <Item>
+                                    <Name>h<sub>0</sub>
+                                        <span className="tooltiptext">Altura de água na seção de medição</span>
+                                    </Name>
+                                    <Value>{H[0].toFixed(4)}</Value>
+                                </Item>
+                                <Item>
+                                    <Name>h<sub>1</sub>
+                                        <span className="tooltiptext">Altura de água antes do ressalto</span>
+                                    </Name>
+                                    <Value>{H[1].toFixed(4)}</Value>
+                                </Item>
+                                <Item>
+                                    <Name>h<sub>2</sub>
+                                        <span className="tooltiptext">Altura do ressalto</span>
+                                    </Name>
+                                    <Value>{H[2].toFixed(4)}</Value>
+                                </Item>
+                                <Item>
+                                    <Name>h<sub>3</sub>
+                                        <span className="tooltiptext">Altura na seção de saída</span>
+                                    </Name>
+                                    <Value>{H[3].toFixed(4)}</Value>
+                                </Item>
+                            </Grid>
+                        </CardResultados>
+                        <CardResultados>
+                            <Grid>
+                                <Item>
+                                    <Name>D' (m)
                                         <span className="tooltiptext">Largura do Parshall na seção de medição</span>
-                                            </Name>
-                                            <Value>{O[0].toFixed(4)}</Value>
-                                        </Item>
-                                        <Item>
-                                            <Name>q (m³/s/m)
+                                    </Name>
+                                    <Value>{O[0].toFixed(4)}</Value>
+                                </Item>
+                                <Item>
+                                    <Name>q (m³/s/m)
                                         <span className="tooltiptext">Vazão específica na garganta do Parshall</span>
-                                            </Name>
-                                            <Value>{O[1].toFixed(4)}</Value>
-                                        </Item>
-                                        <Item>
-                                            <Name>E<sub>0</sub> (m)
+                                    </Name>
+                                    <Value>{O[1].toFixed(4)}</Value>
+                                </Item>
+                                <Item>
+                                    <Name>E<sub>0</sub> (m)
                                         <span className="tooltiptext">Carga hidráulica disponível</span>
-                                            </Name>
-                                            <Value>{O[2].toFixed(4)}</Value>
-                                        </Item>
-                                        <Item>
-                                            <Name>Fr1
+                                    </Name>
+                                    <Value>{O[2].toFixed(4)}</Value>
+                                </Item>
+                                <Item>
+                                    <Name>Fr<sub>1</sub>
                                         <span className="tooltiptext">Número de Froude</span>
-                                            </Name>
-                                            <Value>{O[3].toFixed(4)}</Value>
-                                        </Item>
-                                        <Item>
-                                            <Name>hf (m)
+                                    </Name>
+                                    <Value>{O[3].toFixed(4)}</Value>
+                                </Item>
+                                <Item>
+                                    <Name>hf (m)
                                         <span className="tooltiptext">Perda de carga no ressalto</span>
-                                            </Name>
-                                            <Value>{O[4].toFixed(4)}</Value>
-                                        </Item>
-                                    </Grid>
-                                </CardResultados>
-                            </Left>
-                            <Right>
-                                <CardResultados>
-                                    <GridRight>
-                                        <Item>
-                                            <TitleValue>T
+                                    </Name>
+                                    <Value>{O[4].toFixed(4)}</Value>
+                                </Item>
+                            </Grid>
+                        </CardResultados>
+                    </Left>
+                    <Right>
+                        <CardResultados>
+                            <GridRight>
+                                <Item>
+                                    <TitleValue>T
                                         <span className="tooltipvalue">Tempo de mistura (s)</span>
-                                            </TitleValue>
-                                            <Value>{O[5].toFixed(4)}</Value>
-                                        </Item>
-                                        <Item>
-                                            <TitleValue>G
+                                    </TitleValue>
+                                    <Value>{O[5].toFixed(4)}</Value>
+                                </Item>
+                                <Item>
+                                    <TitleValue>G
                                         <span className="tooltipvalue">Gradiente de velocidade (s<sup>-1</sup> )</span>
-                                            </TitleValue>
-                                            <Value>{O[6].toFixed(4)}</Value>
-                                        </Item>
-                                    </GridRight>
-                                </CardResultados>
-
-                            </Right>
-                        </Resultados>
-                    );
-                })
+                                    </TitleValue>
+                                    <Value>{O[6].toFixed(4)}</Value>
+                                </Item>
+                            </GridRight>
+                        </CardResultados>
+                    </Right>
+                </Resultados>
             }
         </>
     )
 }
 
 const Coagulacao: React.FC<ResultsProps> = (props) => {
-    var pontos = 4;
-    var tmp = [];
-    for (var i = 0; i < pontos; i++) {
-        tmp.push(i);
-    }
-    const [options, setOptions] = useState("");
+
+    var v: any = [];
+    const [options, setOptions] = useState("-1");
     const [num, setNum] = useState("");
     const [calculated, setCalculated] = useState("");
     const [isDimensione, setIsDimensione] = useState(false);
-    
-    function calcular(){
-        setIsDimensione(true);
-        setCalculated(num);
+    const [vetCalculated, setVetCalculated] = useState([]);
+
+    function calcular() {
+        if (num != "" && options != "-1") {
+            setIsDimensione(true);
+            setCalculated(num);
+            var v = [] as any;
+            v = Coag.valoresParshal(Number(options));
+            setVetCalculated(v);
+
+        } else if (options === "-1") {
+            alert("Selecione um medidor parshall");
+        } else if (num === "") {
+            alert("Preencha o campo!");
+        }
     }
-    function setVazao(n: string){
+
+    function setVazao(n: string) {
         setIsDimensione(false);
         setNum(n);
     }
-    const v = [];
-    if(Number(options) === 6){
-        v[0] = 0.1520;
-        v[1] = 1.8420;
-        v[2] = 0.8360;
-        v[3] = 0.1140;
-        v[4] = 0.4030;
-        v[5] = 0.0760;
-        v[6] = 0.6100;
-        v[7] = 0.3940;
-    }
+    v = Coag.valoresParshal(Number(options));
     return (
         <PageTemplate>
             <EtaContainer>
@@ -526,9 +516,10 @@ const Coagulacao: React.FC<ResultsProps> = (props) => {
                     <Parshall>
                         <Title>Selecione o Medidor Parshall</Title>
                         <Selecione onChange={(e) => {
-                            const selectedOp = e.target.value;
-                            setOptions(selectedOp);
+                            const opt = e.target.value;
+                            setOptions(opt);
                         }}>
+                            <option value="-1"></option>
                             <option value="0">W7,6 (cm) / Q: 0,8 - 53,8</option>
                             <option value="1">W15,2 (cm) / Q: 1,4 - 110,4</option>
                             <option value="2">W22,9 (cm) / Q: 2,5 - 252,0</option>
@@ -543,7 +534,6 @@ const Coagulacao: React.FC<ResultsProps> = (props) => {
                             <option value="11">W244,0 (cm) / Q: 99,1 - 3950,2</option>
                         </Selecione>
                     </Parshall>
-                    {options};
                     <Section>
                         <Entrada>
                             <Name>Q (m³/s)
@@ -568,7 +558,7 @@ const Coagulacao: React.FC<ResultsProps> = (props) => {
                             </TableHeadContainer>
                             <Tr1
                                 points={4}
-                                vet = {v}
+                                vet={v}
                             />
                         </Table>
                     </Section>
@@ -583,18 +573,20 @@ const Coagulacao: React.FC<ResultsProps> = (props) => {
                     </Dimensionar>
                 </Card>
                 {
-                    isDimensione === true && 
-                    <Result 
-                        q = {Number(num)}
+                    isDimensione === true &&
+                    <Result
+                        q={Number(num)}
+                        v={vetCalculated}
                     />
                 }
                 {
-                    isDimensione === false && calculated !== "" && 
-                    <Result 
-                        q = {Number(calculated)}
+                    isDimensione === false && calculated !== "" &&
+                    <Result
+                        q={Number(calculated)}
+                        v={vetCalculated}
                     />
                 }
-                        
+
             </EtaContainer>
         </PageTemplate>
     );

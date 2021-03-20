@@ -201,7 +201,6 @@ const Eta1: React.FC<Table1Props> = (props) => {
         tmp.push(i);
     }
     const [Q, setQ] = useState("");
-    const [V, H, O] = Coag.coag(0.8);
 
     function handlerFile(e: any) {
         e.preventDefault()
@@ -260,13 +259,7 @@ const Eta1: React.FC<Table1Props> = (props) => {
                     {
                         <p>
                             {/*{Number(V[i])}*/}
-                            {
-                                V.map((ponto, index) => {
-                                    return (
-                                        <p>Velocidade = {ponto}</p>
-                                    )
-                                })
-                            }
+                            
                         </p>
                     }
                 </TableData>
@@ -275,11 +268,7 @@ const Eta1: React.FC<Table1Props> = (props) => {
                         <p>
                             {/*{Number(V[i])}*/}
                             {
-                                H.map((ponto, index) => {
-                                    return (
-                                        <p>Altura = {ponto}</p>
-                                    )
-                                })
+                              
                             }
                         </p>
                     }
@@ -291,13 +280,7 @@ const Eta1: React.FC<Table1Props> = (props) => {
 
                             {
                                 <>
-                                    <p>D'm = {O[0]}</p>
-                                    <p>Dq(m²/s/m) = {O[1]}</p>
-                                    <p>EO = {O[2]}</p>
-                                    <p>Fr1 = {O[3]}</p>
-                                    <p>hf = {O[4]}</p>
-                                    <p>T = {O[5]}</p>
-                                    <p>G = {O[6]}</p>
+                                   
                                 </>
 
                             }
