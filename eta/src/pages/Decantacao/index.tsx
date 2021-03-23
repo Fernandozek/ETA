@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import styled from 'styled-components';
 import PageTemplate from '../PageTemplate';
 import Dec from '../../Utils/Dec';
@@ -216,130 +216,225 @@ const TitleValue = styled.h2`
     margin-bottom: 10px;
     color: var(--primaria);
 `
-class Eta2 extends Component {
-    render() {
-        var pontos = 5;
-        var tmp = [];
-        for (var i = 0; i < pontos; i++) {
-            tmp.push(i);
-        }
-        const [V1, V2, V3] = Dec.dec(0.8, 40, 4, 4.5);
+interface ResultsProps {
+    q: number,
+    vs: number,
+    ns: number,
+    prof: number
+}
+const Result: React.FC<ResultsProps> = (props) => {
+    const [V1, V2, V3] = Dec.dec(props.q, props.vs, props.ns, props.prof);
+    return (
+        <Resultados>
+            <Left>
+                <CardResultados>
+                    <TitleCard>Painel de resultados</TitleCard>
+                    <Grid>
+                        <Item>
+                            <Name>ql (m³/s)
+                                            <span className="tooltiptext">Vazão que passa pela unidade</span>
+                            </Name>
+                            <Value>{V1[0].toFixed(4)}</Value>
+                        </Item>
+                        <Item>
+                            <Name>t (s)
+                                            <span className="tooltiptext">Tempo de detenção</span>
+                            </Name>
+                            <Value>{V1[1].toFixed(0)}</Value>
+                        </Item>
+                        <Item>
+                            <Name>B (m)
+                                            <span className="tooltiptext">Tempo de detenção</span>
+                            </Name>
+                            <Value>{V1[2].toFixed(0)}</Value>
+                        </Item>
+                        <Item>
+                            <Name>L (m)</Name>
+                            <Value>{V1[3].toFixed(4)}</Value>
+                        </Item>
+                        <Item>
+                            <Name>V0 (cm/s)</Name>
+                            <Value>{V1[4].toFixed(4)}</Value>
+                        </Item>
+                        <Item>
+                            <Name>As (m²)</Name>
+                            <Value>{V2[0].toFixed(0)}</Value>
+                        </Item>
+                        <Item>
+                            <Name>Lv (m)</Name>
+                            <Value>{V2[1].toFixed(4)}</Value>
+                        </Item>
+                        <Item>
+                            <Name>Lcalha (m)</Name>
+                            <Value>{V2[2].toFixed(4)}</Value>
+                        </Item>
+                        <Item>
+                            <Name>Nº de calhas</Name>
+                            <Value>{V2[3].toFixed(0)}</Value>
+                        </Item>
+                        <Item>
+                            <Name>S entre calhas (m)</Name>
+                            <Value>{V2[4].toFixed(4)}</Value>
+                        </Item>
+                    </Grid>
+                </CardResultados>
+                <CardResultados>
+                    <TitleCard>Alturas obtidas (m)</TitleCard>
+                    <Grid>
 
-        return (
-            <PageTemplate>
-                <ETA2Container>
-                    <Card>
-                        <Entradas>
-                            <Op>
-                                <Title>Q (m³/s)</Title>
-                                <Input type="number" />
-                            </Op>
-                            <Op>
-                                <Title>vs (m/dia)</Title>
-                                <Input type="number" />
-                            </Op>
-                            <Op>
-                                <Title>Nº un. de sedimentação</Title>
-                                <Input type="number" />
-                            </Op>
-                            <Op>
-                                <Title>Profundidade (m)</Title>
-                                <Input type="number" />
-                            </Op>
-                        </Entradas>
-                        <Dimensionar>
-                            <Button>Dimensionar</Button>
-                        </Dimensionar>
-                    </Card>
+                    </Grid>
+                </CardResultados>
 
-                    <Resultados>
-                        <Left>
-                            <CardResultados>
-                                <TitleCard>Painel de resultados</TitleCard>
-                                <Grid>
-                                    <Item>
-                                        <Name>ql (m³/s)
-                                            <span className="tooltiptext">Vazão que passa pela unidade</span>  
-                                        </Name>
-                                        <Value>{V1[0].toFixed(4)}</Value>
-                                    </Item>
-                                    <Item>
-                                        <Name>t (s)
-                                            <span className="tooltiptext">Tempo de detenção</span>  
-                                        </Name>
-                                        <Value>{V1[1].toFixed(0)}</Value>
-                                    </Item>
-                                    <Item>
-                                        <Name>B (m)
-                                            <span className="tooltiptext">Tempo de detenção</span>  
-                                        </Name>
-                                        <Value>{V1[2].toFixed(0)}</Value>
-                                    </Item>
-                                    <Item>
-                                        <Name>L (m)</Name>
-                                        <Value>{V1[3].toFixed(4)}</Value>
-                                    </Item>
-                                    <Item>
-                                        <Name>V0 (cm/s)</Name>
-                                        <Value>{V1[4].toFixed(4)}</Value>
-                                    </Item>
-                                    <Item>
-                                        <Name>As (m²)</Name>
-                                        <Value>{V2[0].toFixed(0)}</Value>
-                                    </Item>
-                                    <Item>
-                                        <Name>Lv (m)</Name>
-                                        <Value>{V2[1].toFixed(4)}</Value>
-                                    </Item>
-                                    <Item>
-                                        <Name>Lcalha (m)</Name>
-                                        <Value>{V2[2].toFixed(4)}</Value>
-                                    </Item>
-                                    <Item>
-                                        <Name>Nº de calhas</Name>
-                                        <Value>{V2[3].toFixed(0)}</Value>
-                                    </Item>
-                                    <Item>
-                                        <Name>S entre calhas (m)</Name>
-                                        <Value>{V2[4].toFixed(4)}</Value>
-                                    </Item>
-                                </Grid>
-                            </CardResultados>
-                            <CardResultados>
-                                <TitleCard>Alturas obtidas (m)</TitleCard>
-                                <Grid>
-                                    
-                                </Grid>
-                            </CardResultados>
-                            
-                        </Left>
-                        <Right>
-                            <CardResultados>
-                                <GridRight>
-                                    <ItemRight>
-                                        <TitleValue>Nº de Reynolds (Re)</TitleValue>
-                                        <Value>{V3[0]}</Value>
-                                    </ItemRight>
-                                    <ItemRight>
-                                        <TitleValue>Condição satisfeita:</TitleValue>
-                                        <Value>Re menor 2000 </Value>
-                                    </ItemRight>
-                                    <ItemRight>
-                                        <TitleValue>L/B</TitleValue>
-                                        <Value>{V3[2].toFixed(5)}</Value>
-                                    </ItemRight>
-                                </GridRight>
-                                {
+            </Left>
+            <Right>
+                <CardResultados>
+                    <GridRight>
+                        <ItemRight>
+                            <TitleValue>Nº de Reynolds (Re)</TitleValue>
+                            <Value>{V3[0]}</Value>
+                        </ItemRight>
+                        <ItemRight>
+                            <TitleValue>Condição satisfeita:</TitleValue>
+                            <Value>Re menor 2000 </Value>
+                        </ItemRight>
+                        <ItemRight>
+                            <TitleValue>L/B</TitleValue>
+                            <Value>{V3[2].toFixed(5)}</Value>
+                        </ItemRight>
+                    </GridRight>
+                    {
 
-                                }
-                            </CardResultados>
+                    }
+                </CardResultados>
 
-                        </Right>
-                    </Resultados>
-                </ETA2Container>
-            </PageTemplate>
-        );
+            </Right>
+        </Resultados>
+    );
+}
+const Decantacao: React.FC<ResultsProps> = (props) => {
+
+    var pontos = 5;
+    var tmp = [];
+    for (var i = 0; i < pontos; i++) {
+        tmp.push(i);
     }
+
+
+    const [value1, setValue1] = useState("");
+    const [value2, setValue2] = useState("");
+    const [value3, setValue3] = useState("");
+    const [value4, setValue4] = useState("");
+
+    const [q, setQ] = useState("");
+    const [vs, setVs] = useState("");
+    const [nsedimentacao, setNsedimentacao] = useState("");
+    const [profundidade, setProfundidade] = useState("");
+
+    const [calculated, setCalculated] = useState("");
+    const [isDimensione, setIsDimensione] = useState(false);
+    const [qCalculated, setQCalculated] = useState("");
+    const [vsCalculated, setVsCalculated] = useState("");
+    const [nsedimentacaoCalculated, setNsedimentacaoCalculated] = useState("");
+    const [profundidadeCalculated, setProfundidadeCalculated] = useState("");
+
+    function calcular() {
+        if (q != "" && vs != "" && nsedimentacao != "" && profundidade != "") {
+            setIsDimensione(true);
+            setQCalculated(q);
+            setVsCalculated(vs);
+            setNsedimentacaoCalculated(nsedimentacao);
+            setProfundidadeCalculated(profundidade);
+            setCalculated(q);
+            var v = [] as any;
+
+
+
+        } else {
+            alert("preencha todos os campos");
+        }
+    }
+
+    function setVazao(n: string) {
+        setIsDimensione(false);
+        setQ(n);
+    }
+    function setvs(n: string) {
+        setIsDimensione(false);
+        setVs(n)
+    }
+    function setSedmentacao(n: string) {
+        setIsDimensione(false);
+        setNsedimentacao(n);
+    }
+    function setProfund(n: string) {
+        setIsDimensione(false);
+        setProfundidade(n);
+    }
+    return (
+        <PageTemplate>
+            <ETA2Container>
+                <Card>
+                    <Entradas>
+                        <Op>
+                            <Title>Q (m³/s)</Title>
+                            <Input
+                                type="number"
+
+                                onChange={e => setVazao(e.target.value)}
+                            />
+                        </Op>
+                        <Op>
+                            <Title>vs (m/dia)</Title>
+                            <Input
+                                type="number"
+
+                                onChange={e => setvs(e.target.value)}
+                            />
+                        </Op>
+                        <Op>
+                            <Title>Nº un. de sedimentação</Title>
+                            <Input
+                                type="number"
+
+                                onChange={e => setSedmentacao(e.target.value)}
+                            />
+                        </Op>
+                        <Op>
+                            <Title>Profundidade (m)</Title>
+                            <Input
+                                type="number"
+
+                                onChange={e => setProfund(e.target.value)}
+                            />
+                        </Op>
+                    </Entradas>
+                    <Dimensionar>
+                        <Button onClick={calcular}>
+                            Dimensionar
+                            </Button>
+                    </Dimensionar>
+                </Card>
+                {
+                    isDimensione === true &&
+                    <Result
+                        q={Number(q)}
+                        vs={Number(vs)}
+                        ns={Number(nsedimentacao)}
+                        prof={Number(profundidade)}
+                    />
+                }
+                {
+                    isDimensione === false && calculated !== "" &&
+                    <Result
+                        q={Number(qCalculated)}
+                        vs={Number(vsCalculated)}
+                        ns={Number(nsedimentacaoCalculated)}
+                        prof={Number(profundidadeCalculated)}
+                    />
+                }
+            </ETA2Container>
+        </PageTemplate>
+    );
 }
 
-export default Eta2;
+export default Decantacao;
