@@ -4,6 +4,7 @@ import Coag from '../../Utils/Coag';
 import PageTemplate from '../PageTemplate';
 import { Link } from 'react-router-dom';
 import { boolean } from 'mathjs';
+import Img from '../../assets/images/exampleParshall.png';
 const EtaContainer = styled.div`
     display: flex;
     align-items: center;
@@ -488,6 +489,7 @@ const Coagulacao: React.FC<ResultsProps> = (props) => {
     const [calculated, setCalculated] = useState("");
     const [isDimensione, setIsDimensione] = useState(false);
     const [vetCalculated, setVetCalculated] = useState([]);
+    const [valueChecked, setValueChecked] = useState(false);
 
     function calcular() {
         if (num != "" && options != "-1") {
@@ -507,6 +509,13 @@ const Coagulacao: React.FC<ResultsProps> = (props) => {
     function setVazao(n: string) {
         setIsDimensione(false);
         setNum(n);
+    }
+    function checked(n: boolean){
+        if(n === true){
+            setValueChecked(true);
+        }else{
+            setValueChecked(false);
+        }
     }
     v = Coag.valoresParshal(Number(options));
     return (
@@ -564,13 +573,19 @@ const Coagulacao: React.FC<ResultsProps> = (props) => {
                     </Section>
                     <Dimensionar>
                         <Checkbox>
-                            <input type="checkbox" />
+                            <input type="checkbox" 
+                                onChange={e => checked(e.target.checked)}
+                            />
                             <p>Mostrar modelo</p>
                         </Checkbox>
                         <Button onClick={calcular}>
                             Dimensionar
                         </Button>
                     </Dimensionar>
+                    {
+                        valueChecked === true &&
+                        <img src={Img} height="200px" alt=""/>
+                    }
                 </Card>
                 {
                     isDimensione === true &&
