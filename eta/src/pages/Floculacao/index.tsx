@@ -2,6 +2,8 @@ import React, { Component, FormEvent, useEffect } from 'react';
 import styled from 'styled-components';
 import PageTemplate from '../PageTemplate';
 import Floc from '../../Utils/Floc';
+import Floc3 from '../../Utils/Floc3';
+import Floc5 from '../../Utils/Floc5';
 import { useState } from 'react';
 
 const ETA3Container = styled.div`
@@ -92,7 +94,6 @@ const Fator = styled.div`
 const Button = styled.button`
     width: 150px;
     padding: 20px;
-    
     font-size: 1.2rem;
     font-weight: bold;
     border: none;
