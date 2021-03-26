@@ -1,4 +1,4 @@
-import { divide, multiply, inv } from 'mathjs';
+import { multiply, inv } from 'mathjs';
 
 export default {
     floc(Q: number, Ttf: number, Nc: number, H: number, Nd: number, L: number, G1: number, G2: number, G3: number, G4: number, FC: number) {
@@ -13,7 +13,6 @@ export default {
 
         var inve = inv(am);
         var rm1 = multiply(inve, bm);
-        var oq = FC;
 
         var rm = <any>[];
         rm = rm1;

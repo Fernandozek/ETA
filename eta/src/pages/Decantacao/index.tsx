@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import PageTemplate from '../PageTemplate';
 import Dec from '../../Utils/Dec';
@@ -319,12 +319,6 @@ const Decantacao: React.FC<ResultsProps> = (props) => {
         tmp.push(i);
     }
 
-
-    const [value1, setValue1] = useState("");
-    const [value2, setValue2] = useState("");
-    const [value3, setValue3] = useState("");
-    const [value4, setValue4] = useState("");
-
     const [q, setQ] = useState("");
     const [vs, setVs] = useState("");
     const [nsedimentacao, setNsedimentacao] = useState("");
@@ -338,17 +332,13 @@ const Decantacao: React.FC<ResultsProps> = (props) => {
     const [profundidadeCalculated, setProfundidadeCalculated] = useState("");
 
     function calcular() {
-        if (q != "" && vs != "" && nsedimentacao != "" && profundidade != "") {
+        if (q !== "" && vs !== "" && nsedimentacao !== "" && profundidade !== "") {
             setIsDimensione(true);
             setQCalculated(q);
             setVsCalculated(vs);
             setNsedimentacaoCalculated(nsedimentacao);
             setProfundidadeCalculated(profundidade);
             setCalculated(q);
-            var v = [] as any;
-
-
-
         } else {
             alert("preencha todos os campos");
         }

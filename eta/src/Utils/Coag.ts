@@ -21,7 +21,6 @@ export default {
 
         var angf = -(9.81 * q) / Math.pow(((2 / 3) * 9.81 * EO), 1.5);
         var ang = Math.acos(angf);
-        var TETA = (ang * 180 / Math.PI);
 
         var V1 = 2 * (Math.sqrt(2 * 9.81 * EO/3) * Math.cos(ang / 3));
 
