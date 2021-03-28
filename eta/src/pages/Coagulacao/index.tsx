@@ -5,6 +5,13 @@ import PageTemplate from '../PageTemplate';
 import { Link } from 'react-router-dom';
 import { boolean } from 'mathjs';
 import Img from '../../assets/images/exampleParshall.png';
+
+interface ResultsProps {
+    q: number,
+    v: number[],
+   
+    
+}
 const EtaContainer = styled.div`
     display: flex;
     align-items: center;
@@ -352,10 +359,7 @@ const Tr1: React.FC<Table1Props> = (props) => {
         </>
     )
 }
-interface ResultsProps {
-    q: number
-    v: number[]
-}
+
 const Result: React.FC<ResultsProps> = (props) => {
 
     const [V, H, O] = Coag.coag(Number(props.q), props.v);
@@ -483,6 +487,8 @@ const Result: React.FC<ResultsProps> = (props) => {
 
 const Coagulacao: React.FC<ResultsProps> = (props) => {
 
+    const [errInput, setErrInput] = useState(true);
+
     var v: any = [];
     const [options, setOptions] = useState("-1");
     const [num, setNum] = useState("");
@@ -507,6 +513,7 @@ const Coagulacao: React.FC<ResultsProps> = (props) => {
     }
 
     function setVazao(n: string) {
+        
         setIsDimensione(false);
         setNum(n);
     }
@@ -592,6 +599,7 @@ const Coagulacao: React.FC<ResultsProps> = (props) => {
                     <Result
                         q={Number(num)}
                         v={vetCalculated}
+                        
                     />
                 }
                 {
@@ -599,6 +607,7 @@ const Coagulacao: React.FC<ResultsProps> = (props) => {
                     <Result
                         q={Number(calculated)}
                         v={vetCalculated}
+                        
                     />
                 }
 

@@ -124,6 +124,7 @@ export default {
             M2 = [[n1, nn2, n3], [e1, ee2, e3], [V11, Vv12, V13], [V21, Vv22, V23], [dhd1, ddhd2, dhd3], [dhl1, ddhl2, dhl3], [dh1, ddh2, dh3], [Gg1, GGg2, Gg3]];
             M22 = M2;
         }
+        /*
         if (Gg3 > 70) {
             warndlg = "Dimensionamento não foi realizado com sucesso";
             var GG3 = 70 - (70 * (FC / 100));
@@ -141,6 +142,7 @@ export default {
             M2 = [[n1, n2, nn3], [e1, e2, ee3], [V11, V12, Vv13], [V21, V22, Vv23], [dhd1, dhd2, ddhd3], [dhl1, dhl2, ddhl3], [dh1, dh2, ddh3], [Gg1, Gg2, GGg3]];
             M22 = M1;
         }
+        */
         this.m22(M22);
         return [M22, M2, M11, q, Vol, A, B, a];
     },

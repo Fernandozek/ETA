@@ -51,7 +51,41 @@ const Title = styled.h3`
     color: var(--gray-dark);
     margin-bottom: 10px;
     text-align: center;
+    position: relative;
+    display: inline-block;
 
+    .tooltipvalue {
+        visibility: hidden;
+        width: 120px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -60px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .tooltipvalue::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+    }
+
+    :hover .tooltipvalue {
+        visibility: visible;
+        opacity: 1;
+    }
     @media(min-width: 768px){
         width: 130px;
         font-size: 0.8rem;
@@ -232,48 +266,62 @@ const Result: React.FC<ResultsProps> = (props) => {
                     <Grid>
                         <Item>
                             <Name>ql (m³/s)
-                                            <span className="tooltiptext">Vazão que passa pela unidade</span>
+                                <span className="tooltiptext">Vazão que passa pela unidade</span>
                             </Name>
                             <Value>{V1[0].toFixed(4)}</Value>
                         </Item>
                         <Item>
                             <Name>t (s)
-                                            <span className="tooltiptext">Tempo de detenção</span>
+                                <span className="tooltiptext">Tempo de detenção</span>
                             </Name>
                             <Value>{V1[1].toFixed(0)}</Value>
                         </Item>
                         <Item>
                             <Name>B (m)
-                                            <span className="tooltiptext">Tempo de detenção</span>
+                                <span className="tooltiptext">Largura do decantador</span>
                             </Name>
                             <Value>{V1[2].toFixed(0)}</Value>
                         </Item>
                         <Item>
-                            <Name>L (m)</Name>
+                            <Name>L (m)
+                                <span className="tooltiptext">Comprimento do decantador</span>
+                            </Name>
                             <Value>{V1[3].toFixed(4)}</Value>
                         </Item>
                         <Item>
-                            <Name>V0 (cm/s)</Name>
+                            <Name>V<sub>0</sub> (cm/s)
+                                <span className="tooltiptext">Comprimento do decantador</span>
+                            </Name>
                             <Value>{V1[4].toFixed(4)}</Value>
                         </Item>
                         <Item>
-                            <Name>As (m²)</Name>
+                            <Name>As (m²)
+                                <span className="tooltiptext">Área do decantador</span>
+                            </Name>
                             <Value>{V2[0].toFixed(0)}</Value>
                         </Item>
                         <Item>
-                            <Name>Lv (m)</Name>
+                            <Name>Lv (m)
+                                <span className="tooltiptext">comprimento do total do vertedor</span>
+                            </Name>
                             <Value>{V2[1].toFixed(4)}</Value>
                         </Item>
                         <Item>
-                            <Name>Lcalha (m)</Name>
+                            <Name>Lcalha (m)
+                                <span className="tooltiptext">comprimento das calhas</span>
+                            </Name>
                             <Value>{V2[2].toFixed(4)}</Value>
                         </Item>
                         <Item>
-                            <Name>Nº de calhas</Name>
+                            <Name>Nº de calhas
+                                <span className="tooltiptext">Número de calhas</span>
+                            </Name>
                             <Value>{V2[3].toFixed(0)}</Value>
                         </Item>
                         <Item>
-                            <Name>S entre calhas (m)</Name>
+                            <Name>S entre calhas (m)
+                                <span className="tooltiptext">Espaçamento entre calhas</span>
+                            </Name>
                             <Value>{V2[4].toFixed(4)}</Value>
                         </Item>
                     </Grid>

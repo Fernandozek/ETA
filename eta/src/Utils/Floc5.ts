@@ -128,7 +128,7 @@ export default {
             var ddhl1 = ((nn1 * Math.pow(Vv11, 2)) + (nn1 - 1) * (Math.pow(Vv21, 2))) / (2 * 9.81);
             var ddh1 = ddhd1 + ddhl1;
             var GGg1 = Math.sqrt((9.81 * ddh1) / (Math.pow(10, -6) * t1 * 60));
-            M2 = [[nn1, n2, n3, n4], [ee1, e2, e3, e4], [Vv11, V12, V13, V14], [Vv21, V22, V23, V24], [ddhd1, dhd2, dhd3, dhd4], [ddhl1, dhl2, dhl3, dhl4], [ddh1, dh2, dh3, dh4], [GGg1, Gg2, Gg3, Gg4]];
+            M2 = [[nn1, n2, n3, n4, n5], [ee1, e2, e3, e4, e5], [Vv11, V12, V13, V14, V15], [Vv21, V22, V23, V24, V25], [ddhd1, dhd2, dhd3, dhd4, dhd5], [ddhl1, dhl2, dhl3, dhl4, dhl5], [ddh1, dh2, dh3, dh4, dh5], [GGg1, Gg2, Gg3, Gg4, Gg5]];
             M22 = M2;
         }
 
@@ -146,7 +146,7 @@ export default {
             var ddhl2 = ((nn2 * Math.pow(Vv12, 2)) + (nn2 - 1) * (Math.pow(Vv22, 2))) / (2 * 9.81);
             var ddh2 = ddhd2 + ddhl2;
             var GGg2 = Math.sqrt((9.81 * ddh2) / (Math.pow(10, -6) * t2 * 60));
-            M2 = [[n1, nn2, n3, n4], [e1, ee2, e3, e4], [V11, Vv12, V13, V14], [V21, Vv22, V23, V24], [dhd1, ddhd2, dhd3, dhd4], [dhl1, ddhl2, dhl3, dhl4], [dh1, ddh2, dh3, dh4], [Gg1, GGg2, Gg3, Gg4]];
+            M2 = [[n1, nn2, n3, n4, n5], [e1, ee2, e3, e4, e5], [V11, Vv12, V13, V14, V15], [V21, Vv22, V23, V24, V25], [dhd1, ddhd2, dhd3, dhd4, dhd5], [dhl1, ddhl2, dhl3, dhl4, dhl5], [dh1, ddh2, dh3, dh4, dh5], [Gg1, GGg2, Gg3, Gg4, Gg5]];
             M22 = M2;
         }
         if (Gg3 > 70) {
@@ -163,22 +163,49 @@ export default {
             var ddhl3 = ((nn3 * Math.pow(Vv13, 2)) + (nn3 - 1) * (Math.pow(Vv23, 2))) / (2 * 9.81);
             var ddh3 = ddhd3 + ddhl3;
             var GGg3 = Math.sqrt((9.81 * ddh3) / (Math.pow(10, -6) * t3 * 60));
-            M2 = [[n1, n2, nn3, n4], [e1, e2, ee3, e4], [V11, V12, Vv13, V14], [V21, V22, Vv23, V24], [dhd1, dhd2, ddhd3, dhd4], [dhl1, dhl2, ddhl3, dhl4], [dh1, dh2, ddh3, dh4], [Gg1, Gg2, GGg3, Gg4]];
+            M2 = [[n1, n2, nn3, n4, n5], [e1, e2, ee3, e4, e5], [V11, V12, Vv13, V14, V15], [V21, V22, Vv23, V24, V25], [dhd1, dhd2, ddhd3, dhd4, dhd5], [dhl1, dhl2, ddhl3, dhl4, dhl5], [dh1, dh2, ddh3, dh4, dh5], [Gg1, Gg2, GGg3, Gg4, Gg5]];
+            M22 = M1;
+        }
+        if (Gg4 > 70) {
+            warndlg = "Dimensionamento não foi realizado com sucesso";
+            var GG4 = 70 - (70 * (FC / 100));
+            var nnn4 = 0.045 * Math.pow((Math.pow((a * L * GG4 / q), 2) * t4), (1 / 3));
+            var nn4 = Math.ceil(nnn4);
+            var ee4 = L / nn4;
+            var Vv14 = q / (a * ee4);
+            var Vv24 = (2 / 3) * Vv14;
+            var ll4 = t4 * 60 * Vv14;
+            var rrh4 = a * ee4 / (2 * (a + ee4));
+            var ddhd4 = Math.pow(((q * 0.013) / ((a * ee4) * Math.pow(rrh4, (2 / 3)))), 2) * ll4;
+            var ddhl4 = ((nn4 * Math.pow(Vv14, 2)) + (nn4 - 1) * (Math.pow(Vv24, 2))) / (2 * 9.81);
+            var ddh4 = ddhd4 + ddhl4;
+            var GGg4 = Math.sqrt((9.81 * ddh4) / (Math.pow(10, -6) * t4 * 60));
+            M2 = [[n1, n2, nn3, n4, n5], [e1, e2, e3, ee4, e5], [V11, V12, V13, Vv14, V15], [V21, V22, V23, Vv24, V25], [dhd1, dhd2, dhd3, ddhd4, dhd5], [dhl1, dhl2, dhl3, ddhl4, dhl5], [dh1, dh2, dh3, ddh4, dh5], [Gg1, Gg2, Gg3, GGg4, Gg5]];
             M22 = M1;
         }
         this.m22(M22);
         return [M22, M2, M11, q, Vol, A, B, a];
     },
     m22(M22: any) {
-        var V1 = M22[0];
-        var V2 = M22[1];
-        var V3 = M22[2];
-        var V4 = M22[3];
-        var V5 = M22[4];
-        var V6 = M22[5];
-        var V7 = M22[6];
-        var V8 = M22[7];
-        return [V1, V2, V3, V4, V5, V6, V7, V8];
+        var V21 = M22[0];
+        var V22 = M22[1];
+        var V23 = M22[2];
+        var V24 = M22[3];
+        var V25 = M22[4];
+        var V26 = M22[5];
+        var V27 = M22[6];
+        var V28 = M22[7];
+        return [V21, V22, V23, V24, V25, V26, V27, V28];
+    },
+    m11(M22: any) {
+        var V11 = M22[0];
+        var V12 = M22[1];
+        var V13 = M22[2];
+        var V14 = M22[3];
+        var V15 = M22[4];
+        var V16 = M22[5];
+        var V17 = M22[6];
+        var V18 = M22[7];
+        return [V11, V12, V13, V14, V15, V16, V17, V18];
     }
-
 }
