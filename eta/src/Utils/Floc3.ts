@@ -79,9 +79,10 @@ export default {
         var Gg2 = Math.sqrt((9.81 * dh2) / (Math.pow(10, -6) * t2 * 60));
         var Gg3 = Math.sqrt((9.81 * dh3) / (Math.pow(10, -6) * t3 * 60));
 
-        var M1 = [[n1, n2, n3], [e1, e2, e3], [V11, V12, V13], [V21, V22, V23], [dhd1, dhd2, dhd3 ], [dhl1, dhl2, dhl3], [dh1, dh2, dh3], [Gg1, Gg2, Gg3]];
+        var M1 = [[n1, n2, n3], [e1, e2, e3], [V11, V12, V13], [V21, V22, V23], [dhd1, dhd2, dhd3], [dhl1, dhl2, dhl3], [dh1, dh2, dh3], [Gg1, Gg2, Gg3]];
         var M11 = M1;
         var warndlg;
+        
         if (Gg1 <= 70 && Gg2 <= 70 && Gg3 <= 70) {
             warndlg = "Dimensionamento realizado com sucesso";
         }
@@ -143,19 +144,8 @@ export default {
             M22 = M1;
         }
         */
-        this.m22(M22);
+
         return [M22, M2, M11, q, Vol, A, B, a];
-    },
-    m22(M22: any) {
-        var V1 = M22[0];
-        var V2 = M22[1];
-        var V3 = M22[2];
-        var V4 = M22[3];
-        var V5 = M22[4];
-        var V6 = M22[5];
-        var V7 = M22[6];
-        var V8 = M22[7];
-        return [V1, V2, V3, V4, V5, V6, V7, V8];
     }
 
 }

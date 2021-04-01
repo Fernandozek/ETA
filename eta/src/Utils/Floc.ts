@@ -151,7 +151,7 @@ export default {
             M2 = [[n1, n2, nn3, n4], [e1, e2, ee3, e4], [V11, V12, Vv13, V14], [V21, V22, Vv23, V24], [dhd1, dhd2, ddhd3, dhd4], [dhl1, dhl2, ddhl3, dhl4], [dh1, dh2, ddh3, dh4], [Gg1, Gg2, GGg3, Gg4]];
             M22 = M1;
         }
-        this.m22(M22);
+
         return [M22, M2, M11, q, Vol, A, B, a];
     },
     m22(M22: any) {

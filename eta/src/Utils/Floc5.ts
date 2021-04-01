@@ -183,29 +183,7 @@ export default {
             M2 = [[n1, n2, nn3, n4, n5], [e1, e2, e3, ee4, e5], [V11, V12, V13, Vv14, V15], [V21, V22, V23, Vv24, V25], [dhd1, dhd2, dhd3, ddhd4, dhd5], [dhl1, dhl2, dhl3, ddhl4, dhl5], [dh1, dh2, dh3, ddh4, dh5], [Gg1, Gg2, Gg3, GGg4, Gg5]];
             M22 = M1;
         }
-        this.m22(M22);
+
         return [M22, M2, M11, q, Vol, A, B, a];
-    },
-    m22(M22: any) {
-        var V21 = M22[0];
-        var V22 = M22[1];
-        var V23 = M22[2];
-        var V24 = M22[3];
-        var V25 = M22[4];
-        var V26 = M22[5];
-        var V27 = M22[6];
-        var V28 = M22[7];
-        return [V21, V22, V23, V24, V25, V26, V27, V28];
-    },
-    m11(M22: any) {
-        var V11 = M22[0];
-        var V12 = M22[1];
-        var V13 = M22[2];
-        var V14 = M22[3];
-        var V15 = M22[4];
-        var V16 = M22[5];
-        var V17 = M22[6];
-        var V18 = M22[7];
-        return [V11, V12, V13, V14, V15, V16, V17, V18];
     }
 }

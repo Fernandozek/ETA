@@ -265,7 +265,7 @@ const Result: React.FC<ResultsProps> = (props) => {
                     <TitleCard>Painel de resultados</TitleCard>
                     <Grid>
                         <Item>
-                            <Name>ql (m³/s)
+                            <Name>As (m²)
                                 <span className="tooltiptext">Vazão que passa pela unidade</span>
                             </Name>
                             <Value>{V1[0].toFixed(4)}</Value>
@@ -295,10 +295,10 @@ const Result: React.FC<ResultsProps> = (props) => {
                             <Value>{V1[4].toFixed(4)}</Value>
                         </Item>
                         <Item>
-                            <Name>As (m²)
+                            <Name>Ql (m³/s)
                                 <span className="tooltiptext">Área do decantador</span>
                             </Name>
-                            <Value>{V2[0].toFixed(0)}</Value>
+                            <Value>{V2[0].toFixed(4)}</Value>
                         </Item>
                         <Item>
                             <Name>Lv (m)
@@ -343,11 +343,11 @@ const Result: React.FC<ResultsProps> = (props) => {
                         </ItemRight>
                         <ItemRight>
                             <TitleValue>Condição satisfeita:</TitleValue>
-                            <Value>Re menor 2000 </Value>
+                            <Value>Re menor 20000 </Value>
                         </ItemRight>
                         <ItemRight>
                             <TitleValue>L/B</TitleValue>
-                            <Value>{V3[2].toFixed(5)}</Value>
+                            <Value>{V3[1].toFixed(5)}</Value>
                         </ItemRight>
                     </GridRight>
                     {
