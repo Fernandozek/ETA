@@ -306,7 +306,15 @@ const Tr1: React.FC<Table1Props> = (props) => {
     for (var i = 0; i < 8; i++) {
         tmp.push(i);
     }
-    var [M22, M2, M11, q, Vol, A, B, a] = Floc.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.g4value, props.fatorvalue);
+    if(props.g4value !== 0 && props.g5value === 0){
+        var [M22, M2, M11, q, Vol, A, B, a] = Floc.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.g4value, props.fatorvalue);
+    }else{
+        if(props.g4value === 0){
+            var [M22, M2, M11, q, Vol, A, B, a] = Floc3.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.fatorvalue);
+        }else{
+            var [M22, M2, M11, q, Vol, A, B, a] = Floc5.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.g4value, props.g5value, props.fatorvalue);
+        }
+    }
     var [V11, V12, V13, V14, V15, V16, V17, V18] = Floc.m11(M11);
     return (
         <>
@@ -337,7 +345,15 @@ const Tr2: React.FC<Table1Props> = (props) => {
     for (var i = 0; i < 8; i++) {
         tmp.push(i);
     }
-    var [M22, M2, M11, q, Vol, A, B, a] = Floc.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.g4value, props.fatorvalue);
+    if(props.g4value !== 0 && props.g5value === 0){
+        var [M22, M2, M11, q, Vol, A, B, a] = Floc.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.g4value, props.fatorvalue);
+    }else{
+        if(props.g4value === 0){
+            var [M22, M2, M11, q, Vol, A, B, a] = Floc3.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.fatorvalue);
+        }else{
+            var [M22, M2, M11, q, Vol, A, B, a] = Floc5.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.g4value, props.g5value, props.fatorvalue);
+        }
+    }
     var [V21, V22, V23, V24, V25, V26, V27, V28] = Floc.m22(M22);
     return (
         <>
@@ -368,13 +384,11 @@ const Result: React.FC<ResultsProps> = (props) => {
         var [M22, M2, M11, q, Vol, A, B, a] = Floc.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.g4value, props.fatorvalue);
     }else{
         if(props.g4value === 0){
-            alert("Aqui");
             var [M22, M2, M11, q, Vol, A, B, a] = Floc3.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.fatorvalue);
         }else{
             var [M22, M2, M11, q, Vol, A, B, a] = Floc5.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.g4value, props.g5value, props.fatorvalue);
         }
     }
-    var [M22, M2, M11, q, Vol, A, B, a] = Floc.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.g4value, props.fatorvalue);
     var [V11, V12, V13, V14, V15, V16, V17, V18] = Floc.m11(M11);
     var [V21, V22, V23, V24, V25, V26, V27, V28] = Floc.m22(M22);
     return (

@@ -2,18 +2,17 @@ import { divide, multiply, inv } from 'mathjs';
 
 export default {
     floc(Q: number, Ttf: number, Nc: number, H: number, Nd: number, L: number, G1: number, G2: number, G3: number, FC: number) {
+        
         var Tf = Ttf * 60;
+        
         var am = [[1, 1, 1],
         [G1, -G2, 0],
         [0, G2, -G3]];
         
-
         var bm = [[Ttf], [0], [0]];
-
 
         var inve = inv(am);
         var rm1 = multiply(inve, bm);
-        var oq = FC;
 
         var rm = <any>[];
         rm = rm1;
@@ -21,7 +20,6 @@ export default {
         var t1 = rm[0];
         var t2 = rm[1];
         var t3 = rm[2];
-        
 
         var q = Q / Nd;
         var Vol = q * Tf;
@@ -41,8 +39,7 @@ export default {
         var e1 = L / n1;
         var e2 = L / n2;
         var e3 = L / n3;
-
-
+     
         var V11 = q / (a * e1);
         var V21 = (2 / 3) * V11;
 
@@ -51,7 +48,6 @@ export default {
 
         var V13 = q / (a * e3);
         var V23 = (2 / 3) * V13;
-
 
         var l1 = t1 * 60 * V11;
         var rh1 = a * e1 / (2 * (a + e1));
@@ -65,11 +61,9 @@ export default {
         var rh3 = a * e3 / (2 * (a + e3));
         var dhd3 = Math.pow(((q * 0.013) / ((a * e3) * Math.pow(rh3, (2 / 3)))), 2) * l3;
 
-        
         var dhl1 = ((n1 * (Math.pow(V11, 2)) + (n1 - 1) * (Math.pow(V21, 2)))) / (2 * 9.81);
         var dhl2 = ((n2 * (Math.pow(V12, 2))) + ((n2 - 1) * (Math.pow(V22, 2)))) / (2 * 9.81);
-        var dhl3 = ((n3 * (Math.pow(V13, 2))) + ((n3 - 1) * (Math.pow(V23, 2)))) / (2 * 9.81);
-        
+        var dhl3 = ((n3 * (Math.pow(V13, 2))) + ((n3 - 1) * (Math.pow(V23, 2)))) / (2 * 9.81);        
 
         var dh1 = dhd1 + dhl1;
         var dh2 = dhd2 + dhl2;
@@ -125,7 +119,6 @@ export default {
             M2 = [[n1, nn2, n3], [e1, ee2, e3], [V11, Vv12, V13], [V21, Vv22, V23], [dhd1, ddhd2, dhd3], [dhl1, ddhl2, dhl3], [dh1, ddh2, dh3], [Gg1, GGg2, Gg3]];
             M22 = M2;
         }
-        /*
         if (Gg3 > 70) {
             warndlg = "Dimensionamento não foi realizado com sucesso";
             var GG3 = 70 - (70 * (FC / 100));
@@ -143,7 +136,7 @@ export default {
             M2 = [[n1, n2, nn3], [e1, e2, ee3], [V11, V12, Vv13], [V21, V22, Vv23], [dhd1, dhd2, ddhd3], [dhl1, dhl2, ddhl3], [dh1, dh2, ddh3], [Gg1, Gg2, GGg3]];
             M22 = M1;
         }
-        */
+        
 
         return [M22, M2, M11, q, Vol, A, B, a];
     }
