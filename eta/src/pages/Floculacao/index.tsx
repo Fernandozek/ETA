@@ -303,7 +303,7 @@ interface ResultsProps {
 const Tr1: React.FC<Table1Props> = (props) => {
     var tmp = [];
     var pontos = 1;
-    for (var i = 0; i < 8; i++) {
+    for (var i = 0; i < 3; i++) {
         tmp.push(i);
     }
     if(props.g4value !== 0 && props.g5value === 0){
@@ -342,7 +342,7 @@ const Tr1: React.FC<Table1Props> = (props) => {
 const Tr2: React.FC<Table1Props> = (props) => {
     var tmp = [];
     var pontos = 1;
-    for (var i = 0; i < 8; i++) {
+    for (var i = 0; i < 3; i++) {
         tmp.push(i);
     }
     if(props.g4value !== 0 && props.g5value === 0){
@@ -412,7 +412,7 @@ const Result: React.FC<ResultsProps> = (props) => {
                         <Name>Area (m²)
                                     <span className="tooltiptext">: área superficial do floculador</span>
                         </Name>
-                        <Value>{Number(A).toFixed(4)}</Value>
+                        <Value>{Number(A)?.toFixed(4)}</Value>
                     </Item>
                     <Item>
                         <Name>Largura (m)
