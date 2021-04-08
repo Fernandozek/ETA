@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import TopBar,{BannerProps} from '../TopBar';
+import TopBar from '../TopBar';
+import Banner, { BannerProps } from '../Banner';
 
 const MainHeader = styled.header`
     background-color: var(--primaria);
@@ -10,7 +11,10 @@ const MainHeader = styled.header`
 const Header: React.FC<BannerProps> =  (props) => {
     return(
         <MainHeader>
-            <TopBar />
+            {props.topBar &&
+                <TopBar /> 
+            }
+            <Banner {...props} />          
         </MainHeader>
     );
 }

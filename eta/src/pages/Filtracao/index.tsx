@@ -382,10 +382,10 @@ const Result: React.FC<ResultsProps> = (props) => {
                                     (Number(V3[2]) > 1000) &&
                                     <p>
                                         Superior a 1000
-                                        </p> ||
+                                    </p> ||
                                     <p>
                                         Inferior a 1000
-                                        </p>
+                                    </p>
                                 }
                             </Value>
                         </Item>
@@ -599,7 +599,10 @@ export default function Coagulacao() {
         setD102(e);
     }
     return (
-        <PageTemplate>
+        <PageTemplate
+            title="Filtração"
+            topBar={true}
+        >
             <EtaContainer>
                 <Card>
                     <TopCard>

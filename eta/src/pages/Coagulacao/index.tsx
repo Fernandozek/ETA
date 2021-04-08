@@ -526,7 +526,10 @@ const Coagulacao: React.FC<ResultsProps> = (props) => {
     }
     v = Coag.valoresParshal(Number(options));
     return (
-        <PageTemplate>
+        <PageTemplate
+            title="Coagulação"
+            topBar={true}
+        >
             <EtaContainer>
                 <Card>
                     <Parshall>

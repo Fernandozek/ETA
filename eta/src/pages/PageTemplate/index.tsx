@@ -1,13 +1,13 @@
 import React from 'react';
 import Header from '../../components/Header/Container';
-import {BannerProps} from '../../components/Header/TopBar';
-import Container from '../../components/Container';
+import {BannerProps} from '../../components/Header/Banner';
 import Footer from '../../components/Footer/Container';
+import Container from '../../components/Container';
 
-const PageTemplate: React.FC<BannerProps> = (props) =>{
+const PageTemplate: React.FC<BannerProps> = (props) => {
     return(
         <>
-            <Header />
+            <Header {...props}/>
             <Container>
                 {props.children}
             </Container>

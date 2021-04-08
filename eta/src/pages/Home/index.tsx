@@ -41,7 +41,10 @@ const Itens = styled.div`
 
 export default function Home(props:any) {
         return (
-            <PageTemplate>
+            <PageTemplate
+                title="Seja bem vindo!"
+                topBar={true}
+            >
                 <HomeContainer>
                     {
                         /*

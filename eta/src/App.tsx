@@ -13,8 +13,8 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/" component={Home} exact />
-        <Route path="/login" component={Login} />
+        <Route path="/" component={Login} exact />
+        <Route path="/home" component={Home} />
         <Route path="/coagulacao" component={Coagulacao}/>
         <Route path="/decantacao" component={Eta2} />
         <Route path="/floculacao" component={Eta3} />

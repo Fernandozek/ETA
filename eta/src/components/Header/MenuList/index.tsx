@@ -11,10 +11,8 @@ const MenuList = styled.ul`
                 padding: 0;
                 display: inline-block;
                 margin-left: 0;
-                background-color: red;
             }
         }
-        background-color: blue;
         margin-bottom: 1rem;
         font-size: 2rem;
     }

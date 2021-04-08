@@ -233,7 +233,13 @@ const Section = styled.section`
     justify-content: center;
 
 `
-
+const Select = styled.select`
+    width: 60px;
+    height: 40px;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    padding-left: 10px;
+`
 const TableHead = styled.th`
     padding: 10px; 
     color: var(--gray-dark);
@@ -303,15 +309,15 @@ interface ResultsProps {
 const Tr1: React.FC<Table1Props> = (props) => {
     var tmp = [];
     var pontos = 1;
-    for (var i = 0; i < 3; i++) {
+    for (var i = 0; i < props.ncvalue; i++) {
         tmp.push(i);
     }
-    if(props.g4value !== 0 && props.g5value === 0){
+    if (props.ncvalue == 4) {
         var [M22, M2, M11, q, Vol, A, B, a] = Floc.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.g4value, props.fatorvalue);
-    }else{
-        if(props.g4value === 0){
+    } else {
+        if (props.ncvalue == 3) {
             var [M22, M2, M11, q, Vol, A, B, a] = Floc3.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.fatorvalue);
-        }else{
+        } else {
             var [M22, M2, M11, q, Vol, A, B, a] = Floc5.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.g4value, props.g5value, props.fatorvalue);
         }
     }
@@ -342,15 +348,15 @@ const Tr1: React.FC<Table1Props> = (props) => {
 const Tr2: React.FC<Table1Props> = (props) => {
     var tmp = [];
     var pontos = 1;
-    for (var i = 0; i < 3; i++) {
+    for (var i = 0; i < props.ncvalue; i++) {
         tmp.push(i);
     }
-    if(props.g4value !== 0 && props.g5value === 0){
+    if (props.ncvalue == 4) {
         var [M22, M2, M11, q, Vol, A, B, a] = Floc.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.g4value, props.fatorvalue);
-    }else{
-        if(props.g4value === 0){
+    } else {
+        if (props.ncvalue == 3) {
             var [M22, M2, M11, q, Vol, A, B, a] = Floc3.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.fatorvalue);
-        }else{
+        } else {
             var [M22, M2, M11, q, Vol, A, B, a] = Floc5.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.g4value, props.g5value, props.fatorvalue);
         }
     }
@@ -380,12 +386,12 @@ const Tr2: React.FC<Table1Props> = (props) => {
 }
 
 const Result: React.FC<ResultsProps> = (props) => {
-    if(props.g4value !== 0 && props.g5value === 0){
+    if (props.g4value !== 0 && props.g5value === 0) {
         var [M22, M2, M11, q, Vol, A, B, a] = Floc.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.g4value, props.fatorvalue);
-    }else{
-        if(props.g4value === 0){
+    } else {
+        if (props.g4value === 0) {
             var [M22, M2, M11, q, Vol, A, B, a] = Floc3.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.fatorvalue);
-        }else{
+        } else {
             var [M22, M2, M11, q, Vol, A, B, a] = Floc5.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.g4value, props.g5value, props.fatorvalue);
         }
     }
@@ -410,18 +416,20 @@ const Result: React.FC<ResultsProps> = (props) => {
                     </Item>
                     <Item>
                         <Name>Area (m²)
-                                    <span className="tooltiptext">: área superficial do floculador</span>
+                                <span className="tooltiptext">Área superficial do floculador</span>
                         </Name>
                         <Value>{Number(A)?.toFixed(4)}</Value>
                     </Item>
                     <Item>
                         <Name>Largura (m)
-                                    <span className="tooltiptext">Comprimento do canal ou trecho considerado</span>
+                                <span className="tooltiptext">Largura do canal ou trecho considerado</span>
                         </Name>
                         <Value>{Number(B).toFixed(4)}</Value><br />
                     </Item>
                     <Item>
-                        <Name>Comprimento (m)</Name>
+                        <Name>Comprimento (m)
+                            <span className="tooltiptext">Comprimento do canal ou trecho considerado</span>
+                        </Name>
                         <Value>{Number(a).toFixed(4)}</Value>
                     </Item>
                 </Grid>
@@ -462,8 +470,8 @@ const Result: React.FC<ResultsProps> = (props) => {
                         <TableHeadContainer>
                             <TableHead>n</TableHead>
                             <TableHead>e</TableHead>
-                            <TableHead>V1 (m/s)</TableHead>
-                            <TableHead>V2 (m/s)</TableHead>
+                            <TableHead>V<sub>1</sub> (m/s)</TableHead>
+                            <TableHead>V<sub>2</sub> (m/s)</TableHead>
                             <TableHead>Dhd (m)</TableHead>
                             <TableHead>Dhl (m)</TableHead>
                             <TableHead>Dht (m)</TableHead>
@@ -495,11 +503,9 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
     const [qms, setQms] = useState("");
     const [gs, setGs] = useState("3");
     const [gValues, setGValues] = useState<string[]>([]);
-    const [ok, setOk] = useState(false);
 
     const [qvalue, setQvalue] = useState("");
     const [tvalue, setTvalue] = useState("");
-    const [ncvalue, setNcvalue] = useState("");
     const [profvalue, setProfvalue] = useState("");
     const [ndvalue, setNdvalue] = useState("");
     const [lvalue, setLvalue] = useState("");
@@ -512,7 +518,7 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
 
     const [qvalueCalculated, setQvalueCalculated] = useState("");
     const [tvalueCalculated, setTvalueCalculated] = useState("");
-    const [ncvalueCalculated, setNcvalueCalculated] = useState("");
+    const [gsCalculated, setGsCalculated] = useState("");
     const [profvalueCalculated, setProfvalueCalculated] = useState("");
     const [ndvalueCalculated, setNdvalueCalculated] = useState("");
     const [lvalueCalculated, setLvalueCalculated] = useState("");
@@ -548,7 +554,7 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
         setGValues(updated);
     }
     function calcular() {
-
+        var ok = 0;
         if (gs === "3") {
             if (gValues[0] !== "" && gValues[1] !== "" && gValues[2] !== "") {
                 setG1value(gValues[0]);
@@ -557,9 +563,7 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
                 setG1valueCalculated(gValues[0]);
                 setG2valueCalculated(gValues[1]);
                 setG3valueCalculated(gValues[2]);
-                setOk(true);
-            } else {
-                alert("preencha todos os campos");
+                ok = 1;
             }
         } else {
             if (gs === "4") {
@@ -572,9 +576,7 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
                     setG2valueCalculated(gValues[1]);
                     setG3valueCalculated(gValues[2]);
                     setG4valueCalculated(gValues[3]);
-                    setOk(true);
-                } else {
-                    alert("preencha todos os campos");
+                    ok = 1;
                 }
             } else {
                 if (gValues[0] !== "" && gValues[1] !== "" && gValues[2] !== "" && gValues[3] !== "" && gValues[4] !== "") {
@@ -588,23 +590,21 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
                     setG3valueCalculated(gValues[2]);
                     setG4valueCalculated(gValues[3]);
                     setG5valueCalculated(gValues[4]);
-                    setOk(true);
-                } else {
-                    alert("preencha todos os campos");
+                    ok = 1;
                 }
             }
         }
 
-        if (qvalue !== "" && tvalue !== "" && ncvalue !== "" && profvalue !== "" && ndvalue !== "" && lvalue !== "" && fatorvalue !== "" && ok === true) {
+        if (qvalue !== "" && tvalue !== "" && profvalue !== "" && ndvalue !== "" && lvalue !== "" && fatorvalue !== "" && ok === 1) {
             setIsDimensione(true);
             setQvalueCalculated(qvalue);
             setTvalueCalculated(tvalue);
-            setNcvalueCalculated(ncvalue);
             setProfvalueCalculated(profvalue);
             setNdvalueCalculated(ndvalue);
             setLvalueCalculated(lvalue);
             setCalculated(qvalue);
             setFatorvalueCalculated(fatorvalue);
+            setGsCalculated(gs);
         } else {
             alert("preencha todos os campos");
         }
@@ -616,10 +616,6 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
     function setT(n: string) {
         setIsDimensione(false);
         setTvalue(n)
-    }
-    function setNc(n: string) {
-        setIsDimensione(false);
-        setNcvalue(n);
     }
     function setProf(n: string) {
         setIsDimensione(false);
@@ -638,17 +634,13 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
         setFatorvalue(n);
     }
     return (
-        <PageTemplate>
+        <PageTemplate
+            title="Floculação"
+            topBar={true}
+        >
             <ETA3Container>
                 <Card>
-                    <select name="" id="" onChange={(e) => {
-                        const valor = e.target.value;
-                        setGs(valor);
-                    }}>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
+
                     <Entradas>
                         <Op>
                             <Title>Q (m³/s)
@@ -672,10 +664,14 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
                             <Title>Nº de canais
                                 <span className="tooltiptext">teste</span>
                             </Title>
-                            <Input
-                                type="number"
-                                onChange={e => setNc(e.target.value)}
-                            />
+                            <Select name="" id="" onChange={(e) => {
+                                const valor = e.target.value;
+                                setGs(valor);
+                            }}>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </Select>
                         </Op>
                         <Op>
                             <Title>Profundidade
@@ -731,8 +727,8 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
                                 <Title>Fator de correção (%)
                                     <span className="tooltiptext">teste</span>
                                 </Title>
-                                <Input 
-                                    type="number" 
+                                <Input
+                                    type="number"
                                     onChange={e => setFator(e.target.value)}
                                 />
                             </Op>
@@ -747,7 +743,7 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
                     <Result
                         qvalue={Number(qvalue)}
                         tvalue={Number(tvalue)}
-                        ncvalue={Number(ncvalue)}
+                        ncvalue={Number(gs)}
                         profvalue={Number(profvalue)}
                         ndvalue={Number(ndvalue)}
                         lvalue={Number(lvalue)}
@@ -764,7 +760,7 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
                     <Result
                         qvalue={Number(qvalueCalculated)}
                         tvalue={Number(tvalueCalculated)}
-                        ncvalue={Number(ncvalueCalculated)}
+                        ncvalue={Number(gsCalculated)}
                         profvalue={Number(profvalueCalculated)}
                         ndvalue={Number(ndvalueCalculated)}
                         lvalue={Number(lvalueCalculated)}

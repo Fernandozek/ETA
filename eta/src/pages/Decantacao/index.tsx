@@ -152,6 +152,12 @@ const CardResultados = styled.div`
     flex-direction: column;
     justify-content: center;
 `
+const Consideracoes = styled.div`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`
 const Left = styled.div`
     display: flex;
     flex-direction: column;
@@ -183,6 +189,22 @@ const Grid = styled.div`
     @media(min-width: 1000px){
         grid-template-columns: auto auto auto auto auto;
     }
+`
+const Atendida = styled.div`
+    max-width: 200px;
+    padding: 15px;
+    font-weight: bold;
+    text-align: center;
+    background-color:#b4ffb4;
+    color: #000000;
+`
+const NAtendida = styled.div`
+    max-width: 200px;
+    padding: 15px;
+    font-weight: bold;
+    text-align: center;
+    background-color:#ff7070;
+    color: #000000;
 `
 const GridRight = styled.div`
     margin: 10px;
@@ -266,7 +288,7 @@ const Result: React.FC<ResultsProps> = (props) => {
                     <Grid>
                         <Item>
                             <Name>As (m²)
-                                <span className="tooltiptext">Vazão que passa pela unidade</span>
+                                <span className="tooltiptext">Área superficial útil da zona de decantação</span>
                             </Name>
                             <Value>{V1[0].toFixed(4)}</Value>
                         </Item>
@@ -290,25 +312,25 @@ const Result: React.FC<ResultsProps> = (props) => {
                         </Item>
                         <Item>
                             <Name>V<sub>0</sub> (cm/s)
-                                <span className="tooltiptext">Comprimento do decantador</span>
+                                <span className="tooltiptext">Velocidade horizontal</span>
                             </Name>
                             <Value>{V1[4].toFixed(4)}</Value>
                         </Item>
                         <Item>
                             <Name>Ql (m³/s)
-                                <span className="tooltiptext">Área do decantador</span>
+                                <span className="tooltiptext">Vazão que passa pela unidade</span>
                             </Name>
                             <Value>{V2[0].toFixed(4)}</Value>
                         </Item>
                         <Item>
                             <Name>Lv (m)
-                                <span className="tooltiptext">comprimento do total do vertedor</span>
+                                <span className="tooltiptext">Comprimento do total do vertedor</span>
                             </Name>
                             <Value>{V2[1].toFixed(4)}</Value>
                         </Item>
                         <Item>
                             <Name>Lcalha (m)
-                                <span className="tooltiptext">comprimento das calhas</span>
+                                <span className="tooltiptext">Comprimento das calhas</span>
                             </Name>
                             <Value>{V2[2].toFixed(4)}</Value>
                         </Item>
@@ -327,10 +349,63 @@ const Result: React.FC<ResultsProps> = (props) => {
                     </Grid>
                 </CardResultados>
                 <CardResultados>
-                    <TitleCard>Alturas obtidas (m)</TitleCard>
-                    <Grid>
-
-                    </Grid>
+                    <TitleCard>Painel de considerações</TitleCard>
+                    <Consideracoes>
+                        {
+                           V3[0] < 20000 &&
+                           <Atendida>
+                                <p>
+                                    Condição satisfeita:<br />
+                                    Re menor que 20000
+                                </p>
+                           </Atendida> 
+                        }
+                        {
+                           V3[0] >= 20000 &&
+                           <NAtendida>
+                                <p>
+                                    Condição satisfeita:<br />
+                                    Re maior ou igual a 20000
+                                </p>
+                           </NAtendida> 
+                        }
+                        {
+                            V3[0] >= 10000 &&
+                            <Atendida>
+                                <p>
+                                    Sistema com capacidade acima de 10.000 m³/dia - V0 = 0,75. <br />
+                                (Condição atendida!)
+                            </p>
+                            </Atendida>
+                        }
+                        {
+                            V3[0] < 10000 &&
+                            <NAtendida>
+                                <p>
+                                    Sistema com capacidade abaixo de 10.000 m³/dia - V0 = 0,75. <br />
+                                (Condição não atendida!)
+                            </p>
+                            </NAtendida>
+                        }
+                        {
+                            V3[1] >= 3 && V3[1] <= 4 &&
+                            <Atendida>
+                                <p>
+                                    L/B = 3 ou 4 <br />
+                                (Condição atendida!)
+                            </p>
+                            </Atendida>
+                        }
+                        {
+                            V3[1] < 3 || V3[1] > 4 &&
+                            <NAtendida>
+                                <p>
+                                    L/B != 3 ou 4 <br />
+                                (Condição não atendida!)
+                            </p>
+                            </NAtendida>
+                        }
+                    </Consideracoes>
                 </CardResultados>
 
             </Left>
@@ -340,10 +415,6 @@ const Result: React.FC<ResultsProps> = (props) => {
                         <ItemRight>
                             <TitleValue>Nº de Reynolds (Re)</TitleValue>
                             <Value>{V3[0]}</Value>
-                        </ItemRight>
-                        <ItemRight>
-                            <TitleValue>Condição satisfeita:</TitleValue>
-                            <Value>Re menor 20000 </Value>
                         </ItemRight>
                         <ItemRight>
                             <TitleValue>L/B</TitleValue>
@@ -409,7 +480,10 @@ const Decantacao: React.FC<ResultsProps> = (props) => {
         setProfundidade(n);
     }
     return (
-        <PageTemplate>
+        <PageTemplate
+            title="Decantação"
+            topBar={true}
+        >
             <ETA2Container>
                 <Card>
                     <Entradas>

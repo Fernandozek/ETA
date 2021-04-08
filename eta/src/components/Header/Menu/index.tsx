@@ -127,6 +127,7 @@ const MenuContainer = styled.div`
     margin: 0 1.6rem;
     width: 90%;
     display: flex;
+
     & ${MenuIcons}{
         position: fixed;
         right: 16px;
@@ -147,7 +148,6 @@ const Menus = styled.nav`
     right: 0;
     top: 0;
     transform: ${(props: MenusProps) => props.open ? 'translateX(100%)' : 'translateX(0)'};
-    background-color: var(--primaria);
     transition: 0.3s;
     padding-top: 20px;
     
@@ -261,7 +261,7 @@ export default function Menu() {
             }
             <Menus open={open}>
                 <MenuList>
-                    <Lista><Link to="/" className="MenuLink" >início</Link></Lista>
+                    <Lista><Link to="/home" className="MenuLink" >início</Link></Lista>
                     <Lista><Link to="/coagulacao" className="MenuLink" >Coagulação</Link></Lista>
                     <Lista><Link to="/floculacao" className="MenuLink" >Floculação</Link></Lista>
                     <Lista><Link to="/decantacao" className="MenuLink" >Decantação</Link></Lista>
