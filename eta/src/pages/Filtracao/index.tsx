@@ -13,7 +13,7 @@ const EtaContainer = styled.div`
     padding: 50px 0px;
 `
 const Card = styled.div`
-    width: 100%;
+    width: 80%;
     height: 100%;
     padding: 10px 10px 30px 10px;
     background-color: var(--branco);

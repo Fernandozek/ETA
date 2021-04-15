@@ -9,8 +9,8 @@ import Img from '../../assets/images/exampleParshall.png';
 interface ResultsProps {
     q: number,
     v: number[],
-   
-    
+
+
 }
 const EtaContainer = styled.div`
     display: flex;
@@ -116,6 +116,16 @@ const Input = styled.input`
     padding: 5px;
     font-size: 1.4rem;
     border: 1px solid var(--gray-dark);  
+    border-radius: 8px;
+    outline: none;
+    text-align: center;
+`
+const InputErr = styled.input`
+    margin-top: 10px;
+    width: 80px;
+    padding: 5px;
+    font-size: 1.4rem;
+    border: 1px solid red;  
     border-radius: 8px;
     outline: none;
     text-align: center;
@@ -492,13 +502,14 @@ const Coagulacao: React.FC<ResultsProps> = (props) => {
     var v: any = [];
     const [options, setOptions] = useState("-1");
     const [num, setNum] = useState("");
+    const [acepted, setAcepted] = useState(false);
     const [calculated, setCalculated] = useState("");
     const [isDimensione, setIsDimensione] = useState(false);
     const [vetCalculated, setVetCalculated] = useState([]);
     const [valueChecked, setValueChecked] = useState(false);
 
     function calcular() {
-        if (num != "" && options != "-1") {
+        if (num != "" && options != "-1" && acepted === true) {
             setIsDimensione(true);
             setCalculated(num);
             var v = [] as any;
@@ -509,18 +520,120 @@ const Coagulacao: React.FC<ResultsProps> = (props) => {
             alert("Selecione um medidor parshall");
         } else if (num === "") {
             alert("Preencha o campo!");
+        } else if(acepted === false){
+            alert("Selecione um valor dentro do intervalo válido!");
         }
     }
 
     function setVazao(n: string) {
-        
-        setIsDimensione(false);
         setNum(n);
-    }
-    function checked(n: boolean){
-        if(n === true){
-            setValueChecked(true);
+        var valor = Number(n);
+        if (options === "0") {
+            if (valor >= 0.0008 && valor <= 1.4272) {
+                setAcepted(true);
+            }else{
+                setAcepted(false);
+            }
         }else{
+            if (options === "1") {
+                if (valor >= 0.0014 && valor <= 0.1104) {
+                    setAcepted(true);
+                }else{
+                    setAcepted(false);
+                }
+            }else{
+                if (options === "2") {
+                    if (valor >= 0.0025 && valor <= 0.252) {
+                        setAcepted(true);
+                    }else{
+                        setAcepted(false);
+                    }
+                }else{
+                    if (options === "3") {
+                        if (valor >= 0.0031 && valor <= 0.4559) {
+                            setAcepted(true);
+                        }else{
+                            setAcepted(false);
+                        }
+                    }else{
+                        if (options === "4") {
+                            if (valor >= 0.0042 && valor <= 0.6966) {
+                                setAcepted(true);
+                            }else{
+                                setAcepted(false);
+                            }
+                        }else{
+                            if (options === "5") {
+                                if (valor >= 0.0119 && valor <= 0.937) {
+                                    setAcepted(true);
+                                }else{
+                                    setAcepted(false);
+                                }
+                            }else{
+                                if (options === "6") {
+                                    if (valor >= 0.0173 && valor <= 1.4272) {
+                                        setAcepted(true);
+                                    }else{
+                                        setAcepted(false);
+                                    }
+                                }else{
+                                    if (options === "7") {
+                                        if (valor >= 0.0368 && valor <= 1.9227) {
+                                            setAcepted(true);
+                                        }else{
+                                            setAcepted(false);
+                                        }
+                                    }else{
+                                        if (options === "8") {
+                                            if (valor >= 0.0453 && valor <= 2.4239) {
+                                                setAcepted(true);
+                                            }else{
+                                                setAcepted(false);
+                                            }
+                                        }else{
+                                            if (options === "9") {
+                                                if (valor >= 0.0736 && valor <= 2.9308) {
+                                                    setAcepted(true);
+                                                }else{
+                                                    setAcepted(false);
+                                                }
+                                            }else{
+                                                if (options === "10") {
+                                                    if (valor >= 0.085 && valor <= 3.4377) {
+                                                        setAcepted(true);
+                                                    }else{
+                                                        setAcepted(false);
+                                                    }
+                                                }else{
+                                                    if (options === "11") {
+                                                        if (valor >= 0.0991 && valor <= 3.9502) {
+                                                            setAcepted(true);
+                                                        }else{
+                                                            setAcepted(false);
+                                                        }
+                                                    }else{
+                                                        setAcepted(false);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if(acepted == true){
+            setIsDimensione(false);
+        }
+
+    }
+    function checked(n: boolean) {
+        if (n === true) {
+            setValueChecked(true);
+        } else {
             setValueChecked(false);
         }
     }
@@ -558,11 +671,23 @@ const Coagulacao: React.FC<ResultsProps> = (props) => {
                             <Name>Q (m³/s)
                                 <span className="tooltiptext">Vazão no canal de coagulação (m³/s)</span>
                             </Name>
-                            <Input
-                                type="number"
-                                value={num}
-                                onChange={e => setVazao(e.target.value)}
-                            />
+                            {
+                                acepted === true &&
+                                <Input
+                                    type="number"
+                                    value={num}
+                                    onChange={e => setVazao(e.target.value)}
+                                />
+                            }
+                            
+                            {
+                                acepted === false &&
+                                <InputErr 
+                                    type="number"
+                                    value={num}
+                                    onChange={e => setVazao(e.target.value)}
+                                />
+                            }
                         </Entrada>
                         <Table>
                             <TableHeadContainer>
@@ -583,7 +708,7 @@ const Coagulacao: React.FC<ResultsProps> = (props) => {
                     </Section>
                     <Dimensionar>
                         <Checkbox>
-                            <input type="checkbox" 
+                            <input type="checkbox"
                                 onChange={e => checked(e.target.checked)}
                             />
                             <p>Mostrar modelo</p>
@@ -594,7 +719,7 @@ const Coagulacao: React.FC<ResultsProps> = (props) => {
                     </Dimensionar>
                     {
                         valueChecked === true &&
-                        <img src={Img} height="200px" alt=""/>
+                        <img src={Img} height="200px" alt="" />
                     }
                 </Card>
                 {
@@ -602,7 +727,7 @@ const Coagulacao: React.FC<ResultsProps> = (props) => {
                     <Result
                         q={Number(num)}
                         v={vetCalculated}
-                        
+
                     />
                 }
                 {
@@ -610,7 +735,7 @@ const Coagulacao: React.FC<ResultsProps> = (props) => {
                     <Result
                         q={Number(calculated)}
                         v={vetCalculated}
-                        
+
                     />
                 }
 

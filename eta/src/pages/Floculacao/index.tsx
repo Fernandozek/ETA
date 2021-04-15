@@ -25,6 +25,42 @@ const Card = styled.div`
     justify-content: center;
 
 `
+const CardFator = styled.div`
+    width: 350px;
+    background-color: var(--branco);
+    border-radius: 8px;
+    margin-left: auto;
+    margin-right: 90px;
+    margin-bottom: 30px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+
+`
+const NotiFator = styled.div`
+    width: 100%;
+    text-align: center;
+    h2{
+        color: red;
+        font-size: 15px;
+    }
+`
+const NotiFatorOk = styled.div`
+    width: 100%;
+    text-align: center;
+    h2{
+        color: green;
+        font-size: 15px;
+    }
+`
+const InputFator = styled.div`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
 const Entradas = styled.div`
     width: 100%;
     display: flex;
@@ -140,6 +176,9 @@ const Button = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
+    outline: none;
+
     @media(min-width: 768px){
         font-size: 1.4rem;
     }
@@ -165,9 +204,9 @@ const CardResultados = styled.div`
     justify-content: center;
 `
 const Item = styled.div`
-    display: flex;
+    display: inherit;
     flex-direction: column;
-    align-items: center;
+    align-items: inherit;
     justify-content:center;
 `
 const TitleCard = styled.h2`
@@ -219,6 +258,7 @@ const Name = styled.h2`
 `
 const Value = styled.p`
     color: var(--gray-dark);
+    margin: auto !important;
 `
 const Grid = styled.div`
     display: grid;
@@ -226,7 +266,6 @@ const Grid = styled.div`
     grid-template-columns: auto auto auto auto auto;
 `
 const Section = styled.section`
-    margin-top: 20px;
     width: 100%;
     display: flex;
     align-items: center;
@@ -304,7 +343,6 @@ interface ResultsProps {
     g3value: number,
     g4value: number,
     g5value: number,
-    fatorvalue: number
 }
 const Tr1: React.FC<Table1Props> = (props) => {
     var tmp = [];
@@ -367,17 +405,19 @@ const Tr2: React.FC<Table1Props> = (props) => {
                 tmp.map((i, index) => {
 
                     return (
+                        <>
 
-                        <TableRowContainer >
-                            <TableData>{V21[i]?.toFixed(0)}</TableData>
-                            <TableData>{V22[i]?.toFixed(4)}</TableData>
-                            <TableData>{V23[i]?.toFixed(4)}</TableData>
-                            <TableData>{V24[i]?.toFixed(4)}</TableData>
-                            <TableData>{V25[i]?.toFixed(4)}</TableData>
-                            <TableData>{V26[i]?.toFixed(4)}</TableData>
-                            <TableData>{V27[i]?.toFixed(4)}</TableData>
-                            <TableData>{V28[i]?.toFixed(4)}</TableData>
-                        </TableRowContainer>
+                            <TableRowContainer >
+                                <TableData>{V21[i]?.toFixed(0)}</TableData>
+                                <TableData>{V22[i]?.toFixed(4)}</TableData>
+                                <TableData>{V23[i]?.toFixed(4)}</TableData>
+                                <TableData>{V24[i]?.toFixed(4)}</TableData>
+                                <TableData>{V25[i]?.toFixed(4)}</TableData>
+                                <TableData>{V26[i]?.toFixed(4)}</TableData>
+                                <TableData>{V27[i]?.toFixed(4)}</TableData>
+                                <TableData>{V28[i]?.toFixed(4)}</TableData>
+                            </TableRowContainer>
+                        </>
                     );
                 })
             }
@@ -386,17 +426,44 @@ const Tr2: React.FC<Table1Props> = (props) => {
 }
 
 const Result: React.FC<ResultsProps> = (props) => {
+    var teste = 0;
+    const [fatorvalue, setFatorvalue] = useState(-1);
+    const [fatorvalueCalculated, setFatorvalueCalculated] = useState(0);
+    const [isDimensione, setIsDimensione] = useState(false);
+    const [calculated, setCalculated] = useState(0);
+    const [secondTableCalculated, setSecondTableCalculated] = useState(0);
+
     if (props.g4value !== 0 && props.g5value === 0) {
-        var [M22, M2, M11, q, Vol, A, B, a] = Floc.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.g4value, props.fatorvalue);
+        var [M22, M2, M11, q, Vol, A, B, a] = Floc.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.g4value, fatorvalue);
     } else {
         if (props.g4value === 0) {
-            var [M22, M2, M11, q, Vol, A, B, a] = Floc3.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.fatorvalue);
+            var [M22, M2, M11, q, Vol, A, B, a] = Floc3.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, fatorvalue);
         } else {
-            var [M22, M2, M11, q, Vol, A, B, a] = Floc5.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.g4value, props.g5value, props.fatorvalue);
+            var [M22, M2, M11, q, Vol, A, B, a] = Floc5.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.g4value, props.g5value, fatorvalue);
         }
     }
+    if (M22 !== undefined) {
+        var [V21, V22, V23, V24, V25, V26, V27, V28] = Floc.m22(M22);
+        teste = 1;
+    }
     var [V11, V12, V13, V14, V15, V16, V17, V18] = Floc.m11(M11);
-    var [V21, V22, V23, V24, V25, V26, V27, V28] = Floc.m22(M22);
+    var firstTable = V18[0];
+    var secondTable = V28[0];
+    function calcular() {
+        if (fatorvalue > 0) {
+            setFatorvalueCalculated(fatorvalue);
+            setCalculated(fatorvalue);
+            setIsDimensione(true);
+            setSecondTableCalculated(secondTable);
+
+        } else {
+            alert("Digite um valor positivo para o Fator de correção!");
+        }
+    }
+    function setFator(n: number) {
+        setIsDimensione(false);
+        setFatorvalue(n);
+    }
     return (
         <Resultados>
             <CardResultados>
@@ -434,6 +501,8 @@ const Result: React.FC<ResultsProps> = (props) => {
                     </Item>
                 </Grid>
             </CardResultados>
+
+
             <CardResultados>
                 <Section>
                     <Table>
@@ -459,41 +528,116 @@ const Result: React.FC<ResultsProps> = (props) => {
                             g3value={props.g3value}
                             g4value={props.g4value}
                             g5value={props.g5value}
-                            fatorvalue={props.fatorvalue}
+                            fatorvalue={fatorvalue}
                         />
                     </Table>
                 </Section>
             </CardResultados>
-            <CardResultados>
-                <Section>
-                    <Table>
-                        <TableHeadContainer>
-                            <TableHead>n</TableHead>
-                            <TableHead>e</TableHead>
-                            <TableHead>V<sub>1</sub> (m/s)</TableHead>
-                            <TableHead>V<sub>2</sub> (m/s)</TableHead>
-                            <TableHead>Dhd (m)</TableHead>
-                            <TableHead>Dhl (m)</TableHead>
-                            <TableHead>Dht (m)</TableHead>
-                            <TableHead>G (1/s)</TableHead>
-                        </TableHeadContainer>
-                        <Tr2
-                            qvalue={props.qvalue}
-                            tvalue={props.tvalue}
-                            ncvalue={props.ncvalue}
-                            profvalue={props.profvalue}
-                            ndvalue={props.ndvalue}
-                            lvalue={props.lvalue}
-                            g1value={props.g1value}
-                            g2value={props.g2value}
-                            g3value={props.g3value}
-                            g4value={props.g4value}
-                            g5value={props.g5value}
-                            fatorvalue={props.fatorvalue}
-                        />
-                    </Table>
-                </Section>
-            </CardResultados>
+            {
+                firstTable > 70 &&
+                <CardFator>
+                    <NotiFator>
+                        <h2>O valor do canal 1 é maior que 70!</h2>
+                        <p>Digite um fator de correção para corrigir.</p>
+                    </NotiFator>
+                    <InputFator>
+                        <Op>
+                            <Title>Fator de correção (%)
+                                <span className="tooltiptext">teste</span>
+                            </Title>
+                            <Input
+                                type="number"
+                                onChange={e => setFator(Number(e.target.value))}
+                            />
+                        </Op>
+                        <Fator>
+                            <Button onClick={calcular}>
+                                Dimensionar
+                            </Button>
+                        </Fator>
+                    </InputFator>
+                </CardFator>
+            }
+            {
+                teste !== 0 && fatorvalueCalculated > 0 && isDimensione === true &&
+                <CardResultados>
+                    {
+                        secondTable < 70 &&
+                        <NotiFatorOk>
+                            <h2>O valor do canal 1 foi corrigido com {fatorvalue}%!</h2>
+                        </NotiFatorOk>
+                    }
+                    {
+                        secondTableCalculated > 70 &&
+                        <NotiFator>
+                            <h2>O valor do canal 1 continua maior que 70!</h2>
+                            <p>Insira novamente um fator de correção.</p>
+                        </NotiFator>
+                    }
+                    <Section>
+                        <Table>
+                            <TableHeadContainer>
+                                <TableHead>n</TableHead>
+                                <TableHead>e</TableHead>
+                                <TableHead>V<sub>1</sub> (m/s)</TableHead>
+                                <TableHead>V<sub>2</sub> (m/s)</TableHead>
+                                <TableHead>Dhd (m)</TableHead>
+                                <TableHead>Dhl (m)</TableHead>
+                                <TableHead>Dht (m)</TableHead>
+                                <TableHead>G (1/s)</TableHead>
+                            </TableHeadContainer>
+                            <Tr2
+                                qvalue={props.qvalue}
+                                tvalue={props.tvalue}
+                                ncvalue={props.ncvalue}
+                                profvalue={props.profvalue}
+                                ndvalue={props.ndvalue}
+                                lvalue={props.lvalue}
+                                g1value={props.g1value}
+                                g2value={props.g2value}
+                                g3value={props.g3value}
+                                g4value={props.g4value}
+                                g5value={props.g5value}
+                                fatorvalue={fatorvalueCalculated}
+                            />
+                        </Table>
+                    </Section>
+                </CardResultados>
+            }
+            {
+                teste !== 0 && fatorvalueCalculated > 0 && isDimensione === false && calculated !== 0 &&
+                <CardResultados>
+                    <Section>
+                        <Table>
+                            <TableHeadContainer>
+                                <TableHead>n</TableHead>
+                                <TableHead>e</TableHead>
+                                <TableHead>V<sub>1</sub> (m/s)</TableHead>
+                                <TableHead>V<sub>2</sub> (m/s)</TableHead>
+                                <TableHead>Dhd (m)</TableHead>
+                                <TableHead>Dhl (m)</TableHead>
+                                <TableHead>Dht (m)</TableHead>
+                                <TableHead>G (1/s)</TableHead>
+                            </TableHeadContainer>
+
+                            <Tr2
+                                qvalue={props.qvalue}
+                                tvalue={props.tvalue}
+                                ncvalue={props.ncvalue}
+                                profvalue={props.profvalue}
+                                ndvalue={props.ndvalue}
+                                lvalue={props.lvalue}
+                                g1value={props.g1value}
+                                g2value={props.g2value}
+                                g3value={props.g3value}
+                                g4value={props.g4value}
+                                g5value={props.g5value}
+                                fatorvalue={fatorvalueCalculated}
+                            />
+                        </Table>
+                    </Section>
+                </CardResultados>
+            }
         </Resultados>
     );
 }
@@ -514,7 +658,6 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
     const [g3value, setG3value] = useState("");
     const [g4value, setG4value] = useState("");
     const [g5value, setG5value] = useState("");
-    const [fatorvalue, setFatorvalue] = useState("");
 
     const [qvalueCalculated, setQvalueCalculated] = useState("");
     const [tvalueCalculated, setTvalueCalculated] = useState("");
@@ -527,7 +670,6 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
     const [g3valueCalculated, setG3valueCalculated] = useState("");
     const [g4valueCalculated, setG4valueCalculated] = useState("");
     const [g5valueCalculated, setG5valueCalculated] = useState("");
-    const [fatorvalueCalculated, setFatorvalueCalculated] = useState("");
 
     const [calculated, setCalculated] = useState("");
     const [isDimensione, setIsDimensione] = useState(false);
@@ -595,7 +737,7 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
             }
         }
 
-        if (qvalue !== "" && tvalue !== "" && profvalue !== "" && ndvalue !== "" && lvalue !== "" && fatorvalue !== "" && ok === 1) {
+        if (qvalue !== "" && tvalue !== "" && profvalue !== "" && ndvalue !== "" && lvalue !== "" && ok === 1) {
             setIsDimensione(true);
             setQvalueCalculated(qvalue);
             setTvalueCalculated(tvalue);
@@ -603,7 +745,6 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
             setNdvalueCalculated(ndvalue);
             setLvalueCalculated(lvalue);
             setCalculated(qvalue);
-            setFatorvalueCalculated(fatorvalue);
             setGsCalculated(gs);
         } else {
             alert("preencha todos os campos");
@@ -629,10 +770,7 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
         setIsDimensione(false);
         setLvalue(n);
     }
-    function setFator(n: string) {
-        setIsDimensione(false);
-        setFatorvalue(n);
-    }
+
     return (
         <PageTemplate
             title="Floculação"
@@ -723,15 +861,6 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
                     </Entradas>
                     <Dimensionar>
                         <Fator>
-                            <Op>
-                                <Title>Fator de correção (%)
-                                    <span className="tooltiptext">teste</span>
-                                </Title>
-                                <Input
-                                    type="number"
-                                    onChange={e => setFator(e.target.value)}
-                                />
-                            </Op>
                             <Button onClick={calcular}>
                                 Dimensionar
                             </Button>
@@ -752,7 +881,6 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
                         g3value={Number(g3value)}
                         g4value={Number(g4value)}
                         g5value={Number(g5value)}
-                        fatorvalue={Number(fatorvalue)}
                     />
                 }
                 {
@@ -769,7 +897,6 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
                         g3value={Number(g3valueCalculated)}
                         g4value={Number(g4valueCalculated)}
                         g5value={Number(g5valueCalculated)}
-                        fatorvalue={Number(fatorvalue)}
                     />
                 }
             </ETA3Container>

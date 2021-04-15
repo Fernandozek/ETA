@@ -496,7 +496,9 @@ const Decantacao: React.FC<ResultsProps> = (props) => {
                             />
                         </Op>
                         <Op>
-                            <Title>vs (m/dia)</Title>
+                            <Title>vs (m/dia)
+                                <span className="tooltiptext">velocidade de sedimentação</span>
+                            </Title>
                             <Input
                                 type="number"
 

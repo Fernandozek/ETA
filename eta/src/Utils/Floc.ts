@@ -16,7 +16,6 @@ export default {
 
         var rm = <any>[];
         rm = rm1;
-
         var t1 = rm[0];
         var t2 = rm[1];
         var t3 = rm[2];
@@ -44,7 +43,6 @@ export default {
         var e3 = L / n3;
         var e4 = L / n4;
 
-
         var V11 = q / (a * e1);
         var V21 = (2 / 3) * V11;
 
@@ -59,7 +57,7 @@ export default {
 
         var l1 = t1 * 60 * V11;
         var rh1 = a * e1 / (2 * (a + e1));
-        var dhd1 = Math.pow(((q * 0.013) / ((a * e1) * Math.pow(rh1, (2 / 3)))), 2 )* l1;
+        var dhd1 = Math.pow(((q * 0.013) / ((a * e1) * Math.pow(rh1, (2 / 3)))), 2) * l1;
 
         var l2 = t2 * 60 * V12;
         var rh2 = a * e2 / (2 * (a + e2));
@@ -71,13 +69,12 @@ export default {
 
         var l4 = t4 * 60 * V14;
         var rh4 = a * e4 / (2 * (a + e4));
-        var dhd4 = Math.pow(((q * 0.013) / ((a * e4) * Math.pow(rh4, (2 / 3)))), 2)* l4;
+        var dhd4 = Math.pow(((q * 0.013) / ((a * e4) * Math.pow(rh4, (2 / 3)))), 2) * l4;
 
         var dhl1 = ((n1 * (Math.pow(V11, 2)) + (n1 - 1) * (Math.pow(V21, 2)))) / (2 * 9.81);
         var dhl2 = ((n2 * (Math.pow(V12, 2))) + ((n2 - 1) * (Math.pow(V22, 2)))) / (2 * 9.81);
         var dhl3 = ((n3 * (Math.pow(V13, 2))) + ((n3 - 1) * (Math.pow(V23, 2)))) / (2 * 9.81);
         var dhl4 = ((n4 * (Math.pow(V14, 2))) + ((n4 - 1) * (Math.pow(V24, 2)))) / (2 * 9.81);
-        
 
         var dh1 = dhd1 + dhl1;
         var dh2 = dhd2 + dhl2;
@@ -100,19 +97,35 @@ export default {
         var M22;
         var M2;
         if (Gg1 > 70) {
-            warndlg = "Dimensionamento não foi realizado com sucesso";
-            var GG1 = 70 - (70 * (FC / 100));
-            var nnn1 = 0.045 * Math.pow((Math.pow((a * L * GG1 / q), 2) * t1), (1 / 3));
+            var GG1 = G1 - (G1 * (FC / 100));
+            var am = [[1, 1, 1, 1],
+            [GG1, -G2, 0, 0],
+            [0, G2, -G3, 0],
+            [0, 0, G3, -G4]];
+
+            var bm = [[Ttf], [0], [0], [0]];
+
+
+            var inve = inv(am);
+            var rm1 = multiply(inve, bm);
+
+            var rm = <any>[];
+            rm = rm1;
+            var T1 = rm[0];
+            var T2 = rm[1];
+            var T3 = rm[2];
+            var T4 = rm[3];
+            var nnn1 = 0.045 * Math.pow((Math.pow((a * L * GG1 / q), 2) * T1), (1 / 3));
             var nn1 = Math.ceil(nnn1);
             var ee1 = L / nn1;
             var Vv11 = q / (a * ee1);
             var Vv21 = (2 / 3) * Vv11;
-            var ll1 = t1 * 60 * Vv11;
+            var ll1 = T1 * 60 * Vv11;
             var rrh1 = a * ee1 / (2 * (a + ee1));
             var ddhd1 = Math.pow(((q * 0.013) / ((a * ee1) * (Math.pow(rrh1, (2 / 3))))), 2) * ll1;
             var ddhl1 = ((nn1 * Math.pow(Vv11, 2)) + (nn1 - 1) * (Math.pow(Vv21, 2))) / (2 * 9.81);
             var ddh1 = ddhd1 + ddhl1;
-            var GGg1 = Math.sqrt((9.81 * ddh1) / (Math.pow(10, -6) * t1 * 60));
+            var GGg1 = Math.sqrt((9.81 * ddh1) / (Math.pow(10, -6) * T1 * 60));
             M2 = [[nn1, n2, n3, n4], [ee1, e2, e3, e4], [Vv11, V12, V13, V14], [Vv21, V22, V23, V24], [ddhd1, dhd2, dhd3, dhd4], [ddhl1, dhl2, dhl3, dhl4], [ddh1, dh2, dh3, dh4], [GGg1, Gg2, Gg3, Gg4]];
             M22 = M2;
         }
