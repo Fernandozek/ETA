@@ -5,6 +5,7 @@ import Floc from '../../Utils/Floc';
 import Floc3 from '../../Utils/Floc3';
 import Floc5 from '../../Utils/Floc5';
 import { useState } from 'react';
+import jsPDF from 'jspdf';
 
 const ETA3Container = styled.div`
     width: 100%;
@@ -442,13 +443,14 @@ const Result: React.FC<ResultsProps> = (props) => {
             var [M22, M2, M11, q, Vol, A, B, a] = Floc5.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.g4value, props.g5value, fatorvalue);
         }
     }
+    var secondTable = 0;
     if (M22 !== undefined) {
         var [V21, V22, V23, V24, V25, V26, V27, V28] = Floc.m22(M22);
+        secondTable = V28[0];
         teste = 1;
     }
     var [V11, V12, V13, V14, V15, V16, V17, V18] = Floc.m11(M11);
     var firstTable = V18[0];
-    var secondTable = V28[0];
     function calcular() {
         if (fatorvalue > 0) {
             setFatorvalueCalculated(fatorvalue);
@@ -463,6 +465,108 @@ const Result: React.FC<ResultsProps> = (props) => {
     function setFator(n: number) {
         setIsDimensione(false);
         setFatorvalue(n);
+    }
+    const jsPdfGenerator = () => {
+        var doc = new jsPDF('p', 'pt');
+        doc.setFont('courier');
+        doc.setFontSize(10);
+        doc.text('Universidade Federal Rural do SemiÁrido - UFERSA', 80, 50);
+        doc.text('Esta programa é destinado à realização de um pré-dimensionamento de', 80, 63);
+        doc.text('clarificação em uma estação de tratamento de água convencional', 80, 76);
+
+        doc.setLineWidth(0.5);
+        doc.line(485, 89, 80, 89);
+        doc.text('Resultados da Floculação', 80, 105);
+
+        doc.text('Velocidades Obtidas (m/s)', 80, 135);
+
+        doc.text(`ql (m³/s) = ${Number(q).toFixed(4)}`, 100, 158);
+        doc.text(`Volume (m³) = ${Number(Vol).toFixed(0)}`, 100, 171);
+        doc.text(`Area (m²) = ${Number(A)?.toFixed(4)}`, 100, 184);
+        doc.text(`Largura (m) = ${Number(B).toFixed(4)}`, 100, 197);
+        doc.text(`Comprimento (m) = ${Number(a).toFixed(4)}`, 100, 210);
+
+        doc.line(485, 220, 80, 220);
+
+        doc.text('n', 87, 256);
+        doc.text('e', 117, 256);
+        doc.text('V1 (m/s)', 155, 256);
+        doc.text('V2 (m/s)', 215, 256);
+        doc.text('Dhd (m)', 274, 256);
+        doc.text('Dhl (m)', 331, 256);
+        doc.text('Dht (m)', 387, 256);
+        doc.text('G (1/s)', 440, 256);
+
+
+        doc.line(485, 245, 80, 245);
+
+        var linha = 275;
+        for (var i = 0; i < props.ncvalue; i++) {
+            doc.text(`${V11[i].toFixed(0)}`, 84, linha);
+            doc.text(`${V12[i].toFixed(4)}`, 105, linha);
+            doc.text(`${V13[i].toFixed(4)}`, 160, linha);
+            doc.text(`${V14[i].toFixed(4)}`, 220, linha);
+            doc.text(`${V15[i].toFixed(4)}`, 275, linha);
+            doc.text(`${V16[i].toFixed(4)}`, 333, linha);
+            doc.text(`${V17[i].toFixed(4)}`, 388, linha);
+            doc.text(`${V18[i].toFixed(4)}`, 438, linha);
+            linha = linha + 15;
+        }
+        linha = linha - 5;
+        doc.line(80, 245, 80, linha);
+        doc.line(100, 245, 100, linha);
+        doc.line(148, 245, 148, linha);
+        doc.line(208, 245, 208, linha);
+        doc.line(266, 245, 266, linha);
+        doc.line(322, 245, 322, linha);
+        doc.line(381, 245, 381, linha);
+        doc.line(433, 245, 433, linha);
+        doc.line(485, 245, 485, linha);
+        doc.line(485, linha, 80, linha);
+
+        if (M22 != undefined) {
+
+            doc.text(`O canal 1 foi superior a 70, e usando um fator de correção de ${fatorvalue}%,`, 80, 369);
+            doc.text(`temos:`, 80, 382);
+
+            doc.line(485, 400, 80, 400);
+
+            doc.text('n', 87, 412);
+            doc.text('e', 117, 412);
+            doc.text('V1 (m/s)', 155, 412);
+            doc.text('V2 (m/s)', 215, 412);
+            doc.text('Dhd (m)', 274, 412);
+            doc.text('Dhl (m)', 331, 412);
+            doc.text('Dht (m)', 387, 412);
+            doc.text('G (1/s)', 440, 412);
+
+            linha = 430;
+
+            for (var i = 0; i < props.ncvalue; i++) {
+                doc.text(`${V21[i].toFixed(0)}`, 84, linha);
+                doc.text(`${V22[i].toFixed(4)}`, 105, linha);
+                doc.text(`${V23[i].toFixed(4)}`, 160, linha);
+                doc.text(`${V24[i].toFixed(4)}`, 220, linha);
+                doc.text(`${V25[i].toFixed(4)}`, 275, linha);
+                doc.text(`${V26[i].toFixed(4)}`, 333, linha);
+                doc.text(`${V27[i].toFixed(4)}`, 388, linha);
+                doc.text(`${V28[i].toFixed(4)}`, 438, linha);
+                linha = linha + 15;
+            }
+            linha = linha - 5;
+            doc.line(80, 400, 80, linha);
+            doc.line(100, 400, 100, linha);
+            doc.line(148, 400, 148, linha);
+            doc.line(208, 400, 208, linha);
+            doc.line(266, 400, 266, linha);
+            doc.line(322, 400, 322, linha);
+            doc.line(381, 400, 381, linha);
+            doc.line(433, 400, 433, linha);
+            doc.line(485, 400, 485, linha);
+            doc.line(485, linha, 80, linha);
+        }
+        //doc.save('Resultados Decantacao.pdf');
+        doc.output('dataurlnewwindow');
     }
     return (
         <Resultados>
@@ -543,7 +647,6 @@ const Result: React.FC<ResultsProps> = (props) => {
                     <InputFator>
                         <Op>
                             <Title>Fator de correção (%)
-                                <span className="tooltiptext">teste</span>
                             </Title>
                             <Input
                                 type="number"
@@ -562,7 +665,7 @@ const Result: React.FC<ResultsProps> = (props) => {
                 teste !== 0 && fatorvalueCalculated > 0 && isDimensione === true &&
                 <CardResultados>
                     {
-                        secondTable < 70 &&
+                        secondTable <= 70 &&
                         <NotiFatorOk>
                             <h2>O valor do canal 1 foi corrigido com {fatorvalue}%!</h2>
                         </NotiFatorOk>
@@ -637,6 +740,10 @@ const Result: React.FC<ResultsProps> = (props) => {
                         </Table>
                     </Section>
                 </CardResultados>
+            }
+            {
+                secondTableCalculated <= 70 &&
+                <button onClick={jsPdfGenerator}>teste</button>
             }
         </Resultados>
     );

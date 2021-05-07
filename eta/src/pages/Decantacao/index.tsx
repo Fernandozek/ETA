@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import PageTemplate from '../PageTemplate';
 import Dec from '../../Utils/Dec';
+import jsPDF from 'jspdf';
 
 const ETA2Container = styled.div`
     width: 100%;
@@ -115,7 +116,6 @@ const Dimensionar = styled.div`
 const Button = styled.button`
     width: 150px;
     padding: 20px;
-    
     margin-left: auto;
     margin-right: 0;
     font-size: 1.2rem;
@@ -124,6 +124,7 @@ const Button = styled.button`
     border-radius: 8px;
     color: var(--branco);
     background-color: var(--secundaria);
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -280,6 +281,63 @@ interface ResultsProps {
 }
 const Result: React.FC<ResultsProps> = (props) => {
     const [V1, V2, V3] = Dec.dec(props.q, props.vs, props.ns, props.prof);
+    const jsPdfGenerator = () => {
+        var doc = new jsPDF('p', 'pt');
+        doc.setFont('courier');
+        doc.setFontSize(10);
+        doc.text('Universidade Federal Rural do SemiÁrido - UFERSA', 80, 50);
+        doc.text('Esta programa é destinado à realização de um pré-dimensionamento de', 80, 63);
+        doc.text('clarificação em uma estação de tratamento de água convencional', 80, 76);
+        
+        doc.setLineWidth(0.5);
+        doc.line(485,89,80,89);
+        
+        doc.text('Resultados da Coagulação', 80, 105);
+
+        doc.text('Velocidades Obtidas (m/s)', 80, 135);
+        doc.text(`As (m²) = ${V1[0].toFixed(4)}`, 100, 158);
+        doc.text(`t (s) = ${V1[1].toFixed(4)}`, 100, 171);
+        doc.text(`B (m) = ${V1[2].toFixed(0)}`, 100, 184);
+        doc.text(`L (m) = ${V1[3].toFixed(4)}`, 100, 197);
+        doc.text(`V (cm/s) = ${V1[4].toFixed(4)}`, 100, 210);
+        doc.setFontSize(8);
+        doc.text('0', 105, 212);
+        doc.setFontSize(10);
+        doc.text(`Ql (m³/s) = ${V2[0].toFixed(4)}`, 100, 223);
+        doc.text(`LV (m) = ${V2[1].toFixed(4)}`, 100, 236);
+        doc.text(`Lcalha (m) = ${V2[2].toFixed(4)}`, 100, 249);
+        doc.text(`Nº de Calhas = ${V2[3].toFixed(0)}`, 100, 261);
+        doc.text(`S entre Calhas = ${V2[3].toFixed(4)}`, 100, 273);
+
+        doc.line(485,300,80,300);
+        
+        doc.text('Nº de Reynolds (Re)', 100, 330);
+        doc.text(`${V3[0]}`, 100, 343);
+        doc.text('L/B', 100, 366);
+        doc.text(`${V3[1].toFixed(4)}`, 100, 379);
+
+        doc.line(485,400,80,400);
+
+        doc.text('Considerações', 80, 430);
+        
+
+        if(V3[0] < 20000){
+            doc.text('Condição satisfeita:', 100, 453);
+            doc.text('Re menor que 20000', 100, 466);
+        }else{
+            doc.text('Condição Não satisfeita:', 100, 453);
+            doc.text('Re maior que 20000', 100, 466);
+        }
+
+        doc.text('Sistema com capacidade acima de 10.000 m³/dia - v0 = 0,75', 100, 489);
+        doc.text('(Condição atendia)', 100, 502);
+        
+        doc.text('L/B = 3 ou 4', 100, 535);
+        doc.text('(Condição atendia)', 100, 548);
+
+        //doc.save('Resultados Decantacao.pdf');
+        doc.output('dataurlnewwindow');
+    }
     return (
         <Resultados>
             <Left>
@@ -421,11 +479,9 @@ const Result: React.FC<ResultsProps> = (props) => {
                             <Value>{V3[1].toFixed(5)}</Value>
                         </ItemRight>
                     </GridRight>
-                    {
-
-                    }
                 </CardResultados>
 
+                <button onClick={jsPdfGenerator}>Gerar PDF</button>
             </Right>
         </Resultados>
     );
