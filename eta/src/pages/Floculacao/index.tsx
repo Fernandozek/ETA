@@ -743,7 +743,7 @@ const Result: React.FC<ResultsProps> = (props) => {
             }
             {
                 secondTableCalculated <= 70 &&
-                <button onClick={jsPdfGenerator}>teste</button>
+                <button onClick={jsPdfGenerator}>Gerar PDF</button>
             }
         </Resultados>
     );

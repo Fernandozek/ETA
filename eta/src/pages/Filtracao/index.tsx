@@ -4,6 +4,7 @@ import Filtr from '../../Utils/Filtr';
 import PageTemplate from '../PageTemplate';
 import Eta1 from '../../components/Home/ETA1';
 import { Link } from 'react-router-dom';
+import jsPDF from 'jspdf';
 const EtaContainer = styled.div`
     display: flex;
     align-items: center;
@@ -199,6 +200,7 @@ const Button = styled.button`
     color: var(--branco);
     border-radius: 8px;
     height: 30px;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -285,6 +287,68 @@ interface ResultsProps {
 const Result: React.FC<ResultsProps> = (props) => {
 
     const [hf, vMf, V1, V2, V3, V4] = Filtr.filtr(props.Q, props.taxaFiltracao, props.ndecantadores, props.ldecantador, props.lCalhaLavagem, props.a2, props.an2, props.a7, props.an7, props.a3, props.an3, props.a4, props.an4, props.a5, props.an5, props.porosidade, props.vazaoAr, props.nCalhas, props.a1, props.an1, props.altura, props.a6, props.an6, props.cEsfericidade, props.d10, props.d102);
+    
+    const jsPdfGenerator = () => {
+        var doc = new jsPDF('p', 'pt');
+        doc.setFont('courier');
+        doc.setFontSize(10);
+        doc.text('Universidade Federal Rural do SemiÁrido - UFERSA', 80, 50);
+        doc.text('Esta programa é destinado à realização de um pré-dimensionamento de', 80, 63);
+        doc.text('clarificação em uma estação de tratamento de água convencional', 80, 76);
+
+        doc.setLineWidth(0.5);
+        doc.line(485, 89, 80, 89);
+        doc.text('Resultados da Filtração', 80, 105);
+
+        doc.text('Velocidades Obtidas (m/s)', 80, 135);
+
+        doc.text(`Área total de filtração (m²) = ${V4[0]}`, 100, 158);
+        doc.text(`Número de filtros = ${V4[1]}`, 100, 171);
+        doc.text(`Área de cada filtro (m²) = ${V4[2]}`, 100, 184);
+        doc.text(`Dimensões do filtro L (m) = ${V4[3]}`, 100, 197);
+        doc.text(`Dimensões do filtro Y (m) = ${V4[4]?.toFixed(5)} `, 100, 210);
+
+        doc.line(485, 220, 80, 220);
+
+        doc.text('Lavagem de filtros / Lâmina mínima de água sobre o leito filtrante', 80, 240);
+
+        doc.text(`Vazão de água de lavagem (m³/s) = ${V1[0]?.toFixed(3)}`, 100, 260);
+        doc.text(`Volume de lavagem (m³) = ${V1[1]?.toFixed(1)}`, 100, 273);
+        doc.text(`Volume de reservação (m³) = ${V1[2]?.toFixed(1)}`, 100, 286);
+        doc.text(`Tubulação de água de lavagem (mm) = ${V1[3]}`, 100, 299);
+        doc.text(`Vazão de ar (L/s) = ${V1[4]} `, 100, 312);
+        doc.text(`Lâmina da água (m) = ${V1[5]?.toFixed(5)} `, 100, 325);
+
+        doc.line(485, 345, 80, 345);
+
+        doc.text('Calhas de água de lavagem', 80, 365);
+
+        doc.text(`Dimenssões de calha B (m) = ${V2[0]?.toFixed(3)}`, 100, 385);
+        doc.text(`Dimenssões de calha h (m) = ${V2[1]?.toFixed(3)}`, 100, 398);
+        doc.text(`Consideração = ${V2[2]} - H0 - ${V2[3]}`, 100, 411);
+        doc.text(`Consideração = ${V2[4]?.toFixed(3)} - S - ${V2[5]}`, 100, 424);
+        doc.text(`S entre calhas (m) = ${V2[6]?.toFixed(5)}`, 100, 437);
+
+        doc.line(485, 457, 80, 457);
+
+        doc.text('Perdas de carga', 80, 477);
+
+        doc.text(`Areia = ${hf[0]?.toFixed(4)}`, 100, 497);
+        doc.text(`Antracito = ${hf[1]?.toFixed(4)}`, 100, 510);
+        doc.text(`Total = ${hf[2]?.toFixed(4)}`, 100, 523);
+        doc.text(`Camada Suporte = ${hf[3]?.toFixed(4)}`, 100, 536);
+        
+        doc.line(485, 556, 80, 556);
+
+        doc.text('Velocidade mpinima de fluidificação (m/s)', 80, 576);
+
+        doc.text(`Areia = ${vMf[0]?.toFixed(4)}`, 100, 596);
+        doc.text(`Antracito = ${vMf[1]?.toFixed(4)}`, 100, 609);
+        doc.text(`Bifásico = ${vMf[2]?.toFixed(4)}`, 100, 621);
+        
+        //doc.save('Resultados Decantacao.pdf');
+        doc.output('dataurlnewwindow');
+    }
     return (
         <Resultados>
             <Left>
@@ -429,6 +493,7 @@ const Result: React.FC<ResultsProps> = (props) => {
                         </Item>
                     </Grid>
                 </CardResultados>
+                <button onClick={jsPdfGenerator}>Gerar PDF</button>
             </Left>
             <Right>
 
