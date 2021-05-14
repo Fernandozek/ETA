@@ -447,7 +447,7 @@ const Result: React.FC<ResultsProps> = (props) => {
         doc.text('Gradiente de velocidade (s-1)', 80, 509);
         doc.text(`G = ${O[5].toFixed(4)}`, 100, 522);
 
-        doc.save('Resultados Coagulacao.pdf');
+        doc.save('Resultados Coagulacão.pdf');
         doc.output('dataurlnewwindow');
     }
 

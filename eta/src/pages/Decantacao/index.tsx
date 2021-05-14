@@ -292,7 +292,7 @@ const Result: React.FC<ResultsProps> = (props) => {
         doc.setLineWidth(0.5);
         doc.line(485,89,80,89);
         
-        doc.text('Resultados da Coagulação', 80, 105);
+        doc.text('Resultados da Decantação', 80, 105);
 
         doc.text('Velocidades Obtidas (m/s)', 80, 135);
         doc.text(`As (m²) = ${V1[0].toFixed(4)}`, 100, 158);
@@ -335,8 +335,8 @@ const Result: React.FC<ResultsProps> = (props) => {
         doc.text('L/B = 3 ou 4', 100, 535);
         doc.text('(Condição atendia)', 100, 548);
 
-        //doc.save('Resultados Decantacao.pdf');
-        doc.output('dataurlnewwindow');
+        doc.save('Resultados Decantacao.pdf');
+        //doc.output('dataurlnewwindow');
     }
     return (
         <Resultados>

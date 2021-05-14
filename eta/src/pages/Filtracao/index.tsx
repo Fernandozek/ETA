@@ -346,8 +346,8 @@ const Result: React.FC<ResultsProps> = (props) => {
         doc.text(`Antracito = ${vMf[1]?.toFixed(4)}`, 100, 609);
         doc.text(`Bifásico = ${vMf[2]?.toFixed(4)}`, 100, 621);
         
-        //doc.save('Resultados Decantacao.pdf');
-        doc.output('dataurlnewwindow');
+        doc.save('Resultados Filtração.pdf');
+        //doc.output('dataurlnewwindow');
     }
     return (
         <Resultados>

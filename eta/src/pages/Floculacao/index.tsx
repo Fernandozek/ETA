@@ -565,8 +565,8 @@ const Result: React.FC<ResultsProps> = (props) => {
             doc.line(485, 400, 485, linha);
             doc.line(485, linha, 80, linha);
         }
-        //doc.save('Resultados Decantacao.pdf');
-        doc.output('dataurlnewwindow');
+        doc.save('Resultados Floculação.pdf');
+        //doc.output('dataurlnewwindow');
     }
     return (
         <Resultados>
@@ -929,7 +929,7 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
                         </Op>
                         <Op>
                             <Title>Nº de decantadores
-                                <span className="tooltiptext">teste</span>
+                                <span className="tooltiptext">Número de decantadores</span>
                             </Title>
                             <Input
                                 type="number"
