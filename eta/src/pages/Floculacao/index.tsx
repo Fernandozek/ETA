@@ -318,6 +318,18 @@ const TableRowContainer = styled.tr`
     border-radius: 0 0 8px 8px;    
 
 `
+const PDFButton = styled.button`
+    width: 100px;
+    height: 40px;
+    background-color: var(--primaria);
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+`
 interface Table1Props {
     qvalue: number,
     tvalue: number,
@@ -743,7 +755,7 @@ const Result: React.FC<ResultsProps> = (props) => {
             }
             {
                 secondTableCalculated <= 70 &&
-                <button onClick={jsPdfGenerator}>Gerar PDF</button>
+                <PDFButton onClick={jsPdfGenerator}>Gerar PDF</PDFButton>
             }
         </Resultados>
     );

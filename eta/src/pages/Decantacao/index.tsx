@@ -55,7 +55,7 @@ const Title = styled.h3`
     position: relative;
     display: inline-block;
 
-    .tooltipvalue {
+    .tooltiptext {
         visibility: hidden;
         width: 120px;
         background-color: #555;
@@ -72,7 +72,7 @@ const Title = styled.h3`
         transition: opacity 0.3s;
     }
 
-    .tooltipvalue::after {
+    .tooltiptext::after {
         content: "";
         position: absolute;
         top: 100%;
@@ -83,7 +83,7 @@ const Title = styled.h3`
         border-color: #555 transparent transparent transparent;
     }
 
-    :hover .tooltipvalue {
+    :hover .tooltiptext {
         visibility: visible;
         opacity: 1;
     }
@@ -124,6 +124,7 @@ const Button = styled.button`
     border-radius: 8px;
     color: var(--branco);
     background-color: var(--secundaria);
+    outline: none;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -147,6 +148,7 @@ const CardResultados = styled.div`
     width: 100%;
     padding: 15px;
     margin-bottom: 30px;
+    padding-bottom: 15px;
     background-color: var(--branco);
     border-radius: 8px;
     display: flex;
@@ -279,6 +281,18 @@ interface ResultsProps {
     ns: number,
     prof: number
 }
+const PDFButton = styled.button`
+    width: 100px;
+    height: 40px;
+    background-color: var(--primaria);
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+`
 const Result: React.FC<ResultsProps> = (props) => {
     const [V1, V2, V3] = Dec.dec(props.q, props.vs, props.ns, props.prof);
     const jsPdfGenerator = () => {
@@ -481,7 +495,7 @@ const Result: React.FC<ResultsProps> = (props) => {
                     </GridRight>
                 </CardResultados>
 
-                <button onClick={jsPdfGenerator}>Gerar PDF</button>
+                <PDFButton onClick={jsPdfGenerator}>Gerar PDF</PDFButton>
             </Right>
         </Resultados>
     );

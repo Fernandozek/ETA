@@ -177,7 +177,7 @@ const Button = styled.button`
 
 `
 const Resultados = styled.div`
-    margin-top: 100px;
+    margin-top: 30px;
     padding: 0 10px;
     width: 100%;
     display: flex;
@@ -336,11 +336,22 @@ const P2 = styled.p`
     font-size: 1.3rem;
     color: var(--gray-dark);
 `
-
 interface Table1Props {
     points: number,
     vet: number[]
 }
+const PDFButton = styled.button`
+    width: 100px;
+    height: 40px;
+    background-color: var(--primaria);
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+`
 const Tr1: React.FC<Table1Props> = (props) => {
     var tmp = [];
     var pontos = 1;
@@ -564,9 +575,9 @@ const Result: React.FC<ResultsProps> = (props) => {
                                     </TitleValue>
                                     <Value>{O[6].toFixed(4)}</Value>
                                 </Item>
-                                <button onClick={jsPdfGenerator}>Gerar PDF</button>
                             </GridRight>
                         </CardResultados>
+                                <PDFButton onClick={jsPdfGenerator}>Gerar PDF</PDFButton>
                     </Right>
                 </Resultados>
             }

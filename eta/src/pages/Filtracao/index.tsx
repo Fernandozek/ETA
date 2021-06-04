@@ -219,7 +219,7 @@ const Resultados = styled.div`
         grid-template-columns: auto auto;
     }
 `
-const Left = styled.div`
+const ResultContainer = styled.div`
     display: flex;
     flex-direction: column;
 `
@@ -255,6 +255,20 @@ const Value = styled.p`
 const Right = styled.div`
     display: flex;
     flex-direction: column;
+`
+const PDFButton = styled.button`
+    width: 100px;
+    height: 40px;
+    margin-right: 20px;
+    margin-left: auto;
+    background-color: var(--primaria);
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
 `
 interface ResultsProps {
     Q: number,
@@ -351,7 +365,7 @@ const Result: React.FC<ResultsProps> = (props) => {
     }
     return (
         <Resultados>
-            <Left>
+            <ResultContainer>
                 <CardResultados>
                     <TitleCard>Velocidades Obtidas (m/s)</TitleCard>
                     <Grid>
@@ -493,11 +507,8 @@ const Result: React.FC<ResultsProps> = (props) => {
                         </Item>
                     </Grid>
                 </CardResultados>
-                <button onClick={jsPdfGenerator}>Gerar PDF</button>
-            </Left>
-            <Right>
-
-            </Right>
+                <PDFButton onClick={jsPdfGenerator}>Gerar PDF</PDFButton>
+            </ResultContainer>
         </Resultados>
     );
 }
