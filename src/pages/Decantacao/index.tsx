@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import PageTemplate from '../PageTemplate';
 import Dec from '../../Utils/Dec';
 import jsPDF from 'jspdf';
-
+import Img1 from '../../assets/images/decimg1.png';
 const ETA2Container = styled.div`
     width: 100%;
     padding-top: 40px;
@@ -132,6 +132,11 @@ const Button = styled.button`
     @media(min-width: 768px){
         font-size: 1.4rem;
     }
+`
+const Canvas = styled.div`
+    width: 550px;
+    height: 350px;
+    background-color: #909090;
 `
 const Resultados = styled.div`
     margin-top: 100px;
@@ -500,6 +505,11 @@ const Result: React.FC<ResultsProps> = (props) => {
         </Resultados>
     );
 }
+
+
+interface ImageData {
+    src: string;
+}
 const Decantacao: React.FC<ResultsProps> = (props) => {
 
     var pontos = 5;
@@ -507,19 +517,39 @@ const Decantacao: React.FC<ResultsProps> = (props) => {
     for (var i = 0; i < pontos; i++) {
         tmp.push(i);
     }
-
     const [q, setQ] = useState("");
     const [vs, setVs] = useState("");
     const [nsedimentacao, setNsedimentacao] = useState("");
     const [profundidade, setProfundidade] = useState("");
-
+    
     const [calculated, setCalculated] = useState("");
     const [isDimensione, setIsDimensione] = useState(false);
     const [qCalculated, setQCalculated] = useState("");
     const [vsCalculated, setVsCalculated] = useState("");
     const [nsedimentacaoCalculated, setNsedimentacaoCalculated] = useState("");
     const [profundidadeCalculated, setProfundidadeCalculated] = useState("");
-
+    
+    const [images, setImages] = useState<ImageData[]>([]);
+    const canvasRef = useRef(null);
+    const [upperText, setUpperText] = useState("");
+    const [lowerText, setLowerText] = useState("");
+    const [img, setImg] = useState(0);
+    useEffect(()=> {
+        if (images && images.length) {
+            const canvas = canvasRef.current as any;
+            const contexto = canvas.getContext('2d');
+            var image = new Image();
+            image.src = Img1;
+            image.onload = ()=> {
+                canvas.width = 550;
+                canvas.height = 350;
+                
+                contexto.drawImage(image, 100, 100, 550, 350);
+                
+            }
+            
+        }
+    }, [images, upperText, lowerText]);
     function calcular() {
         if (q !== "" && vs !== "" && nsedimentacao !== "" && profundidade !== "") {
             setIsDimensione(true);
@@ -598,6 +628,10 @@ const Decantacao: React.FC<ResultsProps> = (props) => {
                             </Button>
                     </Dimensionar>
                 </Card>
+                <Canvas id="canvas">
+                    <canvas style={{width: "100%", height: "100%"}} ref={canvasRef}></canvas>
+                </Canvas>
+                <img src={Img1} alt="" />
                 {
                     isDimensione === true &&
                     <Result

@@ -16,6 +16,7 @@ const LoginContainer = styled.div`
         align-items:baseline;
         width: 100%;
     }
+    
 `
 const Content = styled.div`
     display: flex;

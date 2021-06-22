@@ -754,7 +754,7 @@ const Result: React.FC<ResultsProps> = (props) => {
                 </CardResultados>
             }
             {
-                secondTableCalculated <= 70 &&
+                secondTableCalculated <= 70 && fatorvalueCalculated >0 &&
                 <PDFButton onClick={jsPdfGenerator}>Gerar PDF</PDFButton>
             }
         </Resultados>

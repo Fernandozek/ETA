@@ -459,7 +459,7 @@ const Result: React.FC<ResultsProps> = (props) => {
         doc.text(`G = ${O[5].toFixed(4)}`, 100, 522);
 
         doc.save('Resultados Coagulacão.pdf');
-        doc.output('dataurlnewwindow');
+        //doc.output('dataurlnewwindow');
     }
 
     return (
