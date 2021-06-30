@@ -538,7 +538,7 @@ const Result: React.FC<ResultsProps> = (props) => {
 
         if (M22 != undefined) {
 
-            doc.text(`O canal 1 foi superior a 70, e usando um fator de correção de ${fatorvalue}%,`, 80, 369);
+            doc.text(`O canal 1 foi superior a 70 1/s, e usando um fator de correção de ${fatorvalue}%,`, 80, 369);
             doc.text(`temos:`, 80, 382);
 
             doc.line(485, 400, 80, 400);
@@ -653,7 +653,7 @@ const Result: React.FC<ResultsProps> = (props) => {
                 firstTable > 70 &&
                 <CardFator>
                     <NotiFator>
-                        <h2>O valor do canal 1 é maior que 70!</h2>
+                        <h2>O valor do canal 1 é maior que 70 1/s!</h2>
                         <p>Digite um fator de correção para corrigir.</p>
                     </NotiFator>
                     <InputFator>
@@ -685,7 +685,7 @@ const Result: React.FC<ResultsProps> = (props) => {
                     {
                         secondTableCalculated > 70 &&
                         <NotiFator>
-                            <h2>O valor do canal 1 continua maior que 70!</h2>
+                            <h2>O valor do canal 1 continua maior que 70 1/s!</h2>
                             <p>Insira novamente um fator de correção.</p>
                         </NotiFator>
                     }
@@ -901,7 +901,7 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
                     <Entradas>
                         <Op>
                             <Title>Q (m³/s)
-                                <span className="tooltiptext">teste</span>
+                                <span className="tooltiptext">Vazão</span>
                             </Title>
                             <Input
                                 type="number"

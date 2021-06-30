@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PageTemplate from '../PageTemplate';
 import Dec from '../../Utils/Dec';
 import jsPDF from 'jspdf';
-import Img1 from '../../assets/images/decimg1.png';
+import Img1 from '../../assets/images/coag.png';
 const ETA2Container = styled.div`
     width: 100%;
     padding-top: 40px;
@@ -307,10 +307,10 @@ const Result: React.FC<ResultsProps> = (props) => {
         doc.text('Universidade Federal Rural do SemiÁrido - UFERSA', 80, 50);
         doc.text('Esta programa é destinado à realização de um pré-dimensionamento de', 80, 63);
         doc.text('clarificação em uma estação de tratamento de água convencional', 80, 76);
-        
+
         doc.setLineWidth(0.5);
-        doc.line(485,89,80,89);
-        
+        doc.line(485, 89, 80, 89);
+
         doc.text('Resultados da Decantação', 80, 105);
 
         doc.text('Velocidades Obtidas (m/s)', 80, 135);
@@ -328,29 +328,29 @@ const Result: React.FC<ResultsProps> = (props) => {
         doc.text(`Nº de Calhas = ${V2[3].toFixed(0)}`, 100, 261);
         doc.text(`S entre Calhas = ${V2[3].toFixed(4)}`, 100, 273);
 
-        doc.line(485,300,80,300);
-        
+        doc.line(485, 300, 80, 300);
+
         doc.text('Nº de Reynolds (Re)', 100, 330);
         doc.text(`${V3[0]}`, 100, 343);
         doc.text('L/B', 100, 366);
         doc.text(`${V3[1].toFixed(4)}`, 100, 379);
 
-        doc.line(485,400,80,400);
+        doc.line(485, 400, 80, 400);
 
         doc.text('Considerações', 80, 430);
-        
 
-        if(V3[0] < 20000){
+
+        if (V3[0] < 20000) {
             doc.text('Condição satisfeita:', 100, 453);
             doc.text('Re menor que 20000', 100, 466);
-        }else{
+        } else {
             doc.text('Condição Não satisfeita:', 100, 453);
             doc.text('Re maior que 20000', 100, 466);
         }
 
         doc.text('Sistema com capacidade acima de 10.000 m³/dia - v0 = 0,75', 100, 489);
         doc.text('(Condição atendia)', 100, 502);
-        
+
         doc.text('L/B = 3 ou 4', 100, 535);
         doc.text('(Condição atendia)', 100, 548);
 
@@ -429,30 +429,30 @@ const Result: React.FC<ResultsProps> = (props) => {
                     <TitleCard>Painel de considerações</TitleCard>
                     <Consideracoes>
                         {
-                           V3[0] < 20000 &&
-                           <Atendida>
+                            V3[0] < 20000 &&
+                            <Atendida>
                                 <p>
                                     Condição satisfeita:<br />
                                     Re menor que 20000
                                 </p>
-                           </Atendida> 
+                            </Atendida>
                         }
                         {
-                           V3[0] >= 20000 &&
-                           <NAtendida>
+                            V3[0] >= 20000 &&
+                            <NAtendida>
                                 <p>
                                     Condição satisfeita:<br />
                                     Re maior ou igual a 20000
                                 </p>
-                           </NAtendida> 
+                            </NAtendida>
                         }
                         {
                             V3[0] >= 10000 &&
                             <Atendida>
                                 <p>
                                     Sistema com capacidade acima de 10.000 m³/dia - V0 = 0,75. <br />
-                                (Condição atendida!)
-                            </p>
+                                    (Condição atendida!)
+                                </p>
                             </Atendida>
                         }
                         {
@@ -460,8 +460,8 @@ const Result: React.FC<ResultsProps> = (props) => {
                             <NAtendida>
                                 <p>
                                     Sistema com capacidade abaixo de 10.000 m³/dia - V0 = 0,75. <br />
-                                (Condição não atendida!)
-                            </p>
+                                    (Condição não atendida!)
+                                </p>
                             </NAtendida>
                         }
                         {
@@ -469,8 +469,8 @@ const Result: React.FC<ResultsProps> = (props) => {
                             <Atendida>
                                 <p>
                                     L/B = 3 ou 4 <br />
-                                (Condição atendida!)
-                            </p>
+                                    (Condição atendida!)
+                                </p>
                             </Atendida>
                         }
                         {
@@ -478,8 +478,8 @@ const Result: React.FC<ResultsProps> = (props) => {
                             <NAtendida>
                                 <p>
                                     L/B != 3 ou 4 <br />
-                                (Condição não atendida!)
-                            </p>
+                                    (Condição não atendida!)
+                                </p>
                             </NAtendida>
                         }
                     </Consideracoes>
@@ -521,35 +521,49 @@ const Decantacao: React.FC<ResultsProps> = (props) => {
     const [vs, setVs] = useState("");
     const [nsedimentacao, setNsedimentacao] = useState("");
     const [profundidade, setProfundidade] = useState("");
-    
     const [calculated, setCalculated] = useState("");
     const [isDimensione, setIsDimensione] = useState(false);
     const [qCalculated, setQCalculated] = useState("");
     const [vsCalculated, setVsCalculated] = useState("");
     const [nsedimentacaoCalculated, setNsedimentacaoCalculated] = useState("");
     const [profundidadeCalculated, setProfundidadeCalculated] = useState("");
-    
+
     const [images, setImages] = useState<ImageData[]>([]);
     const canvasRef = useRef(null);
     const [upperText, setUpperText] = useState("");
     const [lowerText, setLowerText] = useState("");
     const [img, setImg] = useState(0);
-    useEffect(()=> {
+
+
+    useEffect(() => {
+        const updatedImages: ImageData[] = [...images, { src: `${Img1}` }];
+        setImages(updatedImages);
         if (images && images.length) {
             const canvas = canvasRef.current as any;
             const contexto = canvas.getContext('2d');
             var image = new Image();
             image.src = Img1;
-            image.onload = ()=> {
+            image.onload = () => {
                 canvas.width = 550;
                 canvas.height = 350;
-                
-                contexto.drawImage(image, 100, 100, 550, 350);
-                
+                contexto.font = `14pt`;
+                contexto.drawImage(image, 0, 0, 550, 350);
+                const lines = upperText.split('\n');
+                setUpperText(`opa`);
+                setLowerText(`teste`);
+                lines.forEach((line, index) => {
+                    let deslocamento = 60;
+                    contexto.strokeText(line, 140, deslocamento + index * 40);
+                    contexto.fillText(line, 140, deslocamento + index * 40);
+                });
+                contexto.strokeText(lowerText, 120, 300);
+                contexto.fillText(lowerText, 120, 300);
             }
-            
+
         }
     }, [images, upperText, lowerText]);
+
+
     function calcular() {
         if (q !== "" && vs !== "" && nsedimentacao !== "" && profundidade !== "") {
             setIsDimensione(true);
@@ -578,6 +592,18 @@ const Decantacao: React.FC<ResultsProps> = (props) => {
     function setProfund(n: string) {
         setIsDimensione(false);
         setProfundidade(n);
+    }
+    const downloadMeme = () => {
+        if (images && images.length > 0) {
+            const canvas = canvasRef.current;
+            if (canvas != null) {
+                const a = document.createElement('a');
+                a.href = canvas;
+                a.download = 'download.png';
+                document.body.appendChild(a);
+                a.click();
+            }
+        }
     }
     return (
         <PageTemplate
@@ -625,13 +651,14 @@ const Decantacao: React.FC<ResultsProps> = (props) => {
                     <Dimensionar>
                         <Button onClick={calcular}>
                             Dimensionar
-                            </Button>
+                        </Button>
                     </Dimensionar>
                 </Card>
+
                 <Canvas id="canvas">
-                    <canvas style={{width: "100%", height: "100%"}} ref={canvasRef}></canvas>
+                    <canvas style={{ width: "100%", height: "100%" }} ref={canvasRef}></canvas>
                 </Canvas>
-                <img src={Img1} alt="" />
+
                 {
                     isDimensione === true &&
                     <Result

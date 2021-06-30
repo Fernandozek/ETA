@@ -301,7 +301,7 @@ interface ResultsProps {
 const Result: React.FC<ResultsProps> = (props) => {
 
     const [hf, vMf, V1, V2, V3, V4] = Filtr.filtr(props.Q, props.taxaFiltracao, props.ndecantadores, props.ldecantador, props.lCalhaLavagem, props.a2, props.an2, props.a7, props.an7, props.a3, props.an3, props.a4, props.an4, props.a5, props.an5, props.porosidade, props.vazaoAr, props.nCalhas, props.a1, props.an1, props.altura, props.a6, props.an6, props.cEsfericidade, props.d10, props.d102);
-    
+
     const jsPdfGenerator = () => {
         var doc = new jsPDF('p', 'pt');
         doc.setFont('courier');
@@ -320,28 +320,28 @@ const Result: React.FC<ResultsProps> = (props) => {
         doc.text(`Número de filtros = ${V4[1]}`, 100, 171);
         doc.text(`Área de cada filtro (m²) = ${V4[2]}`, 100, 184);
         doc.text(`Dimensões do filtro L (m) = ${V4[3]}`, 100, 197);
-        doc.text(`Dimensões do filtro Y (m) = ${V4[4]?.toFixed(5)} `, 100, 210);
+        doc.text(`Dimensões do filtro Y (m) = ${V4[4]?.toFixed(4)} `, 100, 210);
 
         doc.line(485, 220, 80, 220);
 
         doc.text('Lavagem de filtros / Lâmina mínima de água sobre o leito filtrante', 80, 240);
 
-        doc.text(`Vazão de água de lavagem (m³/s) = ${V1[0]?.toFixed(3)}`, 100, 260);
-        doc.text(`Volume de lavagem (m³) = ${V1[1]?.toFixed(1)}`, 100, 273);
-        doc.text(`Volume de reservação (m³) = ${V1[2]?.toFixed(1)}`, 100, 286);
+        doc.text(`Vazão de água de lavagem (m³/s) = ${V1[0]?.toFixed(4)}`, 100, 260);
+        doc.text(`Volume de lavagem (m³) = ${V1[1]?.toFixed(4)}`, 100, 273);
+        doc.text(`Volume de reservação (m³) = ${V1[2]?.toFixed(4)}`, 100, 286);
         doc.text(`Tubulação de água de lavagem (mm) = ${V1[3]}`, 100, 299);
         doc.text(`Vazão de ar (L/s) = ${V1[4]} `, 100, 312);
-        doc.text(`Lâmina da água (m) = ${V1[5]?.toFixed(5)} `, 100, 325);
+        doc.text(`Lâmina da água (m) = ${V1[5]?.toFixed(4)} `, 100, 325);
 
         doc.line(485, 345, 80, 345);
 
         doc.text('Calhas de água de lavagem', 80, 365);
 
-        doc.text(`Dimenssões de calha B (m) = ${V2[0]?.toFixed(3)}`, 100, 385);
-        doc.text(`Dimenssões de calha h (m) = ${V2[1]?.toFixed(3)}`, 100, 398);
+        doc.text(`Dimenssões de calha B (m) = ${V2[0]?.toFixed(4)}`, 100, 385);
+        doc.text(`Dimenssões de calha h (m) = ${V2[1]?.toFixed(4)}`, 100, 398);
         doc.text(`Consideração = ${V2[2]} - H0 - ${V2[3]}`, 100, 411);
-        doc.text(`Consideração = ${V2[4]?.toFixed(3)} - S - ${V2[5]}`, 100, 424);
-        doc.text(`S entre calhas (m) = ${V2[6]?.toFixed(5)}`, 100, 437);
+        doc.text(`Consideração = ${V2[4]?.toFixed(4)} - S - ${V2[5]}`, 100, 424);
+        doc.text(`S entre calhas (m) = ${V2[6]?.toFixed(4)}`, 100, 437);
 
         doc.line(485, 457, 80, 457);
 
@@ -351,7 +351,7 @@ const Result: React.FC<ResultsProps> = (props) => {
         doc.text(`Antracito = ${hf[1]?.toFixed(4)}`, 100, 510);
         doc.text(`Total = ${hf[2]?.toFixed(4)}`, 100, 523);
         doc.text(`Camada Suporte = ${hf[3]?.toFixed(4)}`, 100, 536);
-        
+
         doc.line(485, 556, 80, 556);
 
         doc.text('Velocidade mpinima de fluidificação (m/s)', 80, 576);
@@ -359,7 +359,7 @@ const Result: React.FC<ResultsProps> = (props) => {
         doc.text(`Areia = ${vMf[0]?.toFixed(4)}`, 100, 596);
         doc.text(`Antracito = ${vMf[1]?.toFixed(4)}`, 100, 609);
         doc.text(`Bifásico = ${vMf[2]?.toFixed(4)}`, 100, 621);
-        
+
         doc.save('Resultados Filtração.pdf');
         //doc.output('dataurlnewwindow');
     }
@@ -383,8 +383,8 @@ const Result: React.FC<ResultsProps> = (props) => {
                         </Item>
                         <Item>
                             <Name>Dimensões do filtro L e Y (m)</Name>
-                            <Value>{V4[3]}</Value><br />
-                            <Value>{V4[4]?.toFixed(5)}</Value>
+                            <Value>{V4[3]?.toFixed(4)}</Value><br />
+                            <Value>{V4[4]?.toFixed(4)}</Value>
                         </Item>
                     </Grid>
                 </CardResultados>
@@ -393,16 +393,16 @@ const Result: React.FC<ResultsProps> = (props) => {
                     <Grid>
                         <Item>
                             <Name>Vazão de água de lavagem (m³/s)</Name>
-                            <Value>{V1[0]?.toFixed(3)}</Value>
+                            <Value>{V1[0]?.toFixed(4)}</Value>
                         </Item>
                         <Item>
                             <Name>Volume de lavagem (m³)</Name>
-                            <Value>{V1[1]?.toFixed(1)}</Value>
+                            <Value>{V1[1]?.toFixed(4)}</Value>
                         </Item>
 
                         <Item>
                             <Name>Volume de reservação (m³)</Name>
-                            <Value>{V1[2]?.toFixed(1)}</Value>
+                            <Value>{V1[2]?.toFixed(4)}</Value>
                         </Item>
                         <Item>
                             <Name>Tubulação de água de lavagem (mm)</Name>
@@ -414,7 +414,7 @@ const Result: React.FC<ResultsProps> = (props) => {
                         </Item>
                         <Item>
                             <Name>Lâmina da água (m)</Name>
-                            <Value>{V1[5]?.toFixed(5)}</Value>
+                            <Value>{V1[5]?.toFixed(4)}</Value>
                         </Item>
                     </Grid>
                 </CardResultados>
@@ -423,24 +423,24 @@ const Result: React.FC<ResultsProps> = (props) => {
                     <Grid>
                         <Item>
                             <Name>Dimenssões de calha B e h (m)</Name>
-                            <Value>{V2[0]}</Value><br />
-                            <Value>{V2[1]?.toFixed(6)}</Value>
+                            <Value>{V2[0]?.toFixed(4)}</Value><br />
+                            <Value>{V2[1]?.toFixed(4)}</Value>
                         </Item>
                         <Item>
                             <Name>Consideração</Name>
-                            <Value>{V2[2]}</Value>
+                            <Value>{V2[2]?.toFixed(4)}</Value>
                             <Value>- H0 -</Value>
-                            <Value>{V2[3]}</Value>
+                            <Value>{V2[3]?.toFixed(4)}</Value>
                         </Item>
                         <Item>
                             <Name>Consideração</Name>
-                            <Value>{V2[4]?.toFixed(3)}</Value>
+                            <Value>{V2[4]?.toFixed(4)}</Value>
                             <Value>- S -</Value>
-                            <Value>{V2[5]}</Value>
+                            <Value>{V2[5]?.toFixed(4)}</Value>
                         </Item>
                         <Item>
                             <Name>S entre calhas (m)</Name>
-                            <Value>{V2[6]?.toFixed(5)}</Value>
+                            <Value>{V2[6]?.toFixed(4)}</Value>
                         </Item>
                     </Grid>
                 </CardResultados>
@@ -450,7 +450,7 @@ const Result: React.FC<ResultsProps> = (props) => {
                         <Item>
                             <Name>Dimenssões de vertedor B e h (m)</Name>
                             <Value>{V3[0]}</Value><br />
-                            <Value>{V3[1]?.toFixed(6)}</Value>
+                            <Value>{V3[1]?.toFixed(4)}</Value>
                         </Item>
                         <Item>
                             <Name>Consideração</Name>
@@ -944,7 +944,7 @@ export default function Coagulacao() {
                         an4={Number(an4)}
                         an5={Number(an5)}
                         an6={Number(an6)}
-                        an7={Number(an7)}                    
+                        an7={Number(an7)}
                     />
                 }
                 {
@@ -975,7 +975,7 @@ export default function Coagulacao() {
                         an4={Number(an4C)}
                         an5={Number(an5C)}
                         an6={Number(an6C)}
-                        an7={Number(an7C)} 
+                        an7={Number(an7C)}
                     />
                 }
             </EtaContainer>
