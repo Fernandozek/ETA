@@ -353,156 +353,206 @@ const Result: React.FC<ResultsProps> = (props) => {
 
         doc.text('L/B = 3 ou 4', 100, 535);
         doc.text('(Condição atendia)', 100, 548);
-
         doc.save('Resultados Decantacao.pdf');
-        //doc.output('dataurlnewwindow');
+        // doc.output('dataurlnewwindow');
     }
+
+    const [image, setImage] = useState(null) as any;
+    const canvas = useRef<HTMLCanvasElement>(null);
+    const [upperText, setUpperText] = useState("");
+    const [lowerText, setLowerText] = useState("");
+
+    useEffect(() => {
+        const img = new Image();
+        img.src = Img1;
+        if (img !== null) {
+            img.onload = () => setImage(img);
+        }
+
+    }, [image])
+    
+    const download = () => {
+        if(image) {
+            let canva = canvas.current;
+            if(canva !== null){
+                const a = document.createElement('a');
+                a.href = canva.toDataURL();
+                a.download = 'download.png';
+                document.body.appendChild(a);
+                a.click();
+            }
+        }
+    }
+    useEffect(() => {
+        if (image && canvas) {
+            if (canvas.current != null) {
+                const ctx = canvas.current.getContext("2d") as any;
+                ctx.fillStyle = "black";
+                ctx.fillRect(0, 0, 550, 330);
+                ctx.drawImage(image, 0, 0, 550, 350);
+                ctx.font = `16px Roboto`;
+                setUpperText(`${V1[3]?.toFixed(4)} m`);
+                setLowerText(`${V2[2]?.toFixed(4)} m`);
+                ctx.fillText(upperText, 140, 50);
+                ctx.font = `13px Roboto`;
+                ctx.fillText(lowerText, 120, 280);
+            }
+        }
+    }, [image, canvas]);
+
+
     return (
-        <Resultados>
-            <Left>
-                <CardResultados>
-                    <TitleCard>Painel de resultados</TitleCard>
-                    <Grid>
-                        <Item>
-                            <Name>As (m²)
-                                <span className="tooltiptext">Área superficial útil da zona de decantação</span>
-                            </Name>
-                            <Value>{V1[0].toFixed(4)}</Value>
-                        </Item>
-                        <Item>
-                            <Name>t (s)
-                                <span className="tooltiptext">Tempo de detenção</span>
-                            </Name>
-                            <Value>{V1[1].toFixed(0)}</Value>
-                        </Item>
-                        <Item>
-                            <Name>B (m)
-                                <span className="tooltiptext">Largura do decantador</span>
-                            </Name>
-                            <Value>{V1[2].toFixed(0)}</Value>
-                        </Item>
-                        <Item>
-                            <Name>L (m)
-                                <span className="tooltiptext">Comprimento do decantador</span>
-                            </Name>
-                            <Value>{V1[3].toFixed(4)}</Value>
-                        </Item>
-                        <Item>
-                            <Name>V<sub>0</sub> (cm/s)
-                                <span className="tooltiptext">Velocidade horizontal</span>
-                            </Name>
-                            <Value>{V1[4].toFixed(4)}</Value>
-                        </Item>
-                        <Item>
-                            <Name>Ql (m³/s)
-                                <span className="tooltiptext">Vazão que passa pela unidade</span>
-                            </Name>
-                            <Value>{V2[0].toFixed(4)}</Value>
-                        </Item>
-                        <Item>
-                            <Name>Lv (m)
-                                <span className="tooltiptext">Comprimento do total do vertedor</span>
-                            </Name>
-                            <Value>{V2[1].toFixed(4)}</Value>
-                        </Item>
-                        <Item>
-                            <Name>Lcalha (m)
-                                <span className="tooltiptext">Comprimento das calhas</span>
-                            </Name>
-                            <Value>{V2[2].toFixed(4)}</Value>
-                        </Item>
-                        <Item>
-                            <Name>Nº de calhas
-                                <span className="tooltiptext">Número de calhas</span>
-                            </Name>
-                            <Value>{V2[3].toFixed(0)}</Value>
-                        </Item>
-                        <Item>
-                            <Name>S entre calhas (m)
-                                <span className="tooltiptext">Espaçamento entre calhas</span>
-                            </Name>
-                            <Value>{V2[4].toFixed(4)}</Value>
-                        </Item>
-                    </Grid>
-                </CardResultados>
-                <CardResultados>
-                    <TitleCard>Painel de considerações</TitleCard>
-                    <Consideracoes>
-                        {
-                            V3[0] < 20000 &&
-                            <Atendida>
-                                <p>
-                                    Condição satisfeita:<br />
-                                    Re menor que 20000
-                                </p>
-                            </Atendida>
-                        }
-                        {
-                            V3[0] >= 20000 &&
-                            <NAtendida>
-                                <p>
-                                    Condição satisfeita:<br />
-                                    Re maior ou igual a 20000
-                                </p>
-                            </NAtendida>
-                        }
-                        {
-                            V3[0] >= 10000 &&
-                            <Atendida>
-                                <p>
-                                    Sistema com capacidade acima de 10.000 m³/dia - V0 = 0,75. <br />
-                                    (Condição atendida!)
-                                </p>
-                            </Atendida>
-                        }
-                        {
-                            V3[0] < 10000 &&
-                            <NAtendida>
-                                <p>
-                                    Sistema com capacidade abaixo de 10.000 m³/dia - V0 = 0,75. <br />
-                                    (Condição não atendida!)
-                                </p>
-                            </NAtendida>
-                        }
-                        {
-                            V3[1] >= 3 && V3[1] <= 4 &&
-                            <Atendida>
-                                <p>
-                                    L/B = 3 ou 4 <br />
-                                    (Condição atendida!)
-                                </p>
-                            </Atendida>
-                        }
-                        {
-                            V3[1] < 3 || V3[1] > 4 &&
-                            <NAtendida>
-                                <p>
-                                    L/B != 3 ou 4 <br />
-                                    (Condição não atendida!)
-                                </p>
-                            </NAtendida>
-                        }
-                    </Consideracoes>
-                </CardResultados>
+        <>
+            <Canvas id="canvas">
+                <canvas width={550} height={350} ref={canvas}></canvas>
+            </Canvas>
+            <button onClick={() => download()}>Download</button>
+            <Resultados>
+                <Left>
+                    <CardResultados>
+                        <TitleCard>Painel de resultados</TitleCard>
+                        <Grid>
+                            <Item>
+                                <Name>As (m²)
+                                    <span className="tooltiptext">Área superficial útil da zona de decantação</span>
+                                </Name>
+                                <Value>{V1[0].toFixed(4)}</Value>
+                            </Item>
+                            <Item>
+                                <Name>t (s)
+                                    <span className="tooltiptext">Tempo de detenção</span>
+                                </Name>
+                                <Value>{V1[1].toFixed(0)}</Value>
+                            </Item>
+                            <Item>
+                                <Name>B (m)
+                                    <span className="tooltiptext">Largura do decantador</span>
+                                </Name>
+                                <Value>{V1[2].toFixed(0)}</Value>
+                            </Item>
+                            <Item>
+                                <Name>L (m)
+                                    <span className="tooltiptext">Comprimento do decantador</span>
+                                </Name>
+                                <Value>{V1[3].toFixed(4)}</Value>
+                            </Item>
+                            <Item>
+                                <Name>V<sub>0</sub> (cm/s)
+                                    <span className="tooltiptext">Velocidade horizontal</span>
+                                </Name>
+                                <Value>{V1[4].toFixed(4)}</Value>
+                            </Item>
+                            <Item>
+                                <Name>Ql (m³/s)
+                                    <span className="tooltiptext">Vazão que passa pela unidade</span>
+                                </Name>
+                                <Value>{V2[0].toFixed(4)}</Value>
+                            </Item>
+                            <Item>
+                                <Name>Lv (m)
+                                    <span className="tooltiptext">Comprimento do total do vertedor</span>
+                                </Name>
+                                <Value>{V2[1].toFixed(4)}</Value>
+                            </Item>
+                            <Item>
+                                <Name>Lcalha (m)
+                                    <span className="tooltiptext">Comprimento das calhas</span>
+                                </Name>
+                                <Value>{V2[2].toFixed(4)}</Value>
+                            </Item>
+                            <Item>
+                                <Name>Nº de calhas
+                                    <span className="tooltiptext">Número de calhas</span>
+                                </Name>
+                                <Value>{V2[3].toFixed(0)}</Value>
+                            </Item>
+                            <Item>
+                                <Name>S entre calhas (m)
+                                    <span className="tooltiptext">Espaçamento entre calhas</span>
+                                </Name>
+                                <Value>{V2[4].toFixed(4)}</Value>
+                            </Item>
+                        </Grid>
+                    </CardResultados>
+                    <CardResultados>
+                        <TitleCard>Painel de considerações</TitleCard>
+                        <Consideracoes>
+                            {
+                                V3[0] < 20000 &&
+                                <Atendida>
+                                    <p>
+                                        Condição satisfeita:<br />
+                                        Re menor que 20000
+                                    </p>
+                                </Atendida>
+                            }
+                            {
+                                V3[0] >= 20000 &&
+                                <NAtendida>
+                                    <p>
+                                        Condição satisfeita:<br />
+                                        Re maior ou igual a 20000
+                                    </p>
+                                </NAtendida>
+                            }
+                            {
+                                V3[0] >= 10000 &&
+                                <Atendida>
+                                    <p>
+                                        Sistema com capacidade acima de 10.000 m³/dia - V0 = 0,75. <br />
+                                        (Condição atendida!)
+                                    </p>
+                                </Atendida>
+                            }
+                            {
+                                V3[0] < 10000 &&
+                                <NAtendida>
+                                    <p>
+                                        Sistema com capacidade abaixo de 10.000 m³/dia - V0 = 0,75. <br />
+                                        (Condição não atendida!)
+                                    </p>
+                                </NAtendida>
+                            }
+                            {
+                                V3[1] >= 3 && V3[1] <= 4 &&
+                                <Atendida>
+                                    <p>
+                                        L/B = 3 ou 4 <br />
+                                        (Condição atendida!)
+                                    </p>
+                                </Atendida>
+                            }
+                            {
+                                V3[1] < 3 || V3[1] > 4 &&
+                                <NAtendida>
+                                    <p>
+                                        L/B != 3 ou 4 <br />
+                                        (Condição não atendida!)
+                                    </p>
+                                </NAtendida>
+                            }
+                        </Consideracoes>
+                    </CardResultados>
 
-            </Left>
-            <Right>
-                <CardResultados>
-                    <GridRight>
-                        <ItemRight>
-                            <TitleValue>Nº de Reynolds (Re)</TitleValue>
-                            <Value>{V3[0]}</Value>
-                        </ItemRight>
-                        <ItemRight>
-                            <TitleValue>L/B</TitleValue>
-                            <Value>{V3[1].toFixed(5)}</Value>
-                        </ItemRight>
-                    </GridRight>
-                </CardResultados>
+                </Left>
+                <Right>
+                    <CardResultados>
+                        <GridRight>
+                            <ItemRight>
+                                <TitleValue>Nº de Reynolds (Re)</TitleValue>
+                                <Value>{V3[0]}</Value>
+                            </ItemRight>
+                            <ItemRight>
+                                <TitleValue>L/B</TitleValue>
+                                <Value>{V3[1].toFixed(5)}</Value>
+                            </ItemRight>
+                        </GridRight>
+                    </CardResultados>
 
-                <PDFButton onClick={jsPdfGenerator}>Gerar PDF</PDFButton>
-            </Right>
-        </Resultados>
+                    <PDFButton onClick={jsPdfGenerator}>Gerar PDF</PDFButton>
+                </Right>
+            </Resultados>
+        </>
     );
 }
 
@@ -528,41 +578,6 @@ const Decantacao: React.FC<ResultsProps> = (props) => {
     const [nsedimentacaoCalculated, setNsedimentacaoCalculated] = useState("");
     const [profundidadeCalculated, setProfundidadeCalculated] = useState("");
 
-    const [images, setImages] = useState<ImageData[]>([]);
-    const canvasRef = useRef(null);
-    const [upperText, setUpperText] = useState("");
-    const [lowerText, setLowerText] = useState("");
-    const [img, setImg] = useState(0);
-
-
-    useEffect(() => {
-        const updatedImages: ImageData[] = [...images, { src: `${Img1}` }];
-        setImages(updatedImages);
-        if (images && images.length) {
-            const canvas = canvasRef.current as any;
-            const contexto = canvas.getContext('2d');
-            var image = new Image();
-            image.src = Img1;
-            image.onload = () => {
-                canvas.width = 550;
-                canvas.height = 350;
-                contexto.font = `14pt`;
-                contexto.drawImage(image, 0, 0, 550, 350);
-                const lines = upperText.split('\n');
-                setUpperText(`opa`);
-                setLowerText(`teste`);
-                lines.forEach((line, index) => {
-                    let deslocamento = 60;
-                    contexto.strokeText(line, 140, deslocamento + index * 40);
-                    contexto.fillText(line, 140, deslocamento + index * 40);
-                });
-                contexto.strokeText(lowerText, 120, 300);
-                contexto.fillText(lowerText, 120, 300);
-            }
-
-        }
-    }, [images, upperText, lowerText]);
-
 
     function calcular() {
         if (q !== "" && vs !== "" && nsedimentacao !== "" && profundidade !== "") {
@@ -576,7 +591,6 @@ const Decantacao: React.FC<ResultsProps> = (props) => {
             alert("preencha todos os campos");
         }
     }
-
     function setVazao(n: string) {
         setIsDimensione(false);
         setQ(n);
@@ -593,18 +607,18 @@ const Decantacao: React.FC<ResultsProps> = (props) => {
         setIsDimensione(false);
         setProfundidade(n);
     }
-    const downloadMeme = () => {
-        if (images && images.length > 0) {
-            const canvas = canvasRef.current;
-            if (canvas != null) {
-                const a = document.createElement('a');
-                a.href = canvas;
-                a.download = 'download.png';
-                document.body.appendChild(a);
-                a.click();
-            }
-        }
-    }
+    // const downloadMeme = () => {
+    //     if (images && images.length > 0) {
+    //         const canvas = canvasRef.current;
+    //         if (canvas != null) {
+    //             const a = document.createElement('a');
+    //             a.href = canvas;
+    //             a.download = 'download.png';
+    //             document.body.appendChild(a);
+    //             a.click();
+    //         }
+    //     }
+    // }
     return (
         <PageTemplate
             title="Decantação"
@@ -654,10 +668,6 @@ const Decantacao: React.FC<ResultsProps> = (props) => {
                         </Button>
                     </Dimensionar>
                 </Card>
-
-                <Canvas id="canvas">
-                    <canvas style={{ width: "100%", height: "100%" }} ref={canvasRef}></canvas>
-                </Canvas>
 
                 {
                     isDimensione === true &&

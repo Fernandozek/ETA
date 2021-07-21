@@ -1,4 +1,4 @@
-import React, { Component, FormEvent, useEffect } from 'react';
+import React, { Component, FormEvent, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import PageTemplate from '../PageTemplate';
 import Floc from '../../Utils/Floc';
@@ -6,7 +6,7 @@ import Floc3 from '../../Utils/Floc3';
 import Floc5 from '../../Utils/Floc5';
 import { useState } from 'react';
 import jsPDF from 'jspdf';
-
+import Img1 from '../../assets/images/exemploFloc.png';
 const ETA3Container = styled.div`
     width: 100%;
     padding-top: 40px;
@@ -183,6 +183,11 @@ const Button = styled.button`
     @media(min-width: 768px){
         font-size: 1.4rem;
     }
+`
+const Canvas = styled.div`
+    width: 550px;
+    height: 350px;
+    background-color: #909090;
 `
 const Resultados = styled.div`
     margin-top: 100px;
@@ -580,184 +585,235 @@ const Result: React.FC<ResultsProps> = (props) => {
         doc.save('Resultados Floculação.pdf');
         //doc.output('dataurlnewwindow');
     }
+
+
+    const [image, setImage] = useState(null) as any;
+    const canvas = useRef<HTMLCanvasElement>(null);
+    const [upperText, setUpperText] = useState("");
+    const [lowerText, setLowerText] = useState("");
+
+    useEffect(() => {
+        const img = new Image();
+        img.src = Img1;
+        if (img !== null) {
+            img.onload = () => setImage(img);
+        }
+
+    }, [image])
+
+    const download = () => {
+        if (image) {
+            let canva = canvas.current;
+            if (canva !== null) {
+                const a = document.createElement('a');
+                a.href = canva.toDataURL();
+                a.download = 'download.png';
+                document.body.appendChild(a);
+                a.click();
+            }
+        }
+    }
+    useEffect(() => {
+        if (image && canvas) {
+            if (canvas.current != null) {
+                const ctx = canvas.current.getContext("2d") as any;
+                ctx.fillStyle = "black";
+                ctx.fillRect(0, 0, 550, 330);
+                ctx.drawImage(image, 0, 0, 550, 350);
+                ctx.font = `16px Roboto`;
+                setUpperText(`opa`);
+                setLowerText(`teste`);
+                ctx.fillText(upperText, 140, 50);
+                ctx.font = `13px Roboto`;
+                ctx.fillText(lowerText, 120, 280);
+            }
+        }
+    }, [image, canvas]);
+
     return (
-        <Resultados>
-            <CardResultados>
-                <TitleCard>Velocidades Obtidas (m/s)</TitleCard>
-                <Grid>
-                    <Item>
-                        <Name>ql (m³/s)
-                                    <span className="tooltiptext">Vazão da água</span>
-                        </Name>
-                        <Value>{Number(q).toFixed(4)}</Value>
-                    </Item>
-                    <Item>
-                        <Name>Volume (m³)
-                                    <span className="tooltiptext">Volume de água</span>
-                        </Name>
-                        <Value>{Number(Vol).toFixed(0)}</Value>
-                    </Item>
-                    <Item>
-                        <Name>Area (m²)
+        <>
+            <Canvas id="canvas">
+                <canvas width={550} height={350} ref={canvas}></canvas>
+            </Canvas>
+            <button onClick={() => download()}>Download</button>
+            <Resultados>
+                <CardResultados>
+                    <TitleCard>Velocidades Obtidas (m/s)</TitleCard>
+                    <Grid>
+                        <Item>
+                            <Name>ql (m³/s)
+                                <span className="tooltiptext">Vazão da água</span>
+                            </Name>
+                            <Value>{Number(q).toFixed(4)}</Value>
+                        </Item>
+                        <Item>
+                            <Name>Volume (m³)
+                                <span className="tooltiptext">Volume de água</span>
+                            </Name>
+                            <Value>{Number(Vol).toFixed(0)}</Value>
+                        </Item>
+                        <Item>
+                            <Name>Area (m²)
                                 <span className="tooltiptext">Área superficial do floculador</span>
-                        </Name>
-                        <Value>{Number(A)?.toFixed(4)}</Value>
-                    </Item>
-                    <Item>
-                        <Name>Largura (m)
+                            </Name>
+                            <Value>{Number(A)?.toFixed(4)}</Value>
+                        </Item>
+                        <Item>
+                            <Name>Largura (m)
                                 <span className="tooltiptext">Largura do canal ou trecho considerado</span>
-                        </Name>
-                        <Value>{Number(B).toFixed(4)}</Value><br />
-                    </Item>
-                    <Item>
-                        <Name>Comprimento (m)
-                            <span className="tooltiptext">Comprimento do canal ou trecho considerado</span>
-                        </Name>
-                        <Value>{Number(a).toFixed(4)}</Value>
-                    </Item>
-                </Grid>
-            </CardResultados>
+                            </Name>
+                            <Value>{Number(B).toFixed(4)}</Value><br />
+                        </Item>
+                        <Item>
+                            <Name>Comprimento (m)
+                                <span className="tooltiptext">Comprimento do canal ou trecho considerado</span>
+                            </Name>
+                            <Value>{Number(a).toFixed(4)}</Value>
+                        </Item>
+                    </Grid>
+                </CardResultados>
 
 
-            <CardResultados>
-                <Section>
-                    <Table>
-                        <TableHeadContainer>
-                            <TableHead>n</TableHead>
-                            <TableHead><i>e</i></TableHead>
-                            <TableHead>V<sub>1</sub> (m/s)</TableHead>
-                            <TableHead>V<sub>2</sub> (m/s)</TableHead>
-                            <TableHead>Δhd (m)</TableHead>
-                            <TableHead>Δhl (m)</TableHead>
-                            <TableHead>Δht (m)</TableHead>
-                            <TableHead>G (1/s)</TableHead>
-                        </TableHeadContainer>
-                        <Tr1
-                            qvalue={props.qvalue}
-                            tvalue={props.tvalue}
-                            ncvalue={props.ncvalue}
-                            profvalue={props.profvalue}
-                            ndvalue={props.ndvalue}
-                            lvalue={props.lvalue}
-                            g1value={props.g1value}
-                            g2value={props.g2value}
-                            g3value={props.g3value}
-                            g4value={props.g4value}
-                            g5value={props.g5value}
-                            fatorvalue={fatorvalue}
-                        />
-                    </Table>
-                </Section>
-            </CardResultados>
-            {
-                firstTable > 70 &&
-                <CardFator>
-                    <NotiFator>
-                        <h2>O valor do canal 1 é maior que 70 1/s!</h2>
-                        <p>Digite um fator de correção para corrigir.</p>
-                    </NotiFator>
-                    <InputFator>
-                        <Op>
-                            <Title>Fator de correção (%)
-                            </Title>
-                            <Input
-                                type="number"
-                                onChange={e => setFator(Number(e.target.value))}
-                            />
-                        </Op>
-                        <Fator>
-                            <Button onClick={calcular}>
-                                Dimensionar
-                            </Button>
-                        </Fator>
-                    </InputFator>
-                </CardFator>
-            }
-            {
-                teste !== 0 && fatorvalueCalculated > 0 && isDimensione === true &&
                 <CardResultados>
-                    {
-                        secondTable <= 70 &&
-                        <NotiFatorOk>
-                            <h2>O valor do canal 1 foi corrigido com {fatorvalue}%!</h2>
-                        </NotiFatorOk>
-                    }
-                    {
-                        secondTableCalculated > 70 &&
+                    <Section>
+                        <Table>
+                            <TableHeadContainer>
+                                <TableHead>n</TableHead>
+                                <TableHead><i>e</i></TableHead>
+                                <TableHead>V<sub>1</sub> (m/s)</TableHead>
+                                <TableHead>V<sub>2</sub> (m/s)</TableHead>
+                                <TableHead>Δhd (m)</TableHead>
+                                <TableHead>Δhl (m)</TableHead>
+                                <TableHead>Δht (m)</TableHead>
+                                <TableHead>G (1/s)</TableHead>
+                            </TableHeadContainer>
+                            <Tr1
+                                qvalue={props.qvalue}
+                                tvalue={props.tvalue}
+                                ncvalue={props.ncvalue}
+                                profvalue={props.profvalue}
+                                ndvalue={props.ndvalue}
+                                lvalue={props.lvalue}
+                                g1value={props.g1value}
+                                g2value={props.g2value}
+                                g3value={props.g3value}
+                                g4value={props.g4value}
+                                g5value={props.g5value}
+                                fatorvalue={fatorvalue}
+                            />
+                        </Table>
+                    </Section>
+                </CardResultados>
+                {
+                    firstTable > 70 &&
+                    <CardFator>
                         <NotiFator>
-                            <h2>O valor do canal 1 continua maior que 70 1/s!</h2>
-                            <p>Insira novamente um fator de correção.</p>
+                            <h2>O valor do canal 1 é maior que 70 1/s!</h2>
+                            <p>Digite um fator de correção para corrigir.</p>
                         </NotiFator>
-                    }
-                    <Section>
-                        <Table>
-                            <TableHeadContainer>
-                                <TableHead>n</TableHead>
-                                <TableHead>e</TableHead>
-                                <TableHead>V<sub>1</sub> (m/s)</TableHead>
-                                <TableHead>V<sub>2</sub> (m/s)</TableHead>
-                                <TableHead>Dhd (m)</TableHead>
-                                <TableHead>Dhl (m)</TableHead>
-                                <TableHead>Dht (m)</TableHead>
-                                <TableHead>G (1/s)</TableHead>
-                            </TableHeadContainer>
-                            <Tr2
-                                qvalue={props.qvalue}
-                                tvalue={props.tvalue}
-                                ncvalue={props.ncvalue}
-                                profvalue={props.profvalue}
-                                ndvalue={props.ndvalue}
-                                lvalue={props.lvalue}
-                                g1value={props.g1value}
-                                g2value={props.g2value}
-                                g3value={props.g3value}
-                                g4value={props.g4value}
-                                g5value={props.g5value}
-                                fatorvalue={fatorvalueCalculated}
-                            />
-                        </Table>
-                    </Section>
-                </CardResultados>
-            }
-            {
-                teste !== 0 && fatorvalueCalculated > 0 && isDimensione === false && calculated !== 0 &&
-                <CardResultados>
-                    <Section>
-                        <Table>
-                            <TableHeadContainer>
-                                <TableHead>n</TableHead>
-                                <TableHead>e</TableHead>
-                                <TableHead>V<sub>1</sub> (m/s)</TableHead>
-                                <TableHead>V<sub>2</sub> (m/s)</TableHead>
-                                <TableHead>Dhd (m)</TableHead>
-                                <TableHead>Dhl (m)</TableHead>
-                                <TableHead>Dht (m)</TableHead>
-                                <TableHead>G (1/s)</TableHead>
-                            </TableHeadContainer>
+                        <InputFator>
+                            <Op>
+                                <Title>Fator de correção (%)
+                                </Title>
+                                <Input
+                                    type="number"
+                                    onChange={e => setFator(Number(e.target.value))}
+                                />
+                            </Op>
+                            <Fator>
+                                <Button onClick={calcular}>
+                                    Dimensionar
+                                </Button>
+                            </Fator>
+                        </InputFator>
+                    </CardFator>
+                }
+                {
+                    teste !== 0 && fatorvalueCalculated > 0 && isDimensione === true &&
+                    <CardResultados>
+                        {
+                            secondTable <= 70 &&
+                            <NotiFatorOk>
+                                <h2>O valor do canal 1 foi corrigido com {fatorvalue}%!</h2>
+                            </NotiFatorOk>
+                        }
+                        {
+                            secondTableCalculated > 70 &&
+                            <NotiFator>
+                                <h2>O valor do canal 1 continua maior que 70 1/s!</h2>
+                                <p>Insira novamente um fator de correção.</p>
+                            </NotiFator>
+                        }
+                        <Section>
+                            <Table>
+                                <TableHeadContainer>
+                                    <TableHead>n</TableHead>
+                                    <TableHead>e</TableHead>
+                                    <TableHead>V<sub>1</sub> (m/s)</TableHead>
+                                    <TableHead>V<sub>2</sub> (m/s)</TableHead>
+                                    <TableHead>Dhd (m)</TableHead>
+                                    <TableHead>Dhl (m)</TableHead>
+                                    <TableHead>Dht (m)</TableHead>
+                                    <TableHead>G (1/s)</TableHead>
+                                </TableHeadContainer>
+                                <Tr2
+                                    qvalue={props.qvalue}
+                                    tvalue={props.tvalue}
+                                    ncvalue={props.ncvalue}
+                                    profvalue={props.profvalue}
+                                    ndvalue={props.ndvalue}
+                                    lvalue={props.lvalue}
+                                    g1value={props.g1value}
+                                    g2value={props.g2value}
+                                    g3value={props.g3value}
+                                    g4value={props.g4value}
+                                    g5value={props.g5value}
+                                    fatorvalue={fatorvalueCalculated}
+                                />
+                            </Table>
+                        </Section>
+                    </CardResultados>
+                }
+                {
+                    teste !== 0 && fatorvalueCalculated > 0 && isDimensione === false && calculated !== 0 &&
+                    <CardResultados>
+                        <Section>
+                            <Table>
+                                <TableHeadContainer>
+                                    <TableHead>n</TableHead>
+                                    <TableHead>e</TableHead>
+                                    <TableHead>V<sub>1</sub> (m/s)</TableHead>
+                                    <TableHead>V<sub>2</sub> (m/s)</TableHead>
+                                    <TableHead>Dhd (m)</TableHead>
+                                    <TableHead>Dhl (m)</TableHead>
+                                    <TableHead>Dht (m)</TableHead>
+                                    <TableHead>G (1/s)</TableHead>
+                                </TableHeadContainer>
 
-                            <Tr2
-                                qvalue={props.qvalue}
-                                tvalue={props.tvalue}
-                                ncvalue={props.ncvalue}
-                                profvalue={props.profvalue}
-                                ndvalue={props.ndvalue}
-                                lvalue={props.lvalue}
-                                g1value={props.g1value}
-                                g2value={props.g2value}
-                                g3value={props.g3value}
-                                g4value={props.g4value}
-                                g5value={props.g5value}
-                                fatorvalue={fatorvalueCalculated}
-                            />
-                        </Table>
-                    </Section>
-                </CardResultados>
-            }
-            {
-                secondTableCalculated <= 70 && fatorvalueCalculated >0 &&
-                <PDFButton onClick={jsPdfGenerator}>Gerar PDF</PDFButton>
-            }
-        </Resultados>
+                                <Tr2
+                                    qvalue={props.qvalue}
+                                    tvalue={props.tvalue}
+                                    ncvalue={props.ncvalue}
+                                    profvalue={props.profvalue}
+                                    ndvalue={props.ndvalue}
+                                    lvalue={props.lvalue}
+                                    g1value={props.g1value}
+                                    g2value={props.g2value}
+                                    g3value={props.g3value}
+                                    g4value={props.g4value}
+                                    g5value={props.g5value}
+                                    fatorvalue={fatorvalueCalculated}
+                                />
+                            </Table>
+                        </Section>
+                    </CardResultados>
+                }
+                {
+                    secondTableCalculated <= 70 && fatorvalueCalculated > 0 &&
+                    <PDFButton onClick={jsPdfGenerator}>Gerar PDF</PDFButton>
+                }
+            </Resultados>
+        </>
     );
 }
 const Floculacao: React.FC<ResultsProps> = (props) => {
@@ -910,7 +966,7 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
                         </Op>
                         <Op>
                             <Title>t (min)
-                                <span className="tooltiptext">teste</span>
+                                <span className="tooltiptext">Tempo mínimo</span>
                             </Title>
                             <Input
                                 type="number"
@@ -919,7 +975,7 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
                         </Op>
                         <Op>
                             <Title>Nº de canais
-                                <span className="tooltiptext">teste</span>
+                                <span className="tooltiptext">Número de canais</span>
                             </Title>
                             <Select name="" id="" onChange={(e) => {
                                 const valor = e.target.value;
@@ -932,7 +988,7 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
                         </Op>
                         <Op>
                             <Title>Profundidade
-                                <span className="tooltiptext">teste</span>
+                                <span className="tooltiptext">Profundidade</span>
                             </Title>
                             <Input
                                 type="number"
@@ -952,7 +1008,7 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
                     <Entradas>
                         <Op>
                             <Title>Largura (m)
-                                <span className="tooltiptext">teste</span>
+                                <span className="tooltiptext">Largura em metros</span>
                             </Title>
                             <Input
                                 type="number"
@@ -966,7 +1022,7 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
 
                                     <Op>
                                         <Title>G{i + 1} (1/s)
-                                            <span className="tooltiptext">teste</span>
+                                            <span className="tooltiptext">Canal {i + 1}</span>
                                         </Title>
                                         <Input
                                             type="number"

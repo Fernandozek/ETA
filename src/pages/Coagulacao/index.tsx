@@ -1,11 +1,11 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Coag from '../../Utils/Coag';
 import PageTemplate from '../PageTemplate';
 import { Link } from 'react-router-dom';
 import { boolean, dotDivide } from 'mathjs';
-import Img from '../../assets/images/exampleParshall.png';
-
+import Img from '../../assets/images/exemploCalha.png';
+import Img1 from '../../assets/images/Calha.png';
 import jsPDF from 'jspdf';
 
 
@@ -175,6 +175,11 @@ const Button = styled.button`
     align-items: center;
     justify-content: center;
 
+`
+const Canvas = styled.div`
+    width: 550px;
+    height: 350px;
+    background-color: #909090;
 `
 const Resultados = styled.div`
     margin-top: 30px;
@@ -462,8 +467,55 @@ const Result: React.FC<ResultsProps> = (props) => {
         //doc.output('dataurlnewwindow');
     }
 
+    
+    const [image, setImage] = useState(null) as any;
+    const canvas = useRef<HTMLCanvasElement>(null);
+    const [upperText, setUpperText] = useState("");
+    const [lowerText, setLowerText] = useState("");
+
+    useEffect(() => {
+        const img = new Image();
+        img.src = Img1;
+        if (img !== null) {
+            img.onload = () => setImage(img);
+        }
+
+    }, [image])
+    
+    const download = () => {
+        if(image) {
+            let canva = canvas.current;
+            if(canva !== null){
+                const a = document.createElement('a');
+                a.href = canva.toDataURL();
+                a.download = 'download.png';
+                document.body.appendChild(a);
+                a.click();
+            }
+        }
+    }
+    useEffect(() => {
+        if (image && canvas) {
+            if (canvas.current != null) {
+                const ctx = canvas.current.getContext("2d") as any;
+                ctx.fillStyle = "black";
+                ctx.fillRect(0, 0, 550, 330);
+                ctx.drawImage(image, 0, 0, 550, 350);
+                ctx.font = `16px Roboto`;
+                setUpperText(`opa`);
+                setLowerText(`teste`);
+                ctx.fillText(upperText, 140, 50);
+                ctx.font = `13px Roboto`;
+                ctx.fillText(lowerText, 120, 280);
+            }
+        }
+    }, [image, canvas]);
     return (
         <>
+            <Canvas id="canvas">
+                <canvas width={550} height={350} ref={canvas}></canvas>
+            </Canvas>
+            <button onClick={() => download()}>Download</button>
             {
                 <Resultados>
                     <Left>
@@ -810,7 +862,7 @@ const Coagulacao: React.FC<ResultsProps> = (props) => {
                     </Dimensionar>
                     {
                         valueChecked === true &&
-                        <img src={Img} height="200px" alt="" />
+                        <img src={Img} height="300px" alt="" />
                     }
                 </Card>
                 {

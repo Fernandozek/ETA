@@ -1,10 +1,12 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Filtr from '../../Utils/Filtr';
 import PageTemplate from '../PageTemplate';
 import Eta1 from '../../components/Home/ETA1';
 import { Link } from 'react-router-dom';
 import jsPDF from 'jspdf';
+import Img1 from '../../assets/images/exemploFilt.png';
+
 const EtaContainer = styled.div`
     display: flex;
     align-items: center;
@@ -233,6 +235,11 @@ const CardResultados = styled.div`
     flex-direction: column;
     justify-content: center;
 `
+const Canvas = styled.div`
+    width: 550px;
+    height: 350px;
+    background-color: #909090;
+`
 const TitleCard = styled.h2`
     margin-bottom: 30px;
     text-align: left;
@@ -363,153 +370,202 @@ const Result: React.FC<ResultsProps> = (props) => {
         doc.save('Resultados Filtração.pdf');
         //doc.output('dataurlnewwindow');
     }
-    return (
-        <Resultados>
-            <ResultContainer>
-                <CardResultados>
-                    <TitleCard>Velocidades Obtidas (m/s)</TitleCard>
-                    <Grid>
-                        <Item>
-                            <Name>Área total de filtração (m²)</Name>
-                            <Value>{V4[0]}</Value>
-                        </Item>
-                        <Item>
-                            <Name>Número de filtros</Name>
-                            <Value>{V4[1]}</Value>
-                        </Item>
-                        <Item>
-                            <Name>Área de cada filtro (m²)</Name>
-                            <Value>{V4[2]}</Value>
-                        </Item>
-                        <Item>
-                            <Name>Dimensões do filtro L e Y (m)</Name>
-                            <Value>{V4[3]?.toFixed(4)}</Value><br />
-                            <Value>{V4[4]?.toFixed(4)}</Value>
-                        </Item>
-                    </Grid>
-                </CardResultados>
-                <CardResultados>
-                    <TitleCard>Lavagem de filtros / Lâmina mínima de água sobre o leito filtrante</TitleCard>
-                    <Grid>
-                        <Item>
-                            <Name>Vazão de água de lavagem (m³/s)</Name>
-                            <Value>{V1[0]?.toFixed(4)}</Value>
-                        </Item>
-                        <Item>
-                            <Name>Volume de lavagem (m³)</Name>
-                            <Value>{V1[1]?.toFixed(4)}</Value>
-                        </Item>
+    const [image, setImage] = useState(null) as any;
+    const canvas = useRef<HTMLCanvasElement>(null);
+    const [upperText, setUpperText] = useState("");
+    const [lowerText, setLowerText] = useState("");
 
-                        <Item>
-                            <Name>Volume de reservação (m³)</Name>
-                            <Value>{V1[2]?.toFixed(4)}</Value>
-                        </Item>
-                        <Item>
-                            <Name>Tubulação de água de lavagem (mm)</Name>
-                            <Value>{V1[3]}</Value>
-                        </Item>
-                        <Item>
-                            <Name>Vazão de ar (L/s)</Name>
-                            <Value>{V1[4]}</Value>
-                        </Item>
-                        <Item>
-                            <Name>Lâmina da água (m)</Name>
-                            <Value>{V1[5]?.toFixed(4)}</Value>
-                        </Item>
-                    </Grid>
-                </CardResultados>
-                <CardResultados>
-                    <TitleCard>Calhas de água de lavagem</TitleCard>
-                    <Grid>
-                        <Item>
-                            <Name>Dimenssões de calha B e h (m)</Name>
-                            <Value>{V2[0]?.toFixed(4)}</Value><br />
-                            <Value>{V2[1]?.toFixed(4)}</Value>
-                        </Item>
-                        <Item>
-                            <Name>Consideração</Name>
-                            <Value>{V2[2]?.toFixed(4)}</Value>
-                            <Value>- H0 -</Value>
-                            <Value>{V2[3]?.toFixed(4)}</Value>
-                        </Item>
-                        <Item>
-                            <Name>Consideração</Name>
-                            <Value>{V2[4]?.toFixed(4)}</Value>
-                            <Value>- S -</Value>
-                            <Value>{V2[5]?.toFixed(4)}</Value>
-                        </Item>
-                        <Item>
-                            <Name>S entre calhas (m)</Name>
-                            <Value>{V2[6]?.toFixed(4)}</Value>
-                        </Item>
-                    </Grid>
-                </CardResultados>
-                <CardResultados>
-                    <TitleCard>Vertedor de saída</TitleCard>
-                    <Grid>
-                        <Item>
-                            <Name>Dimenssões de vertedor B e h (m)</Name>
-                            <Value>{V3[0]}</Value><br />
-                            <Value>{V3[1]?.toFixed(4)}</Value>
-                        </Item>
-                        <Item>
-                            <Name>Consideração</Name>
-                            <Value>{V3[2]}</Value><br />
-                            <Value>
-                                {
-                                    (Number(V3[2]) > 1000) &&
-                                    <p>
-                                        Superior a 1000
-                                    </p> ||
-                                    <p>
-                                        Inferior a 1000
-                                    </p>
-                                }
-                            </Value>
-                        </Item>
-                    </Grid>
-                </CardResultados>
-                <CardResultados>
-                    <TitleCard>Perdas de carga</TitleCard>
-                    <Grid>
-                        <Item>
-                            <Name>Areia</Name>
-                            <Value>{hf[0]?.toFixed(4)}</Value>
-                        </Item>
-                        <Item>
-                            <Name>Antracito</Name>
-                            <Value>{hf[1]?.toFixed(4)}</Value>
-                        </Item>
-                        <Item>
-                            <Name>Total</Name>
-                            <Value>{hf[2]?.toFixed(4)}</Value>
-                        </Item>
-                        <Item>
-                            <Name>Camada Suporte</Name>
-                            <Value>{hf[3]?.toFixed(4)}</Value>
-                        </Item>
-                    </Grid>
-                </CardResultados>
-                <CardResultados>
-                    <TitleCard>Velocidade mpinima de fluidificação (m/s)</TitleCard>
-                    <Grid>
-                        <Item>
-                            <Name>Areia</Name>
-                            <Value>{vMf[0]?.toFixed(4)}</Value>
-                        </Item>
-                        <Item>
-                            <Name>Antracito</Name>
-                            <Value>{vMf[1]?.toFixed(4)}</Value>
-                        </Item>
-                        <Item>
-                            <Name>Bifásico</Name>
-                            <Value>{vMf[2]?.toFixed(4)}</Value>
-                        </Item>
-                    </Grid>
-                </CardResultados>
-                <PDFButton onClick={jsPdfGenerator}>Gerar PDF</PDFButton>
-            </ResultContainer>
-        </Resultados>
+    useEffect(() => {
+        const img = new Image();
+        img.src = Img1;
+        if (img !== null) {
+            img.onload = () => setImage(img);
+        }
+
+    }, [image])
+    
+    const download = () => {
+        if(image) {
+            let canva = canvas.current;
+            if(canva !== null){
+                const a = document.createElement('a');
+                a.href = canva.toDataURL();
+                a.download = 'download.png';
+                document.body.appendChild(a);
+                a.click();
+            }
+        }
+    }
+    useEffect(() => {
+        if (image && canvas) {
+            if (canvas.current != null) {
+                const ctx = canvas.current.getContext("2d") as any;
+                ctx.fillStyle = "black";
+                ctx.fillRect(0, 0, 550, 330);
+                ctx.drawImage(image, 0, 0, 550, 350);
+                ctx.font = `16px Roboto`;
+                setUpperText(`opa`);
+                setLowerText(`teste`);
+                ctx.fillText(upperText, 140, 50);
+                ctx.font = `13px Roboto`;
+                ctx.fillText(lowerText, 120, 280);
+            }
+        }
+    }, [image, canvas]);
+
+    return (
+        <>
+            <Canvas id="canvas">
+                <canvas width={550} height={350} ref={canvas}></canvas>
+            </Canvas>
+            <button onClick={() => download()}>Download</button>
+            <Resultados>
+                <ResultContainer>
+                    <CardResultados>
+                        <TitleCard>Velocidades Obtidas (m/s)</TitleCard>
+                        <Grid>
+                            <Item>
+                                <Name>Área total de filtração (m²)</Name>
+                                <Value>{V4[0]}</Value>
+                            </Item>
+                            <Item>
+                                <Name>Número de filtros</Name>
+                                <Value>{V4[1]}</Value>
+                            </Item>
+                            <Item>
+                                <Name>Área de cada filtro (m²)</Name>
+                                <Value>{V4[2]}</Value>
+                            </Item>
+                            <Item>
+                                <Name>Dimensões do filtro L e Y (m)</Name>
+                                <Value>{V4[3]?.toFixed(4)}</Value><br />
+                                <Value>{V4[4]?.toFixed(4)}</Value>
+                            </Item>
+                        </Grid>
+                    </CardResultados>
+                    <CardResultados>
+                        <TitleCard>Lavagem de filtros / Lâmina mínima de água sobre o leito filtrante</TitleCard>
+                        <Grid>
+                            <Item>
+                                <Name>Vazão de água de lavagem (m³/s)</Name>
+                                <Value>{V1[0]?.toFixed(4)}</Value>
+                            </Item>
+                            <Item>
+                                <Name>Volume de lavagem (m³)</Name>
+                                <Value>{V1[1]?.toFixed(4)}</Value>
+                            </Item>
+
+                            <Item>
+                                <Name>Volume de reservação (m³)</Name>
+                                <Value>{V1[2]?.toFixed(4)}</Value>
+                            </Item>
+                            <Item>
+                                <Name>Tubulação de água de lavagem (mm)</Name>
+                                <Value>{V1[3]}</Value>
+                            </Item>
+                            <Item>
+                                <Name>Vazão de ar (L/s)</Name>
+                                <Value>{V1[4]}</Value>
+                            </Item>
+                            <Item>
+                                <Name>Lâmina da água (m)</Name>
+                                <Value>{V1[5]?.toFixed(4)}</Value>
+                            </Item>
+                        </Grid>
+                    </CardResultados>
+                    <CardResultados>
+                        <TitleCard>Calhas de água de lavagem</TitleCard>
+                        <Grid>
+                            <Item>
+                                <Name>Dimenssões de calha B e h (m)</Name>
+                                <Value>{V2[0]?.toFixed(4)}</Value><br />
+                                <Value>{V2[1]?.toFixed(4)}</Value>
+                            </Item>
+                            <Item>
+                                <Name>Consideração</Name>
+                                <Value>{V2[2]?.toFixed(4)}</Value>
+                                <Value>- H0 -</Value>
+                                <Value>{V2[3]?.toFixed(4)}</Value>
+                            </Item>
+                            <Item>
+                                <Name>Consideração</Name>
+                                <Value>{V2[4]?.toFixed(4)}</Value>
+                                <Value>- S -</Value>
+                                <Value>{V2[5]?.toFixed(4)}</Value>
+                            </Item>
+                            <Item>
+                                <Name>S entre calhas (m)</Name>
+                                <Value>{V2[6]?.toFixed(4)}</Value>
+                            </Item>
+                        </Grid>
+                    </CardResultados>
+                    <CardResultados>
+                        <TitleCard>Vertedor de saída</TitleCard>
+                        <Grid>
+                            <Item>
+                                <Name>Dimenssões de vertedor B e h (m)</Name>
+                                <Value>{V3[0]}</Value><br />
+                                <Value>{V3[1]?.toFixed(4)}</Value>
+                            </Item>
+                            <Item>
+                                <Name>Consideração</Name>
+                                <Value>{V3[2]}</Value><br />
+                                <Value>
+                                    {
+                                        (Number(V3[2]) > 1000) &&
+                                        <p>
+                                            Superior a 1000
+                                        </p> ||
+                                        <p>
+                                            Inferior a 1000
+                                        </p>
+                                    }
+                                </Value>
+                            </Item>
+                        </Grid>
+                    </CardResultados>
+                    <CardResultados>
+                        <TitleCard>Perdas de carga</TitleCard>
+                        <Grid>
+                            <Item>
+                                <Name>Areia</Name>
+                                <Value>{hf[0]?.toFixed(4)}</Value>
+                            </Item>
+                            <Item>
+                                <Name>Antracito</Name>
+                                <Value>{hf[1]?.toFixed(4)}</Value>
+                            </Item>
+                            <Item>
+                                <Name>Total</Name>
+                                <Value>{hf[2]?.toFixed(4)}</Value>
+                            </Item>
+                            <Item>
+                                <Name>Camada Suporte</Name>
+                                <Value>{hf[3]?.toFixed(4)}</Value>
+                            </Item>
+                        </Grid>
+                    </CardResultados>
+                    <CardResultados>
+                        <TitleCard>Velocidade mpinima de fluidificação (m/s)</TitleCard>
+                        <Grid>
+                            <Item>
+                                <Name>Areia</Name>
+                                <Value>{vMf[0]?.toFixed(4)}</Value>
+                            </Item>
+                            <Item>
+                                <Name>Antracito</Name>
+                                <Value>{vMf[1]?.toFixed(4)}</Value>
+                            </Item>
+                            <Item>
+                                <Name>Bifásico</Name>
+                                <Value>{vMf[2]?.toFixed(4)}</Value>
+                            </Item>
+                        </Grid>
+                    </CardResultados>
+                    <PDFButton onClick={jsPdfGenerator}>Gerar PDF</PDFButton>
+                </ResultContainer>
+            </Resultados>
+        </>
     );
 }
 
