@@ -403,12 +403,11 @@ const Result: React.FC<ResultsProps> = (props) => {
                 ctx.fillStyle = "black";
                 ctx.fillRect(0, 0, 550, 330);
                 ctx.drawImage(image, 0, 0, 550, 350);
-                ctx.font = `16px Roboto`;
-                setUpperText(`opa`);
-                setLowerText(`teste`);
-                ctx.fillText(upperText, 140, 50);
-                ctx.font = `13px Roboto`;
-                ctx.fillText(lowerText, 120, 280);
+                ctx.font = `12px Roboto`;
+                ctx.fillText(`${V1[5]?.toFixed(2)}`, 420, 80);
+                ctx.fillText(`${V2[1]?.toFixed(2)}`, 420, 130);
+                ctx.fillText(`${hf[1]?.toFixed(2)}`, 420, 175);
+                ctx.fillText(`sf`, 120, 280);
             }
         }
     }, [image, canvas]);

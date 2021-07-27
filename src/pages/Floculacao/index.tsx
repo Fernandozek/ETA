@@ -185,8 +185,8 @@ const Button = styled.button`
     }
 `
 const Canvas = styled.div`
-    width: 550px;
-    height: 350px;
+    width: 650px;
+    height: 450px;
     background-color: #909090;
 `
 const Resultados = styled.div`
@@ -361,6 +361,7 @@ interface ResultsProps {
     g3value: number,
     g4value: number,
     g5value: number,
+    values: any
 }
 const Tr1: React.FC<Table1Props> = (props) => {
     var tmp = [];
@@ -514,7 +515,7 @@ const Result: React.FC<ResultsProps> = (props) => {
         doc.text('Dht (m)', 387, 256);
         doc.text('G (1/s)', 440, 256);
 
-
+        
         doc.line(485, 245, 80, 245);
 
         var linha = 275;
@@ -587,10 +588,24 @@ const Result: React.FC<ResultsProps> = (props) => {
     }
 
 
+
     const [image, setImage] = useState(null) as any;
     const canvas = useRef<HTMLCanvasElement>(null);
     const [upperText, setUpperText] = useState("");
     const [lowerText, setLowerText] = useState("");
+    const [l, setL] = useState("");
+    const [c1, setC1] = useState("");
+    const [c2, setC2] = useState("");
+    const [c3, setC3] = useState("");
+    const [e1, setE1] = useState("");
+    const [e2, setE2] = useState("");
+    const [e3, setE3] = useState("");
+    const [e4, setE4] = useState("");
+    const [v, setV] = useState("");
+    const [v2, setV2] = useState("");
+    const [v3, setV3] = useState("");
+    const [h, setH] = useState("");
+    const [e, setE] = useState("");
 
     useEffect(() => {
         const img = new Image();
@@ -616,16 +631,34 @@ const Result: React.FC<ResultsProps> = (props) => {
     useEffect(() => {
         if (image && canvas) {
             if (canvas.current != null) {
+                setL(Number(B).toFixed(4));
+                setC1(`d = ${Number(a).toFixed(4)}`);
+                setE1(`e = ${V12[0]?.toFixed(4)}`);
+                setE2(`e = ${V12[1]?.toFixed(4)}`);
+                setE3(`e = ${V12[2]?.toFixed(4)}`);
+                setE4(`e = ${V12[3]?.toFixed(4)}`);
+                setV(`V = ${V24[2]?.toFixed(4)}`);
+                setV3(`${V24[3]?.toFixed(2)}`);
+                setH(`${V12[3]?.toFixed(4)}`);
                 const ctx = canvas.current.getContext("2d") as any;
                 ctx.fillStyle = "black";
-                ctx.fillRect(0, 0, 550, 330);
-                ctx.drawImage(image, 0, 0, 550, 350);
-                ctx.font = `16px Roboto`;
-                setUpperText(`opa`);
-                setLowerText(`teste`);
-                ctx.fillText(upperText, 140, 50);
-                ctx.font = `13px Roboto`;
-                ctx.fillText(lowerText, 120, 280);
+                ctx.fillRect(0, 0, 950, 630);
+                ctx.drawImage(image, 0, 0, 650, 450);
+                ctx.font = `12px Roboto`;
+                ctx.fillText(l, 297, 15);
+                ctx.font = `9px Roboto`;
+                ctx.fillText(c1, 10, 50);
+                ctx.fillText(c1, 10, 90);
+                ctx.fillText(c1, 10, 130);
+                ctx.fillText(c1, 10, 170);
+                ctx.fillText(e1, 105, 40);
+                ctx.fillText(e2, 120, 80);
+                ctx.fillText(e3, 120, 120);
+                ctx.fillText(e4, 135, 160);
+                ctx.font = `7px Roboto`;
+                ctx.fillText(h, 520, 320);
+                ctx.fillText(v, 60, 320);
+                ctx.fillText(v3, 140, 385);
             }
         }
     }, [image, canvas]);
@@ -633,9 +666,10 @@ const Result: React.FC<ResultsProps> = (props) => {
     return (
         <>
             <Canvas id="canvas">
-                <canvas width={550} height={350} ref={canvas}></canvas>
+                <canvas width={650} height={450} ref={canvas}></canvas>
             </Canvas>
             <button onClick={() => download()}>Download</button>
+            <p>{props.values}</p>
             <Resultados>
                 <CardResultados>
                     <TitleCard>Velocidades Obtidas (m/s)</TitleCard>
@@ -822,7 +856,7 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
     const [qms, setQms] = useState("");
     const [gs, setGs] = useState("3");
     const [gValues, setGValues] = useState<string[]>([]);
-
+    const [valuesInputs, setValuesInputs] = useState({}); 
     const [qvalue, setQvalue] = useState("");
     const [tvalue, setTvalue] = useState("");
     const [profvalue, setProfvalue] = useState("");
@@ -924,6 +958,8 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
         } else {
             alert("preencha todos os campos");
         }
+        setValuesInputs(gs);
+        // setValuesInputs({qvalueCalculated, tvalueCalculated, gsCalculated,profvalueCalculated,ndvalueCalculated, lvalueCalculated,  g1valueCalculated, g2valueCalculated, g3valueCalculated, g4valueCalculated, g5valueCalculated });
     }
     function setVazao(n: string) {
         setIsDimensione(false);
@@ -1056,6 +1092,7 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
                         g3value={Number(g3value)}
                         g4value={Number(g4value)}
                         g5value={Number(g5value)}
+                        values={valuesInputs}
                     />
                 }
                 {
@@ -1072,6 +1109,7 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
                         g3value={Number(g3valueCalculated)}
                         g4value={Number(g4valueCalculated)}
                         g5value={Number(g5valueCalculated)}
+                        values={valuesInputs}
                     />
                 }
             </ETA3Container>

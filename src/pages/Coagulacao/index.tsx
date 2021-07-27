@@ -5,13 +5,14 @@ import PageTemplate from '../PageTemplate';
 import { Link } from 'react-router-dom';
 import { boolean, dotDivide } from 'mathjs';
 import Img from '../../assets/images/exemploCalha.png';
-import Img1 from '../../assets/images/Calha.png';
+import Img1 from '../../assets/images/exemploCoag.png';
 import jsPDF from 'jspdf';
 
 
 interface ResultsProps {
     q: number,
     v: number[],
+    options: number
 }
 const EtaContainer = styled.div`
     display: flex;
@@ -497,6 +498,7 @@ const Result: React.FC<ResultsProps> = (props) => {
     useEffect(() => {
         if (image && canvas) {
             if (canvas.current != null) {
+                var values = Coag.valoresParshal(props.options)
                 const ctx = canvas.current.getContext("2d") as any;
                 ctx.fillStyle = "black";
                 ctx.fillRect(0, 0, 550, 330);
@@ -504,7 +506,24 @@ const Result: React.FC<ResultsProps> = (props) => {
                 ctx.font = `16px Roboto`;
                 setUpperText(`opa`);
                 setLowerText(`teste`);
-                ctx.fillText(upperText, 140, 50);
+                ctx.fillText(`${values[0].toFixed(2)}`, 320, 70);
+                ctx.fillText(`${values[4].toFixed(2)}`, 80, 120);
+                ctx.fillText(`${V[2].toFixed(2)}`, 140, 120);
+                ctx.font = `14px Roboto`;
+                ctx.fillText(`${values[6].toFixed(2)}`, 260, 120);
+                ctx.font = `16px Roboto`;
+                ctx.fillText(`${values[7].toFixed(2)}`, 410, 120);
+                ctx.font = `14px Roboto`;
+                ctx.fillText(`${V[0].toFixed(2)}`, 195, 157);
+                ctx.fillText(`${values[1].toFixed(2)}`, 265, 150);
+                ctx.fillText(`1.65`, 195, 177);
+                ctx.font = `16px Roboto`;
+                ctx.fillText(`${H[0].toFixed(2)}`, 130, 320);
+                ctx.fillText(`${H[1].toFixed(2)}`, 260, 325);
+                ctx.font = `14px Roboto`;
+                ctx.fillText(`${H[2].toFixed(2)}`, 320, 315);
+                ctx.fillText(`${(H[3]+O[4]).toFixed(2)}`, 420, 315);
+
                 ctx.font = `13px Roboto`;
                 ctx.fillText(lowerText, 120, 280);
             }
@@ -870,7 +889,7 @@ const Coagulacao: React.FC<ResultsProps> = (props) => {
                     <Result
                         q={Number(num)}
                         v={vetCalculated}
-
+                        options={Number(options)}
                     />
                 }
                 {
@@ -878,6 +897,7 @@ const Coagulacao: React.FC<ResultsProps> = (props) => {
                     <Result
                         q={Number(calculated)}
                         v={vetCalculated}
+                        options={Number(options)}
 
                     />
                 }
