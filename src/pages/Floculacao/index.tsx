@@ -614,7 +614,7 @@ const Result: React.FC<ResultsProps> = (props) => {
             img.onload = () => setImage(img);
         }
 
-    }, [image])
+    }, [])
 
     const download = () => {
         if (image) {

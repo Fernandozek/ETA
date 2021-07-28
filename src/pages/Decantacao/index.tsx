@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PageTemplate from '../PageTemplate';
 import Dec from '../../Utils/Dec';
 import jsPDF from 'jspdf';
-import Img1 from '../../assets/images/coag.png';
+import Img1 from '../../assets/images/exemploDec.png';
 const ETA2Container = styled.div`
     width: 100%;
     padding-top: 40px;
@@ -134,8 +134,8 @@ const Button = styled.button`
     }
 `
 const Canvas = styled.div`
-    width: 550px;
-    height: 350px;
+    width: 650px;
+    height: 366px;
     background-color: #909090;
 `
 const Resultados = styled.div`
@@ -369,7 +369,7 @@ const Result: React.FC<ResultsProps> = (props) => {
             img.onload = () => setImage(img);
         }
 
-    }, [image])
+    }, [])
     
     const download = () => {
         if(image) {
@@ -386,14 +386,17 @@ const Result: React.FC<ResultsProps> = (props) => {
     useEffect(() => {
         if (image && canvas) {
             if (canvas.current != null) {
+                var calc = (V2[3]*V2[2])+((V2[3]+1)*V2[4]);
                 const ctx = canvas.current.getContext("2d") as any;
                 ctx.fillStyle = "black";
-                ctx.fillRect(0, 0, 550, 330);
-                ctx.drawImage(image, 0, 0, 550, 350);
+                ctx.fillRect(0, 0, 650, 366);
+                ctx.drawImage(image, 0, 0, 650, 366);
                 ctx.font = `16px Roboto`;
-                setUpperText(`${V1[3]?.toFixed(4)} m`);
-                setLowerText(`${V2[2]?.toFixed(4)} m`);
-                ctx.fillText(upperText, 140, 50);
+                setLowerText(`${V2[2]?.toFixed(2)} m`);
+                ctx.fillText(`${V1[3]?.toFixed(2)} m`, 290, 90);
+                ctx.fillText(`${V1[3]?.toFixed(2)} m`, 190, 90);
+                ctx.fillText(`${calc.toFixed(2)} m`, 140, 120);
+                ctx.fillText(`${V1[2].toFixed(0)} m`, 560, 212);
                 ctx.font = `13px Roboto`;
                 ctx.fillText(lowerText, 120, 280);
             }
@@ -404,7 +407,7 @@ const Result: React.FC<ResultsProps> = (props) => {
     return (
         <>
             <Canvas id="canvas">
-                <canvas width={550} height={350} ref={canvas}></canvas>
+                <canvas width={650} height={366} ref={canvas}></canvas>
             </Canvas>
             <button onClick={() => download()}>Download</button>
             <Resultados>
