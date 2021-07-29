@@ -489,7 +489,7 @@ const Result: React.FC<ResultsProps> = (props) => {
             if(canva !== null){
                 const a = document.createElement('a');
                 a.href = canva.toDataURL();
-                a.download = 'download.png';
+                a.download = 'Coagulação.png';
                 document.body.appendChild(a);
                 a.click();
             }

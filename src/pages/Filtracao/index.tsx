@@ -6,6 +6,7 @@ import Eta1 from '../../components/Home/ETA1';
 import { Link } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import Img1 from '../../assets/images/exemploFilt.png';
+import { dotDivide } from 'mathjs';
 
 const EtaContainer = styled.div`
     display: flex;
@@ -366,7 +367,10 @@ const Result: React.FC<ResultsProps> = (props) => {
         doc.text(`Areia = ${vMf[0]?.toFixed(4)}`, 100, 596);
         doc.text(`Antracito = ${vMf[1]?.toFixed(4)}`, 100, 609);
         doc.text(`Bifásico = ${vMf[2]?.toFixed(4)}`, 100, 621);
-
+        doc.addPage();
+        if(canvas.current != null){
+            doc.addImage(canvas.current.toDataURL(), 'PNG', 15, 40, 550, 350);
+        }
         doc.save('Resultados Filtração.pdf');
         //doc.output('dataurlnewwindow');
     }
@@ -383,14 +387,14 @@ const Result: React.FC<ResultsProps> = (props) => {
         }
 
     }, [])
-    
+
     const download = () => {
-        if(image) {
+        if (image) {
             let canva = canvas.current;
-            if(canva !== null){
+            if (canva !== null) {
                 const a = document.createElement('a');
                 a.href = canva.toDataURL();
-                a.download = 'download.png';
+                a.download = 'Filtração.png';
                 document.body.appendChild(a);
                 a.click();
             }
@@ -406,8 +410,10 @@ const Result: React.FC<ResultsProps> = (props) => {
                 ctx.font = `12px Roboto`;
                 ctx.fillText(`${V1[5]?.toFixed(2)}`, 420, 80);
                 ctx.fillText(`${V2[1]?.toFixed(2)}`, 420, 130);
-                ctx.fillText(`${hf[1]?.toFixed(2)}`, 420, 175);
-                ctx.fillText(`sf`, 120, 280);
+                ctx.fillText(`${props.a1.toFixed(2)}`, 420, 195);
+                ctx.fillText(`${props.an1.toFixed(2)}`, 420, 175);
+                ctx.fillText(`${props.altura.toFixed(2)}`, 420, 215);
+                ctx.fillText(`espaço entre calhas = ${V2[6]?.toFixed(4)} m`, 290, 320);
             }
         }
     }, [image, canvas]);
@@ -508,7 +514,7 @@ const Result: React.FC<ResultsProps> = (props) => {
                             </Item>
                             <Item>
                                 <Name>Consideração</Name>
-                                <Value>{V3[2]}</Value><br />
+                                <Value>{V3[2]?.toFixed(0)}</Value><br />
                                 <Value>
                                     {
                                         (Number(V3[2]) > 1000) &&

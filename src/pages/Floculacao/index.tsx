@@ -622,7 +622,7 @@ const Result: React.FC<ResultsProps> = (props) => {
             if (canva !== null) {
                 const a = document.createElement('a');
                 a.href = canva.toDataURL();
-                a.download = 'download.png';
+                a.download = 'Floculação.png';
                 document.body.appendChild(a);
                 a.click();
             }
@@ -631,34 +631,30 @@ const Result: React.FC<ResultsProps> = (props) => {
     useEffect(() => {
         if (image && canvas) {
             if (canvas.current != null) {
-                setL(Number(B).toFixed(4));
-                setC1(`d = ${Number(a).toFixed(4)}`);
-                setE1(`e = ${V12[0]?.toFixed(4)}`);
-                setE2(`e = ${V12[1]?.toFixed(4)}`);
-                setE3(`e = ${V12[2]?.toFixed(4)}`);
-                setE4(`e = ${V12[3]?.toFixed(4)}`);
-                setV(`V = ${V24[2]?.toFixed(4)}`);
-                setV3(`${V24[3]?.toFixed(2)}`);
-                setH(`${V12[3]?.toFixed(4)}`);
+                var v1 = Number(q)/(Number(a)*V12[0]);
                 const ctx = canvas.current.getContext("2d") as any;
                 ctx.fillStyle = "black";
-                ctx.fillRect(0, 0, 950, 630);
+                ctx.fillRect(0, 0, 650, 450);
                 ctx.drawImage(image, 0, 0, 650, 450);
                 ctx.font = `12px Roboto`;
-                ctx.fillText(l, 297, 15);
+                ctx.fillText(`${Number(B).toFixed(4)} m`, 297, 15);
                 ctx.font = `9px Roboto`;
-                ctx.fillText(c1, 10, 50);
-                ctx.fillText(c1, 10, 90);
-                ctx.fillText(c1, 10, 130);
-                ctx.fillText(c1, 10, 170);
-                ctx.fillText(e1, 105, 40);
-                ctx.fillText(e2, 120, 80);
-                ctx.fillText(e3, 120, 120);
-                ctx.fillText(e4, 135, 160);
+                ctx.fillText(`a = ${Number(a).toFixed(4)}m`, 7, 50);
+                ctx.fillText(`a = ${Number(a).toFixed(4)}m`, 20, 90);
+                ctx.fillText(`a = ${Number(a).toFixed(4)}m`, 20, 130);
+                ctx.fillText(`a = ${Number(a).toFixed(4)}m`, 20, 170);
+                ctx.fillText(`e = ${V12[0]?.toFixed(4)}m`, 105, 40);
+                ctx.fillText(`e = ${V12[1]?.toFixed(4)}m`, 120, 80);
+                ctx.fillText(`e = ${V12[2]?.toFixed(4)}m`, 120, 120);
+                ctx.fillText(`e = ${V12[3]?.toFixed(4)}m`, 135, 160);
+                ctx.font = `9px Roboto`;
+                ctx.fillText(`H =     ${V12[3]?.toFixed(4)}m`, 525, 320);
+                ctx.font = `10px Roboto`;
+                ctx.fillText(`V1 = ${v1.toFixed(4)} m³`, 20, 320);
+                ctx.fillText(`V1`, 107, 340);
                 ctx.font = `7px Roboto`;
-                ctx.fillText(h, 520, 320);
-                ctx.fillText(v, 60, 320);
-                ctx.fillText(v3, 140, 385);
+                ctx.fillText(`V2 = ${((2/3)*v1).toFixed(4)} m/s`, 105, 280);
+                ctx.fillText(`${V24[3]?.toFixed(2)}`, 140, 385);
             }
         }
     }, [image, canvas]);
@@ -669,7 +665,6 @@ const Result: React.FC<ResultsProps> = (props) => {
                 <canvas width={650} height={450} ref={canvas}></canvas>
             </Canvas>
             <button onClick={() => download()}>Download</button>
-            <p>{props.values}</p>
             <Resultados>
                 <CardResultados>
                     <TitleCard>Velocidades Obtidas (m/s)</TitleCard>

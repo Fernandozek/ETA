@@ -359,8 +359,6 @@ const Result: React.FC<ResultsProps> = (props) => {
 
     const [image, setImage] = useState(null) as any;
     const canvas = useRef<HTMLCanvasElement>(null);
-    const [upperText, setUpperText] = useState("");
-    const [lowerText, setLowerText] = useState("");
 
     useEffect(() => {
         const img = new Image();
@@ -377,7 +375,7 @@ const Result: React.FC<ResultsProps> = (props) => {
             if(canva !== null){
                 const a = document.createElement('a');
                 a.href = canva.toDataURL();
-                a.download = 'download.png';
+                a.download = 'Decantação.png';
                 document.body.appendChild(a);
                 a.click();
             }
@@ -392,13 +390,10 @@ const Result: React.FC<ResultsProps> = (props) => {
                 ctx.fillRect(0, 0, 650, 366);
                 ctx.drawImage(image, 0, 0, 650, 366);
                 ctx.font = `16px Roboto`;
-                setLowerText(`${V2[2]?.toFixed(2)} m`);
                 ctx.fillText(`${V1[3]?.toFixed(2)} m`, 290, 90);
-                ctx.fillText(`${V1[3]?.toFixed(2)} m`, 190, 90);
-                ctx.fillText(`${calc.toFixed(2)} m`, 140, 120);
+                ctx.fillText(` `, 140, 120);
                 ctx.fillText(`${V1[2].toFixed(0)} m`, 560, 212);
                 ctx.font = `13px Roboto`;
-                ctx.fillText(lowerText, 120, 280);
             }
         }
     }, [image, canvas]);
