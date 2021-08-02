@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import PageTemplate from '../PageTemplate';
 import Dec from '../../Utils/Dec';
 import jsPDF from 'jspdf';
-import Img1 from '../../assets/images/exemploDec.png';
+import Img3 from '../../assets/images/dec3.png';
+import Img4 from '../../assets/images/dec4.png';
+import Img5 from '../../assets/images/dec5.png';
 const ETA2Container = styled.div`
     width: 100%;
     padding-top: 40px;
@@ -304,35 +306,30 @@ const Result: React.FC<ResultsProps> = (props) => {
         var doc = new jsPDF('p', 'pt');
         doc.setFont('courier');
         doc.setFontSize(10);
-        doc.text('Universidade Federal Rural do SemiÁrido - UFERSA', 80, 50);
+        doc.text('Universidade Federal Rural do Semi-Árido - UFERSA', 80, 50);
         doc.text('Esta programa é destinado à realização de um pré-dimensionamento de', 80, 63);
         doc.text('clarificação em uma estação de tratamento de água convencional', 80, 76);
 
         doc.setLineWidth(0.5);
         doc.line(485, 89, 80, 89);
 
-        doc.text('Resultados da Decantação', 80, 105);
-
-        doc.text('Velocidades Obtidas (m/s)', 80, 135);
-        doc.text(`As (m²) = ${V1[0].toFixed(4)}`, 100, 158);
-        doc.text(`t (s) = ${V1[1].toFixed(4)}`, 100, 171);
-        doc.text(`B (m) = ${V1[2].toFixed(0)}`, 100, 184);
-        doc.text(`L (m) = ${V1[3].toFixed(4)}`, 100, 197);
-        doc.text(`V (cm/s) = ${V1[4].toFixed(4)}`, 100, 210);
-        doc.setFontSize(8);
-        doc.text('0', 105, 212);
-        doc.setFontSize(10);
-        doc.text(`Ql (m³/s) = ${V2[0].toFixed(4)}`, 100, 223);
-        doc.text(`LV (m) = ${V2[1].toFixed(4)}`, 100, 236);
-        doc.text(`Lcalha (m) = ${V2[2].toFixed(4)}`, 100, 249);
-        doc.text(`Nº de Calhas = ${V2[3].toFixed(0)}`, 100, 261);
-        doc.text(`S entre Calhas = ${V2[3].toFixed(4)}`, 100, 273);
+        doc.text('Relatório analítico da unidade de Decantação', 80, 135);
+        doc.text(`Área superficial útil da zona de decantação (m²) = ${V1[0].toFixed(4)}`, 100, 158);
+        doc.text(`Tempo de detenção (s) = ${V1[1].toFixed(4)}`, 100, 171);
+        doc.text(`Largura do decantador (m) = ${V1[2].toFixed(0)}`, 100, 184);
+        doc.text(`Comprimento do decantador (m) = ${V1[3].toFixed(4)}`, 100, 197);
+        doc.text(`Velocidade horizontal (cm/s) = ${V1[4].toFixed(4)}`, 100, 210);
+        doc.text(`Vazão que passa pela unidade (m³/s) = ${V2[0].toFixed(4)}`, 100, 223);
+        doc.text(`Comprimento do total do vertedor (m) = ${V2[1].toFixed(4)}`, 100, 236);
+        doc.text(`Comprimento das calhas (m) = ${V2[2].toFixed(4)}`, 100, 249);
+        doc.text(`Número de calhas = ${V2[3].toFixed(0)}`, 100, 261);
+        doc.text(`Espaçamento entre calhas (m) = ${V2[3].toFixed(4)}`, 100, 273);
 
         doc.line(485, 300, 80, 300);
 
-        doc.text('Nº de Reynolds (Re)', 100, 330);
+        doc.text('Número de Reynolds (Re)', 100, 330);
         doc.text(`${V3[0]}`, 100, 343);
-        doc.text('L/B', 100, 366);
+        doc.text('comprimento do decantador / largura do decantador', 100, 366);
         doc.text(`${V3[1].toFixed(4)}`, 100, 379);
 
         doc.line(485, 400, 80, 400);
@@ -349,10 +346,21 @@ const Result: React.FC<ResultsProps> = (props) => {
         }
 
         doc.text('Sistema com capacidade acima de 10.000 m³/dia - v0 = 0,75', 100, 489);
-        doc.text('(Condição atendia)', 100, 502);
+        doc.text('(Condição atendida)', 100, 502);
 
         doc.text('L/B = 3 ou 4', 100, 535);
-        doc.text('(Condição atendia)', 100, 548);
+        doc.text('(Condição atendida)', 100, 548);
+        if(canvas.current != null){
+            doc.addPage();
+            doc.text('Universidade Federal Rural do Semi-Árido - UFERSA', 80, 50);
+            doc.text('Esta programa é destinado à realização de um pré-dimensionamento de', 80, 63);
+            doc.text('clarificação em uma estação de tratamento de água convencional', 80, 76);
+
+            doc.setLineWidth(0.5);
+            doc.line(485, 89, 80, 89);
+            doc.text('Detalhamento do pré-dimensionamento da unidade de Decantação', 80, 110);
+            doc.addImage(canvas.current.toDataURL(), 'PNG', 15, 130, 600, 346);
+        }
         doc.save('Resultados Decantacao.pdf');
         // doc.output('dataurlnewwindow');
     }
@@ -362,7 +370,15 @@ const Result: React.FC<ResultsProps> = (props) => {
 
     useEffect(() => {
         const img = new Image();
-        img.src = Img1;
+        if(props.ns === 3){
+            img.src = Img3;
+        }else{
+            if(props.ns === 4){
+                img.src = Img4;
+            }else{
+                img.src = Img5;
+            }
+        }
         if (img !== null) {
             img.onload = () => setImage(img);
         }
@@ -384,15 +400,17 @@ const Result: React.FC<ResultsProps> = (props) => {
     useEffect(() => {
         if (image && canvas) {
             if (canvas.current != null) {
-                var calc = (V2[3]*V2[2])+((V2[3]+1)*V2[4]);
+                //largura da calha
+                var lc = (V1[2] - ((V2[3]+1)*V2[4]))/V2[3];
                 const ctx = canvas.current.getContext("2d") as any;
                 ctx.fillStyle = "black";
                 ctx.fillRect(0, 0, 650, 366);
                 ctx.drawImage(image, 0, 0, 650, 366);
                 ctx.font = `16px Roboto`;
-                ctx.fillText(`${V1[3]?.toFixed(2)} m`, 290, 90);
-                ctx.fillText(` `, 140, 120);
-                ctx.fillText(`${V1[2].toFixed(0)} m`, 560, 212);
+                ctx.fillText(`${V1[3]?.toFixed(2)} m`, 350, 50);
+                ctx.fillText(`${V1[2].toFixed(0)} m`, 560, 152);
+                ctx.fillText(`${lc.toFixed(4)} m`, 565, 270);
+                ctx.fillText(`${V2[2].toFixed(4)} m`, 445, 300);
                 ctx.font = `13px Roboto`;
             }
         }
@@ -605,18 +623,7 @@ const Decantacao: React.FC<ResultsProps> = (props) => {
         setIsDimensione(false);
         setProfundidade(n);
     }
-    // const downloadMeme = () => {
-    //     if (images && images.length > 0) {
-    //         const canvas = canvasRef.current;
-    //         if (canvas != null) {
-    //             const a = document.createElement('a');
-    //             a.href = canvas;
-    //             a.download = 'download.png';
-    //             document.body.appendChild(a);
-    //             a.click();
-    //         }
-    //     }
-    // }
+
     return (
         <PageTemplate
             title="Decantação"
@@ -626,7 +633,10 @@ const Decantacao: React.FC<ResultsProps> = (props) => {
                 <Card>
                     <Entradas>
                         <Op>
-                            <Title>Q (m³/s)</Title>
+                            <Title>
+                                <span className="tooltiptext">Vazão de clarificação</span>
+                                Q (m³/s)
+                            </Title>
                             <Input
                                 type="number"
 
@@ -635,7 +645,7 @@ const Decantacao: React.FC<ResultsProps> = (props) => {
                         </Op>
                         <Op>
                             <Title>vs (m/dia)
-                                <span className="tooltiptext">velocidade de sedimentação</span>
+                                <span className="tooltiptext">Velocidade de sedimentação</span>
                             </Title>
                             <Input
                                 type="number"
@@ -644,7 +654,10 @@ const Decantacao: React.FC<ResultsProps> = (props) => {
                             />
                         </Op>
                         <Op>
-                            <Title>Nº un. de sedimentação</Title>
+                            <Title>
+                                <span className="tooltiptext">Número das unidades de sedimentação</span>
+                                Nº un. de sedimentação
+                            </Title>
                             <Input
                                 type="number"
 

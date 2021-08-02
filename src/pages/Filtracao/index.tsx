@@ -237,8 +237,8 @@ const CardResultados = styled.div`
     justify-content: center;
 `
 const Canvas = styled.div`
-    width: 550px;
-    height: 350px;
+    width: 650px;
+    height: 450px;
     background-color: #909090;
 `
 const TitleCard = styled.h2`
@@ -314,13 +314,13 @@ const Result: React.FC<ResultsProps> = (props) => {
         var doc = new jsPDF('p', 'pt');
         doc.setFont('courier');
         doc.setFontSize(10);
-        doc.text('Universidade Federal Rural do SemiÁrido - UFERSA', 80, 50);
-        doc.text('Esta programa é destinado à realização de um pré-dimensionamento de', 80, 63);
-        doc.text('clarificação em uma estação de tratamento de água convencional', 80, 76);
+        doc.text('Universidade Federal Rural do Semi-Árido - UFERSA', 80, 50);
+        doc.text('Este programa é destinado à realização do pré-dimensionamento das', 80, 63);
+        doc.text('unidade em estações de tratamento do tipo convencional - ETAUFERSA', 80, 76);
 
         doc.setLineWidth(0.5);
         doc.line(485, 89, 80, 89);
-        doc.text('Resultados da Filtração', 80, 105);
+        doc.text('Relatório analítico da unidade de Filtração', 80, 105);
 
         doc.text('Velocidades Obtidas (m/s)', 80, 135);
 
@@ -367,17 +367,22 @@ const Result: React.FC<ResultsProps> = (props) => {
         doc.text(`Areia = ${vMf[0]?.toFixed(4)}`, 100, 596);
         doc.text(`Antracito = ${vMf[1]?.toFixed(4)}`, 100, 609);
         doc.text(`Bifásico = ${vMf[2]?.toFixed(4)}`, 100, 621);
-        doc.addPage();
         if(canvas.current != null){
-            doc.addImage(canvas.current.toDataURL(), 'PNG', 15, 40, 550, 350);
+            doc.addPage();
+            doc.text('Universidade Federal Rural do Semi-Árido - UFERSA', 80, 50);
+            doc.text('Esta programa é destinado à realização de um pré-dimensionamento de', 80, 63);
+            doc.text('clarificação em uma estação de tratamento de água convencional', 80, 76);
+
+            doc.setLineWidth(0.5);
+            doc.line(485, 89, 80, 89);
+            doc.text('Detalhamento do pré-dimensionamento da unidade de Filtração', 80, 110);
+            doc.addImage(canvas.current.toDataURL(), 'PNG', 15, 130, 550, 350);
         }
         doc.save('Resultados Filtração.pdf');
-        //doc.output('dataurlnewwindow');
+        // doc.output('dataurlnewwindow');
     }
     const [image, setImage] = useState(null) as any;
     const canvas = useRef<HTMLCanvasElement>(null);
-    const [upperText, setUpperText] = useState("");
-    const [lowerText, setLowerText] = useState("");
 
     useEffect(() => {
         const img = new Image();
@@ -405,15 +410,22 @@ const Result: React.FC<ResultsProps> = (props) => {
             if (canvas.current != null) {
                 const ctx = canvas.current.getContext("2d") as any;
                 ctx.fillStyle = "black";
-                ctx.fillRect(0, 0, 550, 330);
-                ctx.drawImage(image, 0, 0, 550, 350);
+                ctx.fillRect(0, 0, 650, 450);
+                ctx.drawImage(image, 0, 0, 650, 450);
                 ctx.font = `12px Roboto`;
-                ctx.fillText(`${V1[5]?.toFixed(2)}`, 420, 80);
-                ctx.fillText(`${V2[1]?.toFixed(2)}`, 420, 130);
-                ctx.fillText(`${props.a1.toFixed(2)}`, 420, 195);
-                ctx.fillText(`${props.an1.toFixed(2)}`, 420, 175);
-                ctx.fillText(`${props.altura.toFixed(2)}`, 420, 215);
-                ctx.fillText(`espaço entre calhas = ${V2[6]?.toFixed(4)} m`, 290, 320);
+                ctx.fillText(`${V1[3]} m`, 578, 59);
+                ctx.fillText(`L = ${V4[3]?.toFixed(4)} m`, 210, 26);
+                ctx.font = `10px Roboto`;
+                ctx.fillText(`Y = ${V4[4]?.toFixed(4)} m`, 30, 196);
+                ctx.font = `12px Roboto`;
+                ctx.fillText(`${V1[5]?.toFixed(2)} m`, 490, 120);
+                ctx.fillText(`${V2[1]?.toFixed(2)} m`, 490, 185);
+                ctx.fillText(`${props.an1.toFixed(2)} m`, 490, 242);
+                ctx.fillText(`${props.a1.toFixed(2)} m`, 490, 267);
+                ctx.fillText(`${props.altura.toFixed(2)} m`, 490, 288);
+                ctx.fillText(`${V2[1]?.toFixed(4)} m`, 300, 420);
+                ctx.fillText(`${V2[0]?.toFixed(4)} m`, 235, 447);
+                ctx.fillText(`espaço entre calhas = ${V2[6]?.toFixed(4)} m`, 380, 420);
             }
         }
     }, [image, canvas]);
@@ -421,7 +433,7 @@ const Result: React.FC<ResultsProps> = (props) => {
     return (
         <>
             <Canvas id="canvas">
-                <canvas width={550} height={350} ref={canvas}></canvas>
+                <canvas width={650} height={450} ref={canvas}></canvas>
             </Canvas>
             <button onClick={() => download()}>Download</button>
             <Resultados>
@@ -780,7 +792,7 @@ export default function Coagulacao() {
                                 <TableHead>Altura (m)</TableHead>
                                 <TableHead>Def (mm)</TableHead>
                                 <TableHead>C.U</TableHead>
-                                <TableHead>Massa Específica (Kg/m²)</TableHead>
+                                <TableHead>Massa Específica (kg/m³)</TableHead>
                                 <TableHead>Porosidade</TableHead>
                                 <TableHead>C. esfericidade</TableHead>
                                 <TableHead>d10 (mm)</TableHead>

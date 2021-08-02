@@ -403,59 +403,29 @@ const Result: React.FC<ResultsProps> = (props) => {
         doc.setLineWidth(0.5);
         doc.line(485,89,80,89);
         
-        doc.text('Resultados da Coagulação', 80, 105);
+        doc.text('Relatório analítico da unidade de Coagulação', 80, 105);
 
         doc.text('Velocidades Obtidas (m/s)', 80, 135);
-        doc.text(`V  = ${V[0].toFixed(4)}`, 100, 158);
-        doc.setFontSize(8);
-        doc.text('s', 105, 160);
-        doc.setFontSize(10);
-        doc.text(`V  = ${V[1].toFixed(4)}`, 100, 171);
-        doc.setFontSize(8);
-        doc.text('1', 105, 173);
-        doc.setFontSize(10);
-        doc.text(`V  = ${V[2].toFixed(4)}`, 100, 184);
-        doc.setFontSize(8);
-        doc.text('2', 105, 186);
-        doc.setFontSize(10);
-        doc.text(`V  = ${V[3].toFixed(4)}`, 100, 197);
-        doc.setFontSize(8);
-        doc.text('3', 105, 199);
-        doc.setFontSize(10);
+        doc.text(`Velocidade na seção de medição = ${V[0].toFixed(4)}`, 100, 158);
+        doc.text(`Velocidade antes do ressalto = ${V[1].toFixed(4)}`, 100, 171);
+        doc.text(`Velocidade no ressalto = ${V[2].toFixed(4)}`, 100, 184);
+        doc.text(`Velocidade na seção de saída do Parshall = ${V[3].toFixed(4)}`, 100, 197);
 
         doc.line(485,230,80,230);
 
         doc.text('Alturas obtidas (m)', 80, 260);
-        doc.text(`H  = ${H[0].toFixed(4)}`, 100, 283);
-        doc.setFontSize(8);
-        doc.text('0', 106, 285);
-        doc.setFontSize(10);
-        doc.text(`H  = ${H[1].toFixed(4)}`, 100, 296);
-        doc.setFontSize(8);
-        doc.text('1', 106, 298);
-        doc.setFontSize(10);
-        doc.text(`H  = ${H[2].toFixed(4)}`, 100, 309);
-        doc.setFontSize(8);
-        doc.text('2', 106, 311);
-        doc.setFontSize(10);
-        doc.text(`H  = ${H[3].toFixed(4)}`, 100, 321);
-        doc.setFontSize(8);
-        doc.text('3', 106, 323);
-        doc.setFontSize(10);
+        doc.text(`Altura de água na seção de medição = ${H[0].toFixed(4)}`, 100, 283);
+        doc.text(`Altura de água antes do ressalto = ${H[1].toFixed(4)}`, 100, 296);
+        doc.text(`Altura do ressalto = ${H[2].toFixed(4)}`, 100, 309);
+        doc.text(`Altura na seção de saída = ${H[3].toFixed(4)}`, 100, 321);
 
         doc.line(485,350,80,350);
 
-        doc.text(`D'(m) = ${O[0].toFixed(4)}`, 100, 375);
-        doc.text(`q (m³/s/m) = ${O[1].toFixed(4)}`, 100, 388);
-        doc.text(`E (m) = ${O[2].toFixed(4)}`, 100, 401);
-        doc.setFontSize(8);
-        doc.text('0', 106, 403);
-        doc.setFontSize(10);
-        doc.text(`Fr = ${O[3].toFixed(4)}`, 100, 414);
-        doc.setFontSize(8);
-        doc.text('1', 111, 416);
-        doc.setFontSize(10);
-        doc.text(`hf (m) = ${O[4].toFixed(4)}`, 100, 427);
+        doc.text(`Largura do Parshall na seção de medição = ${O[0].toFixed(4)}`, 100, 375);
+        doc.text(`Vazão específica na garganta do Parshall = ${O[1].toFixed(4)}`, 100, 388);
+        doc.text(`Carga hidráulica disponível = ${O[2].toFixed(4)}`, 100, 401);
+        doc.text(`Número de Froude = ${O[3].toFixed(4)}`, 100, 414);
+        doc.text(`Perda de carga no ressalto = ${O[4].toFixed(4)}`, 100, 427);
 
         doc.line(485,450,80,450);
 
@@ -463,16 +433,24 @@ const Result: React.FC<ResultsProps> = (props) => {
         doc.text(`T = ${O[5].toFixed(4)}`, 100, 483);
         doc.text('Gradiente de velocidade (s-1)', 80, 509);
         doc.text(`G = ${O[5].toFixed(4)}`, 100, 522);
+        if(canvas.current != null){
+            doc.addPage();
+            doc.text('Universidade Federal Rural do Semi-Árido - UFERSA', 80, 50);
+            doc.text('Esta programa é destinado à realização de um pré-dimensionamento de', 80, 63);
+            doc.text('clarificação em uma estação de tratamento de água convencional', 80, 76);
 
+            doc.setLineWidth(0.5);
+            doc.line(485, 89, 80, 89);
+            doc.text('Detalhamento do pré-dimensionamento da unidade de Coagulação', 80, 110);
+            doc.addImage(canvas.current.toDataURL(), 'PNG', 15, 130, 550, 350);
+        }
         doc.save('Resultados Coagulacão.pdf');
-        //doc.output('dataurlnewwindow');
+        // doc.output('dataurlnewwindow');
     }
 
     
     const [image, setImage] = useState(null) as any;
     const canvas = useRef<HTMLCanvasElement>(null);
-    const [upperText, setUpperText] = useState("");
-    const [lowerText, setLowerText] = useState("");
 
     useEffect(() => {
         const img = new Image();
@@ -501,12 +479,10 @@ const Result: React.FC<ResultsProps> = (props) => {
                 var values = Coag.valoresParshal(props.options)
                 const ctx = canvas.current.getContext("2d") as any;
                 ctx.fillStyle = "black";
-                ctx.fillRect(0, 0, 550, 330);
+                ctx.fillRect(0, 0, 550, 350);
                 ctx.drawImage(image, 0, 0, 550, 350);
                 ctx.font = `16px Roboto`;
-                setUpperText(`opa`);
-                setLowerText(`teste`);
-                ctx.fillText(`${values[0].toFixed(2)}`, 320, 70);
+                ctx.fillText(`${values[0].toFixed(2)}`, 320, 75);
                 ctx.fillText(`${values[4].toFixed(2)}`, 80, 120);
                 ctx.fillText(`${V[2].toFixed(2)}`, 140, 120);
                 ctx.font = `14px Roboto`;
@@ -514,9 +490,10 @@ const Result: React.FC<ResultsProps> = (props) => {
                 ctx.font = `16px Roboto`;
                 ctx.fillText(`${values[7].toFixed(2)}`, 410, 120);
                 ctx.font = `14px Roboto`;
-                ctx.fillText(`${V[0].toFixed(2)}`, 195, 157);
+                ctx.fillText(`${V[0].toFixed(1)}`, 195, 157);
                 ctx.fillText(`${values[1].toFixed(2)}`, 265, 150);
-                ctx.fillText(`1.65`, 195, 177);
+                var b = V[0].toFixed(1);
+                ctx.fillText(`${((3*Number(b))/2).toFixed(2)}`, 195, 177);
                 ctx.font = `16px Roboto`;
                 ctx.fillText(`${H[0].toFixed(2)}`, 130, 320);
                 ctx.fillText(`${H[1].toFixed(2)}`, 260, 325);
@@ -525,7 +502,6 @@ const Result: React.FC<ResultsProps> = (props) => {
                 ctx.fillText(`${(H[3]+O[4]).toFixed(2)}`, 420, 315);
 
                 ctx.font = `13px Roboto`;
-                ctx.fillText(lowerText, 120, 280);
             }
         }
     }, [image, canvas]);
@@ -534,7 +510,7 @@ const Result: React.FC<ResultsProps> = (props) => {
             <Canvas id="canvas">
                 <canvas width={550} height={350} ref={canvas}></canvas>
             </Canvas>
-            <button onClick={() => download()}>Download</button>
+            <PDFButton onClick={() => download()}>Download</PDFButton>
             {
                 <Resultados>
                     <Left>
@@ -648,7 +624,7 @@ const Result: React.FC<ResultsProps> = (props) => {
                                 </Item>
                             </GridRight>
                         </CardResultados>
-                                <PDFButton onClick={jsPdfGenerator}>Gerar PDF</PDFButton>
+                        <PDFButton onClick={jsPdfGenerator}>Gerar PDF</PDFButton>
                     </Right>
                 </Resultados>
             }

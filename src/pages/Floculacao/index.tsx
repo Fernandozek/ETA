@@ -293,6 +293,40 @@ const TableHead = styled.th`
     @media(min-width: 768px){
         font-size: 1.2rem;
     }
+    position: relative;
+    
+    .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -60px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .tooltiptext::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+    }
+
+    :hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
 `
 const Table = styled.table`
     margin-top: 20px;
@@ -494,15 +528,13 @@ const Result: React.FC<ResultsProps> = (props) => {
 
         doc.setLineWidth(0.5);
         doc.line(485, 89, 80, 89);
-        doc.text('Resultados da Floculação', 80, 105);
+        doc.text('Relatório analítico da unidade de Floculação', 80, 125);
 
-        doc.text('Velocidades Obtidas (m/s)', 80, 135);
-
-        doc.text(`ql (m³/s) = ${Number(q).toFixed(4)}`, 100, 158);
-        doc.text(`Volume (m³) = ${Number(Vol).toFixed(0)}`, 100, 171);
-        doc.text(`Area (m²) = ${Number(A)?.toFixed(4)}`, 100, 184);
-        doc.text(`Largura (m) = ${Number(B).toFixed(4)}`, 100, 197);
-        doc.text(`Comprimento (m) = ${Number(a).toFixed(4)}`, 100, 210);
+        doc.text(`Vazão da água (m³/s) = ${Number(q).toFixed(4)}`, 100, 158);
+        doc.text(`Volume de água (m³) = ${Number(Vol).toFixed(0)}`, 100, 171);
+        doc.text(`Área superficial do floculador (m²) = ${Number(A)?.toFixed(4)}`, 100, 184);
+        doc.text(`Largura do canal ou trecho considerado (m) = ${Number(B).toFixed(4)}`, 100, 197);
+        doc.text(`Comprimento do canal ou trecho considerado (m) = ${Number(a).toFixed(4)}`, 100, 210);
 
         doc.line(485, 220, 80, 220);
 
@@ -515,7 +547,7 @@ const Result: React.FC<ResultsProps> = (props) => {
         doc.text('Dht (m)', 387, 256);
         doc.text('G (1/s)', 440, 256);
 
-        
+
         doc.line(485, 245, 80, 245);
 
         var linha = 275;
@@ -545,7 +577,7 @@ const Result: React.FC<ResultsProps> = (props) => {
         if (M22 != undefined) {
 
             doc.text(`O canal 1 foi superior a 70 1/s, e usando um fator de correção de ${fatorvalue}%,`, 80, 369);
-            doc.text(`temos:`, 80, 382);
+            doc.text(`tem-se:`, 80, 382);
 
             doc.line(485, 400, 80, 400);
 
@@ -582,30 +614,47 @@ const Result: React.FC<ResultsProps> = (props) => {
             doc.line(433, 400, 433, linha);
             doc.line(485, 400, 485, linha);
             doc.line(485, linha, 80, linha);
+
+            doc.text('Legenda: ', 80, 520);
+            doc.text('n = Número de espaçamento entre chicanas em cada câmara', 80, 533);
+            doc.text('e = Espaçamento entre chicanas', 80, 546);
+            doc.text('V1 (m/s) = Velocidade nos trechos retos', 80, 559);
+            doc.text('V2 (m/s) = Velocidade nos trechos curvos', 80, 571);
+            doc.text('Dhd (m) = Perda de carga distribuída(m)', 80, 584);
+            doc.text('Dhl (m) = Perda de carga localizada', 80, 597);
+            doc.text('Dht (m) = Perda de carga total', 80, 610);
+            doc.text('G (1/s) = Gradiente de velocidade', 80, 623);
+        } else {
+            doc.text('Legenda: ', 80, 460);
+            doc.text('n = Número de espaçamento entre chicanas em cada câmara', 80, 473);
+            doc.text('e = Espaçamento entre chicanas', 80, 486);
+            doc.text('V1 (m/s) = Velocidade nos trechos retos', 80, 499);
+            doc.text('V2 (m/s) = Velocidade nos trechos curvos', 80, 512);
+            doc.text('Dhd (m) = Perda de carga distribuída(m)', 80, 525);
+            doc.text('Dhl (m) = Perda de carga localizada', 80, 538);
+            doc.text('Dht (m) = Perda de carga total', 80, 551);
+            doc.text('G (1/s) = Gradiente de velocidade', 80, 564);
+        }
+
+        if (canvas.current != null) {
+            doc.addPage();
+            doc.text('Universidade Federal Rural do Semi-Árido - UFERSA', 80, 50);
+            doc.text('Esta programa é destinado à realização de um pré-dimensionamento de', 80, 63);
+            doc.text('clarificação em uma estação de tratamento de água convencional', 80, 76);
+
+            doc.setLineWidth(0.5);
+            doc.line(485, 89, 80, 89);
+            doc.text('Detalhamento do pré-dimensionamento da unidade de Floculação', 80, 110);
+            doc.addImage(canvas.current.toDataURL(), 'PNG', 15, 130, 620, 430);
         }
         doc.save('Resultados Floculação.pdf');
-        //doc.output('dataurlnewwindow');
+        // doc.output('dataurlnewwindow');
     }
 
 
 
     const [image, setImage] = useState(null) as any;
     const canvas = useRef<HTMLCanvasElement>(null);
-    const [upperText, setUpperText] = useState("");
-    const [lowerText, setLowerText] = useState("");
-    const [l, setL] = useState("");
-    const [c1, setC1] = useState("");
-    const [c2, setC2] = useState("");
-    const [c3, setC3] = useState("");
-    const [e1, setE1] = useState("");
-    const [e2, setE2] = useState("");
-    const [e3, setE3] = useState("");
-    const [e4, setE4] = useState("");
-    const [v, setV] = useState("");
-    const [v2, setV2] = useState("");
-    const [v3, setV3] = useState("");
-    const [h, setH] = useState("");
-    const [e, setE] = useState("");
 
     useEffect(() => {
         const img = new Image();
@@ -631,7 +680,7 @@ const Result: React.FC<ResultsProps> = (props) => {
     useEffect(() => {
         if (image && canvas) {
             if (canvas.current != null) {
-                var v1 = Number(q)/(Number(a)*V12[0]);
+                var v1 = Number(q) / (Number(a) * V12[0]);
                 const ctx = canvas.current.getContext("2d") as any;
                 ctx.fillStyle = "black";
                 ctx.fillRect(0, 0, 650, 450);
@@ -648,12 +697,12 @@ const Result: React.FC<ResultsProps> = (props) => {
                 ctx.fillText(`e = ${V12[2]?.toFixed(4)}m`, 120, 120);
                 ctx.fillText(`e = ${V12[3]?.toFixed(4)}m`, 135, 160);
                 ctx.font = `9px Roboto`;
-                ctx.fillText(`H =     ${V12[3]?.toFixed(4)}m`, 525, 320);
+                ctx.fillText(`H =     ${props.profvalue} m`, 525, 320);
                 ctx.font = `10px Roboto`;
                 ctx.fillText(`V1 = ${v1.toFixed(4)} m³`, 20, 320);
                 ctx.fillText(`V1`, 107, 340);
                 ctx.font = `7px Roboto`;
-                ctx.fillText(`V2 = ${((2/3)*v1).toFixed(4)} m/s`, 105, 280);
+                ctx.fillText(`V2 = ${((2 / 3) * v1).toFixed(4)} m/s`, 105, 280);
                 ctx.fillText(`${V24[3]?.toFixed(2)}`, 140, 385);
             }
         }
@@ -707,14 +756,14 @@ const Result: React.FC<ResultsProps> = (props) => {
                     <Section>
                         <Table>
                             <TableHeadContainer>
-                                <TableHead>n</TableHead>
-                                <TableHead><i>e</i></TableHead>
-                                <TableHead>V<sub>1</sub> (m/s)</TableHead>
-                                <TableHead>V<sub>2</sub> (m/s)</TableHead>
-                                <TableHead>Δhd (m)</TableHead>
-                                <TableHead>Δhl (m)</TableHead>
-                                <TableHead>Δht (m)</TableHead>
-                                <TableHead>G (1/s)</TableHead>
+                                <TableHead><span className="tooltiptext">Número de espaçamento entre chicanas em cada câmara</span>n</TableHead>
+                                <TableHead><span className="tooltiptext">Espaçamento entre chicanas</span><i>e</i></TableHead>
+                                <TableHead><span className="tooltiptext">Velocidade nos trechos retos (m/s)</span>V<sub>1</sub> (m/s)</TableHead>
+                                <TableHead><span className="tooltiptext">Velocidade nos trechos curvos (m/s)</span>V<sub>2</sub> (m/s)</TableHead>
+                                <TableHead><span className="tooltiptext">Perda de carga distribuída (m)</span>Δhd (m)</TableHead>
+                                <TableHead><span className="tooltiptext">Perda de carga localizada (m)</span>Δhl (m)</TableHead>
+                                <TableHead><span className="tooltiptext">Perda de carga total (m)</span>Δht (m)</TableHead>
+                                <TableHead><span className="tooltiptext">Gradiente de velocidade (1/s)</span>G (1/s)</TableHead>
                             </TableHeadContainer>
                             <Tr1
                                 qvalue={props.qvalue}
@@ -763,7 +812,7 @@ const Result: React.FC<ResultsProps> = (props) => {
                         {
                             secondTable <= 70 &&
                             <NotiFatorOk>
-                                <h2>O valor do canal 1 foi corrigido com {fatorvalue}%!</h2>
+                                <h2>O valor do canal 1 foi corrigido com um fator de correção de {fatorvalue}%!</h2>
                             </NotiFatorOk>
                         }
                         {
@@ -776,14 +825,14 @@ const Result: React.FC<ResultsProps> = (props) => {
                         <Section>
                             <Table>
                                 <TableHeadContainer>
-                                    <TableHead>n</TableHead>
-                                    <TableHead>e</TableHead>
-                                    <TableHead>V<sub>1</sub> (m/s)</TableHead>
-                                    <TableHead>V<sub>2</sub> (m/s)</TableHead>
-                                    <TableHead>Dhd (m)</TableHead>
-                                    <TableHead>Dhl (m)</TableHead>
-                                    <TableHead>Dht (m)</TableHead>
-                                    <TableHead>G (1/s)</TableHead>
+                                    <TableHead><span className="tooltiptext">Número de espaçamento entre chicanas em cada câmara</span>n</TableHead>
+                                    <TableHead><span className="tooltiptext">Espaçamento entre chicanas</span><i>e</i></TableHead>
+                                    <TableHead><span className="tooltiptext">Velocidade nos trechos retos (m/s)</span>V<sub>1</sub> (m/s)</TableHead>
+                                    <TableHead><span className="tooltiptext">Velocidade nos trechos curvos (m/s)</span>V<sub>2</sub> (m/s)</TableHead>
+                                    <TableHead><span className="tooltiptext">Perda de carga distribuída (m)</span>Δhd (m)</TableHead>
+                                    <TableHead><span className="tooltiptext">Perda de carga localizada (m)</span>Δhl (m)</TableHead>
+                                    <TableHead><span className="tooltiptext">Perda de carga total (m)</span>Δht (m)</TableHead>
+                                    <TableHead><span className="tooltiptext">Gradiente de velocidade (1/s)</span>G (1/s)</TableHead>
                                 </TableHeadContainer>
                                 <Tr2
                                     qvalue={props.qvalue}
@@ -851,7 +900,7 @@ const Floculacao: React.FC<ResultsProps> = (props) => {
     const [qms, setQms] = useState("");
     const [gs, setGs] = useState("3");
     const [gValues, setGValues] = useState<string[]>([]);
-    const [valuesInputs, setValuesInputs] = useState({}); 
+    const [valuesInputs, setValuesInputs] = useState({});
     const [qvalue, setQvalue] = useState("");
     const [tvalue, setTvalue] = useState("");
     const [profvalue, setProfvalue] = useState("");
