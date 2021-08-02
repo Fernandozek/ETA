@@ -352,9 +352,9 @@ const Result: React.FC<ResultsProps> = (props) => {
         doc.text('(Condição atendida)', 100, 548);
         if(canvas.current != null){
             doc.addPage();
-            doc.text('Universidade Federal Rural do Semi-Árido - UFERSA', 80, 50);
-            doc.text('Esta programa é destinado à realização de um pré-dimensionamento de', 80, 63);
-            doc.text('clarificação em uma estação de tratamento de água convencional', 80, 76);
+            doc.text('Universidade Federal Rural do SemiÁrido - UFERSA', 80, 50);
+            doc.text('Este programa é destinado à realização do pré-dimensionamento da', 80, 63);
+            doc.text('unidade de decantação (fluxo horizontal) em estações do tratamento de água do tipo convencional', 80, 76);
 
             doc.setLineWidth(0.5);
             doc.line(485, 89, 80, 89);

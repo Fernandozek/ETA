@@ -396,9 +396,9 @@ const Result: React.FC<ResultsProps> = (props) => {
         var doc = new jsPDF('p', 'pt');
         doc.setFont('courier');
         doc.setFontSize(10);
-        doc.text('Universidade Federal Rural do SemiÁrido - UFERSA', 80, 50);
-        doc.text('Esta programa é destinado à realização de um pré-dimensionamento de', 80, 63);
-        doc.text('clarificação em uma estação de tratamento de água convencional', 80, 76);
+        doc.text('Universidade Federal Rural do Semi-Árido - UFERSA', 80, 50);
+        doc.text('Este programa é destinado à realização do pré-dimensionamento da', 80, 63);
+        doc.text('unidade de coagulação hidráulica (calha Parshall) em estações de tratamento de água do tipo convencional', 80, 76);
         
         doc.setLineWidth(0.5);
         doc.line(485,89,80,89);
@@ -436,8 +436,8 @@ const Result: React.FC<ResultsProps> = (props) => {
         if(canvas.current != null){
             doc.addPage();
             doc.text('Universidade Federal Rural do Semi-Árido - UFERSA', 80, 50);
-            doc.text('Esta programa é destinado à realização de um pré-dimensionamento de', 80, 63);
-            doc.text('clarificação em uma estação de tratamento de água convencional', 80, 76);
+            doc.text('Este programa é destinado à realização do pré-dimensionamento da', 80, 63);
+            doc.text('unidade de coagulação (hidráulica) em estações de tratamento de água do tipo convencional', 80, 76);
 
             doc.setLineWidth(0.5);
             doc.line(485, 89, 80, 89);

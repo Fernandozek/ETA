@@ -155,6 +155,39 @@ const TableData = styled.td`
     @media(min-width: 768px){
         font-size: 1.3rem;
     }
+    position: relative;
+    .tooltipvalue {
+        visibility: hidden;
+        width: 120px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -60px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .tooltipvalue::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+    }
+
+    :hover .tooltipvalue {
+        visibility: visible;
+        opacity: 1;
+    }
 `
 const TableRowContainer = styled.tr`
     width: 100%;
@@ -314,9 +347,9 @@ const Result: React.FC<ResultsProps> = (props) => {
         var doc = new jsPDF('p', 'pt');
         doc.setFont('courier');
         doc.setFontSize(10);
-        doc.text('Universidade Federal Rural do Semi-Árido - UFERSA', 80, 50);
-        doc.text('Este programa é destinado à realização do pré-dimensionamento das', 80, 63);
-        doc.text('unidade em estações de tratamento do tipo convencional - ETAUFERSA', 80, 76);
+        doc.text('Universidade Federal Rural do SemiÁrido - UFERSA', 80, 50);
+        doc.text('Este programa é destinado à realização do pré-dimensionamento da', 80, 63);
+        doc.text('unidade de filtração rápida (camada dupla de antracito e areia) em estações do tratamento de água do tipo convencional', 80, 76);
 
         doc.setLineWidth(0.5);
         doc.line(485, 89, 80, 89);
@@ -369,9 +402,9 @@ const Result: React.FC<ResultsProps> = (props) => {
         doc.text(`Bifásico = ${vMf[2]?.toFixed(4)}`, 100, 621);
         if(canvas.current != null){
             doc.addPage();
-            doc.text('Universidade Federal Rural do Semi-Árido - UFERSA', 80, 50);
-            doc.text('Esta programa é destinado à realização de um pré-dimensionamento de', 80, 63);
-            doc.text('clarificação em uma estação de tratamento de água convencional', 80, 76);
+            doc.text('Universidade Federal Rural do SemiÁrido - UFERSA', 80, 50);
+            doc.text('Este programa é destinado à realização do pré-dimensionamento da', 80, 63);
+            doc.text('unidade de filtração rápida (camada dupla de antracito e areia) em estações do tratamento de água do tipo convencional', 80, 76);
 
             doc.setLineWidth(0.5);
             doc.line(485, 89, 80, 89);
@@ -966,14 +999,14 @@ export default function Coagulacao() {
                                     />
                                 </Item>
                                 <Item>
-                                    <Title>d10 (mm)</Title>
+                                    <Title>d<sub>10</sub> (mm)</Title>
                                     <InputCard
                                         type="number"
                                         onChange={(e) => setD1(e.target.value)}
                                     />
                                 </Item>
                                 <Item>
-                                    <Title>d10 (mm)</Title>
+                                    <Title>d<sub>60</sub> (mm)</Title>
                                     <InputCard
                                         type="number"
                                         onChange={(e) => setD2(e.target.value)}

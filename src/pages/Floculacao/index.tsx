@@ -523,8 +523,8 @@ const Result: React.FC<ResultsProps> = (props) => {
         doc.setFont('courier');
         doc.setFontSize(10);
         doc.text('Universidade Federal Rural do SemiÁrido - UFERSA', 80, 50);
-        doc.text('Esta programa é destinado à realização de um pré-dimensionamento de', 80, 63);
-        doc.text('clarificação em uma estação de tratamento de água convencional', 80, 76);
+        doc.text('Este programa é destinado à realização do pré-dimensionamento da', 80, 63);
+        doc.text('unidade de floculação hidráulica (fluxo vertical) em estações do tratamento de água do tipo convencional', 80, 76);
 
         doc.setLineWidth(0.5);
         doc.line(485, 89, 80, 89);
@@ -638,9 +638,9 @@ const Result: React.FC<ResultsProps> = (props) => {
 
         if (canvas.current != null) {
             doc.addPage();
-            doc.text('Universidade Federal Rural do Semi-Árido - UFERSA', 80, 50);
-            doc.text('Esta programa é destinado à realização de um pré-dimensionamento de', 80, 63);
-            doc.text('clarificação em uma estação de tratamento de água convencional', 80, 76);
+            doc.text('Universidade Federal Rural do SemiÁrido - UFERSA', 80, 50);
+            doc.text('Este programa é destinado à realização do pré-dimensionamento da', 80, 63);
+            doc.text('unidade de floculação hidráulica (fluxo vertical) em estações do tratamento de água do tipo convencional', 80, 76);
 
             doc.setLineWidth(0.5);
             doc.line(485, 89, 80, 89);
@@ -686,7 +686,7 @@ const Result: React.FC<ResultsProps> = (props) => {
                 ctx.fillRect(0, 0, 650, 450);
                 ctx.drawImage(image, 0, 0, 650, 450);
                 ctx.font = `12px Roboto`;
-                ctx.fillText(`${Number(B).toFixed(4)} m`, 297, 15);
+                ctx.fillText(`L = ${Number(B).toFixed(4)} m`, 297, 15);
                 ctx.font = `9px Roboto`;
                 ctx.fillText(`a = ${Number(a).toFixed(4)}m`, 7, 50);
                 ctx.fillText(`a = ${Number(a).toFixed(4)}m`, 20, 90);
