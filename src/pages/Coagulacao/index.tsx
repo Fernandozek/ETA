@@ -12,6 +12,7 @@ import jsPDF from 'jspdf';
 interface ResultsProps {
     q: number,
     v: number[],
+    vet: number[],
     options: number
 }
 const EtaContainer = styled.div`
@@ -175,9 +176,11 @@ const Button = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 
 `
 const Canvas = styled.div`
+    margin-top: 20px;
     width: 550px;
     height: 350px;
     background-color: #909090;
@@ -389,7 +392,7 @@ const Tr1: React.FC<Table1Props> = (props) => {
 }
 
 const Result: React.FC<ResultsProps> = (props) => {
-    
+
     const [V, H, O] = Coag.coag(Number(props.q), props.v);
 
     const jsPdfGenerator = () => {
@@ -398,57 +401,71 @@ const Result: React.FC<ResultsProps> = (props) => {
         doc.setFontSize(10);
         doc.text('Universidade Federal Rural do Semi-Árido - UFERSA', 80, 50);
         doc.text('Este programa é destinado à realização do pré-dimensionamento da', 80, 63);
-        doc.text('unidade de coagulação hidráulica (calha Parshall) em estações de tratamento de água do tipo convencional', 80, 76);
-        
+        doc.text('unidade de coagulação (hidráulica) em estações de tratamento', 80, 76);
+        doc.text('de água do tipo convencional', 80, 89);
+
         doc.setLineWidth(0.5);
-        doc.line(485,89,80,89);
+        doc.line(485, 95, 80, 95);
+        doc.text('Dados de entrada', 80, 115);
+        doc.text('Medidor Parshall: ', 80, 138);
         
-        doc.text('Relatório analítico da unidade de Coagulação', 80, 105);
+        let linha = 30;
+        
+        props.vet.map((e) =>{
+            linha+=50;
+            return(
+                doc.text(e.toFixed(4), linha, 151)
+            )
+        })
 
-        doc.text('Velocidades Obtidas (m/s)', 80, 135);
-        doc.text(`Velocidade na seção de medição = ${V[0].toFixed(4)}`, 100, 158);
-        doc.text(`Velocidade antes do ressalto = ${V[1].toFixed(4)}`, 100, 171);
-        doc.text(`Velocidade no ressalto = ${V[2].toFixed(4)}`, 100, 184);
-        doc.text(`Velocidade na seção de saída do Parshall = ${V[3].toFixed(4)}`, 100, 197);
+        doc.text('Vazão no canal de coagulação (m³/s)', 80, 174);
+        doc.text(`${props.q}`, 80, 187);
 
-        doc.line(485,230,80,230);
+        doc.text('Relatório analítico da unidade de Coagulação', 80, 225);
 
-        doc.text('Alturas obtidas (m)', 80, 260);
-        doc.text(`Altura de água na seção de medição = ${H[0].toFixed(4)}`, 100, 283);
-        doc.text(`Altura de água antes do ressalto = ${H[1].toFixed(4)}`, 100, 296);
-        doc.text(`Altura do ressalto = ${H[2].toFixed(4)}`, 100, 309);
-        doc.text(`Altura na seção de saída = ${H[3].toFixed(4)}`, 100, 321);
+        doc.text('Velocidades Obtidas (m/s)', 80, 248);
+        doc.text(`Velocidade na seção de medição = ${V[0].toFixed(4)}`, 100, 261);
+        doc.text(`Velocidade antes do ressalto = ${V[1].toFixed(4)}`, 100, 274);
+        doc.text(`Velocidade no ressalto = ${V[2].toFixed(4)}`, 100, 287);
+        doc.text(`Velocidade na seção de saída do Parshall = ${V[3].toFixed(4)}`, 100, 300);
 
-        doc.line(485,350,80,350);
+        doc.text('Alturas obtidas (m)', 80, 330);
+        doc.text(`Altura de água na seção de medição = ${H[0].toFixed(4)}`, 100, 353);
+        doc.text(`Altura de água antes do ressalto = ${H[1].toFixed(4)}`, 100, 366);
+        doc.text(`Altura do ressalto = ${H[2].toFixed(4)}`, 100, 379);
+        doc.text(`Altura na seção de saída = ${H[3].toFixed(4)}`, 100, 392);
 
-        doc.text(`Largura do Parshall na seção de medição = ${O[0].toFixed(4)}`, 100, 375);
-        doc.text(`Vazão específica na garganta do Parshall = ${O[1].toFixed(4)}`, 100, 388);
-        doc.text(`Carga hidráulica disponível = ${O[2].toFixed(4)}`, 100, 401);
-        doc.text(`Número de Froude = ${O[3].toFixed(4)}`, 100, 414);
-        doc.text(`Perda de carga no ressalto = ${O[4].toFixed(4)}`, 100, 427);
+        doc.text(`Largura do Parshall na seção de medição = ${O[0].toFixed(4)}`, 100, 430);
+        doc.text(`Vazão específica na garganta do Parshall = ${O[1].toFixed(4)}`, 100, 443);
+        doc.text(`Carga hidráulica disponível = ${O[2].toFixed(4)}`, 100, 456);
+        doc.text(`Número de Froude = ${O[3].toFixed(4)}`, 100, 469);
+        doc.text(`Perda de carga no ressalto = ${O[4].toFixed(4)}`, 100, 482);
 
-        doc.line(485,450,80,450);
+        doc.text('Tempo de mistura (s)', 80, 520);
+        doc.text(`T = ${O[5].toFixed(4)}`, 100, 533);
+        doc.text('Gradiente de velocidade (s-1)', 80, 546);
+        doc.text(`G = ${O[5].toFixed(4)}`, 100, 569);
 
-        doc.text('Tempo de mistura (s)', 80, 470);
-        doc.text(`T = ${O[5].toFixed(4)}`, 100, 483);
-        doc.text('Gradiente de velocidade (s-1)', 80, 509);
-        doc.text(`G = ${O[5].toFixed(4)}`, 100, 522);
-        if(canvas.current != null){
+
+        
+
+        if (canvas.current != null) {
             doc.addPage();
             doc.text('Universidade Federal Rural do Semi-Árido - UFERSA', 80, 50);
             doc.text('Este programa é destinado à realização do pré-dimensionamento da', 80, 63);
-            doc.text('unidade de coagulação (hidráulica) em estações de tratamento de água do tipo convencional', 80, 76);
+            doc.text('unidade de coagulação (hidráulica) em estações de tratamento', 80, 76);
+            doc.text('de água do tipo convencional', 80, 89);
 
             doc.setLineWidth(0.5);
-            doc.line(485, 89, 80, 89);
-            doc.text('Detalhamento do pré-dimensionamento da unidade de Coagulação', 80, 110);
+            doc.line(485, 95, 80, 95);
+            doc.text('Detalhamento do pré-dimensionamento da unidade de Coagulação', 80, 115);
             doc.addImage(canvas.current.toDataURL(), 'PNG', 15, 130, 550, 350);
         }
-        doc.save('Resultados Coagulacão.pdf');
-        // doc.output('dataurlnewwindow');
+        // doc.save('Resultados Coagulacão.pdf');
+        doc.output('dataurlnewwindow');
     }
 
-    
+
     const [image, setImage] = useState(null) as any;
     const canvas = useRef<HTMLCanvasElement>(null);
 
@@ -460,11 +477,11 @@ const Result: React.FC<ResultsProps> = (props) => {
         }
 
     }, [])
-    
+
     const download = () => {
-        if(image) {
+        if (image) {
             let canva = canvas.current;
-            if(canva !== null){
+            if (canva !== null) {
                 const a = document.createElement('a');
                 a.href = canva.toDataURL();
                 a.download = 'Coagulação.png';
@@ -493,13 +510,13 @@ const Result: React.FC<ResultsProps> = (props) => {
                 ctx.fillText(`${V[0].toFixed(1)}`, 195, 157);
                 ctx.fillText(`${values[1].toFixed(2)}`, 265, 150);
                 var b = V[0].toFixed(1);
-                ctx.fillText(`${((3*Number(b))/2).toFixed(2)}`, 195, 177);
+                ctx.fillText(`${((3 * Number(b)) / 2).toFixed(2)}`, 195, 177);
                 ctx.font = `16px Roboto`;
                 ctx.fillText(`${H[0].toFixed(2)}`, 130, 320);
                 ctx.fillText(`${H[1].toFixed(2)}`, 260, 325);
                 ctx.font = `14px Roboto`;
                 ctx.fillText(`${H[2].toFixed(2)}`, 320, 315);
-                ctx.fillText(`${(H[3]+O[4]).toFixed(2)}`, 420, 315);
+                ctx.fillText(`${(H[3] + O[4]).toFixed(2)}`, 420, 315);
 
                 ctx.font = `13px Roboto`;
             }
@@ -634,7 +651,7 @@ const Result: React.FC<ResultsProps> = (props) => {
 
 const Coagulacao: React.FC<ResultsProps> = (props) => {
 
-    
+
     const [errInput, setErrInput] = useState(true);
 
     var v: any = [];
@@ -653,12 +670,12 @@ const Coagulacao: React.FC<ResultsProps> = (props) => {
             var v = [] as any;
             v = Coag.valoresParshal(Number(options));
             setVetCalculated(v);
-
+            
         } else if (options === "-1") {
             alert("Selecione um medidor parshall");
         } else if (num === "") {
             alert("Preencha o campo!");
-        } else if(acepted === false){
+        } else if (acepted === false) {
             alert("Selecione um valor dentro do intervalo válido!");
         }
     }
@@ -669,87 +686,87 @@ const Coagulacao: React.FC<ResultsProps> = (props) => {
         if (options === "0") {
             if (valor >= 0.0008 && valor <= 1.4272) {
                 setAcepted(true);
-            }else{
+            } else {
                 setAcepted(false);
             }
-        }else{
+        } else {
             if (options === "1") {
                 if (valor >= 0.0014 && valor <= 0.1104) {
                     setAcepted(true);
-                }else{
+                } else {
                     setAcepted(false);
                 }
-            }else{
+            } else {
                 if (options === "2") {
                     if (valor >= 0.0025 && valor <= 0.252) {
                         setAcepted(true);
-                    }else{
+                    } else {
                         setAcepted(false);
                     }
-                }else{
+                } else {
                     if (options === "3") {
                         if (valor >= 0.0031 && valor <= 0.4559) {
                             setAcepted(true);
-                        }else{
+                        } else {
                             setAcepted(false);
                         }
-                    }else{
+                    } else {
                         if (options === "4") {
                             if (valor >= 0.0042 && valor <= 0.6966) {
                                 setAcepted(true);
-                            }else{
+                            } else {
                                 setAcepted(false);
                             }
-                        }else{
+                        } else {
                             if (options === "5") {
                                 if (valor >= 0.0119 && valor <= 0.937) {
                                     setAcepted(true);
-                                }else{
+                                } else {
                                     setAcepted(false);
                                 }
-                            }else{
+                            } else {
                                 if (options === "6") {
                                     if (valor >= 0.0173 && valor <= 1.4272) {
                                         setAcepted(true);
-                                    }else{
+                                    } else {
                                         setAcepted(false);
                                     }
-                                }else{
+                                } else {
                                     if (options === "7") {
                                         if (valor >= 0.0368 && valor <= 1.9227) {
                                             setAcepted(true);
-                                        }else{
+                                        } else {
                                             setAcepted(false);
                                         }
-                                    }else{
+                                    } else {
                                         if (options === "8") {
                                             if (valor >= 0.0453 && valor <= 2.4239) {
                                                 setAcepted(true);
-                                            }else{
+                                            } else {
                                                 setAcepted(false);
                                             }
-                                        }else{
+                                        } else {
                                             if (options === "9") {
                                                 if (valor >= 0.0736 && valor <= 2.9308) {
                                                     setAcepted(true);
-                                                }else{
+                                                } else {
                                                     setAcepted(false);
                                                 }
-                                            }else{
+                                            } else {
                                                 if (options === "10") {
                                                     if (valor >= 0.085 && valor <= 3.4377) {
                                                         setAcepted(true);
-                                                    }else{
+                                                    } else {
                                                         setAcepted(false);
                                                     }
-                                                }else{
+                                                } else {
                                                     if (options === "11") {
                                                         if (valor >= 0.0991 && valor <= 3.9502) {
                                                             setAcepted(true);
-                                                        }else{
+                                                        } else {
                                                             setAcepted(false);
                                                         }
-                                                    }else{
+                                                    } else {
                                                         setAcepted(false);
                                                     }
                                                 }
@@ -763,7 +780,7 @@ const Coagulacao: React.FC<ResultsProps> = (props) => {
                 }
             }
         }
-        if(acepted == true){
+        if (acepted == true) {
             setIsDimensione(false);
         }
 
@@ -817,10 +834,10 @@ const Coagulacao: React.FC<ResultsProps> = (props) => {
                                     onChange={e => setVazao(e.target.value)}
                                 />
                             }
-                            
+
                             {
                                 acepted === false &&
-                                <InputErr 
+                                <InputErr
                                     type="number"
                                     value={num}
                                     onChange={e => setVazao(e.target.value)}
@@ -865,6 +882,7 @@ const Coagulacao: React.FC<ResultsProps> = (props) => {
                     <Result
                         q={Number(num)}
                         v={vetCalculated}
+                        vet={v}
                         options={Number(options)}
                     />
                 }
@@ -873,6 +891,7 @@ const Coagulacao: React.FC<ResultsProps> = (props) => {
                     <Result
                         q={Number(calculated)}
                         v={vetCalculated}
+                        vet={v}
                         options={Number(options)}
 
                     />

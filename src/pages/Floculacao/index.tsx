@@ -6,7 +6,9 @@ import Floc3 from '../../Utils/Floc3';
 import Floc5 from '../../Utils/Floc5';
 import { useState } from 'react';
 import jsPDF from 'jspdf';
-import Img1 from '../../assets/images/exemploFloc.png';
+import Img3 from '../../assets/images/exemploFloc3.png';
+import Img4 from '../../assets/images/exemploFloc.png';
+import Img5 from '../../assets/images/exemploFloc5.png';
 const ETA3Container = styled.div`
     width: 100%;
     padding-top: 40px;
@@ -187,10 +189,11 @@ const Button = styled.button`
 const Canvas = styled.div`
     width: 650px;
     height: 450px;
+    margin-top: 20px;
     background-color: #909090;
 `
 const Resultados = styled.div`
-    margin-top: 100px;
+    margin-top: 40px;
     padding: 0 10px;
     width: 100%;
     display: flex;
@@ -481,10 +484,13 @@ const Tr2: React.FC<Table1Props> = (props) => {
 const Result: React.FC<ResultsProps> = (props) => {
     var teste = 0;
     const [fatorvalue, setFatorvalue] = useState(-1);
+    const [fatorAcept, setFatorAcept] = useState(false);
     const [fatorvalueCalculated, setFatorvalueCalculated] = useState(0);
     const [isDimensione, setIsDimensione] = useState(false);
     const [calculated, setCalculated] = useState(0);
     const [secondTableCalculated, setSecondTableCalculated] = useState(0);
+    const [image, setImage] = useState(null) as any;
+    let canvas = useRef<HTMLCanvasElement>(null);
 
     if (props.g4value !== 0 && props.g5value === 0) {
         var [M22, M2, M11, q, Vol, A, B, a] = Floc.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.g4value, fatorvalue);
@@ -495,21 +501,29 @@ const Result: React.FC<ResultsProps> = (props) => {
             var [M22, M2, M11, q, Vol, A, B, a] = Floc5.floc(props.qvalue, props.tvalue, props.ncvalue, props.profvalue, props.ndvalue, props.lvalue, props.g1value, props.g2value, props.g3value, props.g4value, props.g5value, fatorvalue);
         }
     }
+
     var secondTable = 0;
+    var [V11, V12, V13, V14, V15, V16, V17, V18] = Floc.m11(M11);
+    var firstTable = V18[0];
+
     if (M22 !== undefined) {
         var [V21, V22, V23, V24, V25, V26, V27, V28] = Floc.m22(M22);
         secondTable = V28[0];
         teste = 1;
     }
-    var [V11, V12, V13, V14, V15, V16, V17, V18] = Floc.m11(M11);
-    var firstTable = V18[0];
+
     function calcular() {
         if (fatorvalue > 0) {
             setFatorvalueCalculated(fatorvalue);
             setCalculated(fatorvalue);
             setIsDimensione(true);
-            setSecondTableCalculated(secondTable);
+            if (secondTable === 0)
+                setSecondTableCalculated(V28[0]);
+            else
+                setSecondTableCalculated(secondTable);
 
+            if (V28[0] <= 70)
+                setFatorAcept(true)
         } else {
             alert("Digite um valor positivo para o Fator de correção!");
         }
@@ -522,35 +536,70 @@ const Result: React.FC<ResultsProps> = (props) => {
         var doc = new jsPDF('p', 'pt');
         doc.setFont('courier');
         doc.setFontSize(10);
-        doc.text('Universidade Federal Rural do SemiÁrido - UFERSA', 80, 50);
+        doc.text('Universidade Federal Rural do Semi-Árido - UFERSA', 80, 50);
         doc.text('Este programa é destinado à realização do pré-dimensionamento da', 80, 63);
-        doc.text('unidade de floculação hidráulica (fluxo vertical) em estações do tratamento de água do tipo convencional', 80, 76);
+        doc.text('unidade de floculação hidráulica (fluxo vertical) em estações do', 80, 76);
+        doc.text('tratamento de água do tipo convencional', 80, 89);
 
         doc.setLineWidth(0.5);
-        doc.line(485, 89, 80, 89);
-        doc.text('Relatório analítico da unidade de Floculação', 80, 125);
+        doc.line(485, 95, 80, 95);
 
-        doc.text(`Vazão da água (m³/s) = ${Number(q).toFixed(4)}`, 100, 158);
-        doc.text(`Volume de água (m³) = ${Number(Vol).toFixed(0)}`, 100, 171);
-        doc.text(`Área superficial do floculador (m²) = ${Number(A)?.toFixed(4)}`, 100, 184);
-        doc.text(`Largura do canal ou trecho considerado (m) = ${Number(B).toFixed(4)}`, 100, 197);
-        doc.text(`Comprimento do canal ou trecho considerado (m) = ${Number(a).toFixed(4)}`, 100, 210);
+        doc.text('Dados de entrada', 80, 115);
 
-        doc.line(485, 220, 80, 220);
+        doc.text('Vazão: ', 100, 128);
+        doc.text(`${props.qvalue}`, 140, 128);
 
-        doc.text('n', 87, 256);
-        doc.text('e', 117, 256);
-        doc.text('V1 (m/s)', 155, 256);
-        doc.text('V2 (m/s)', 215, 256);
-        doc.text('Dhd (m)', 274, 256);
-        doc.text('Dhl (m)', 331, 256);
-        doc.text('Dht (m)', 387, 256);
-        doc.text('G (1/s)', 440, 256);
+        doc.text('Tempo mínimo: ', 230, 128);
+        doc.text(`${props.tvalue}`, 313, 128);
+
+        doc.text('Nº de canais: ', 380, 128);
+        doc.text(`${props.ncvalue}`, 460, 128);
+
+        doc.text('Profundidade: ', 100, 141);
+        doc.text(`${props.profvalue}`, 180, 141);
+
+        doc.text('Nº de decantadores: ', 230, 141);
+        doc.text(`${props.ndvalue}`, 350, 141);
+
+        doc.text('Largura: ', 380, 141);
+        doc.text(`${props.lvalue}`, 430, 141);
+
+        doc.text('canais: ', 100, 160);
+        let canais = [props.g1value, props.g2value, props.g3value, props.g4value, props.g5value];
+        let linha = 160;
+        canais.map((e, index) =>{
+            linha+=13;
+            if(e !== 0){
+                return(
+                    doc.text(`Canal ${index+1} = ${e}`, 100, linha)
+                )
+            }
+        })
+        doc.text('canais: ', 100, 160);
+        
+        doc.line(485, 255, 80, 255);
+        doc.text('Relatório analítico da unidade de Floculação', 80, 275);
+
+        doc.text(`Vazão da água (m³/s) = ${Number(q).toFixed(4)}`, 100, 308);
+        doc.text(`Volume de água (m³) = ${Number(Vol).toFixed(0)}`, 100, 321);
+        doc.text(`Área superficial do floculador (m²) = ${Number(A)?.toFixed(4)}`, 100, 334);
+        doc.text(`Largura do canal ou trecho considerado (m) = ${Number(B).toFixed(4)}`, 100, 347);
+        doc.text(`Comprimento do canal ou trecho considerado (m) = ${Number(a).toFixed(4)}`, 100, 360);
 
 
-        doc.line(485, 245, 80, 245);
+        doc.text('n', 87, 406);
+        doc.text('e', 117, 406);
+        doc.text('V1 (m/s)', 155, 406);
+        doc.text('V2 (m/s)', 215, 406);
+        doc.text('Dhd (m)', 274, 406);
+        doc.text('Dhl (m)', 331, 406);
+        doc.text('Dht (m)', 387, 406);
+        doc.text('G (1/s)', 440, 406);
 
-        var linha = 275;
+
+        doc.line(485, 395, 80, 395);
+
+        linha = 425;
         for (var i = 0; i < props.ncvalue; i++) {
             doc.text(`${V11[i].toFixed(0)}`, 84, linha);
             doc.text(`${V12[i].toFixed(4)}`, 105, linha);
@@ -563,34 +612,34 @@ const Result: React.FC<ResultsProps> = (props) => {
             linha = linha + 15;
         }
         linha = linha - 5;
-        doc.line(80, 245, 80, linha);
-        doc.line(100, 245, 100, linha);
-        doc.line(148, 245, 148, linha);
-        doc.line(208, 245, 208, linha);
-        doc.line(266, 245, 266, linha);
-        doc.line(322, 245, 322, linha);
-        doc.line(381, 245, 381, linha);
-        doc.line(433, 245, 433, linha);
-        doc.line(485, 245, 485, linha);
+        doc.line(80, 395, 80, linha);
+        doc.line(100, 395, 100, linha);
+        doc.line(148, 395, 148, linha);
+        doc.line(208, 395, 208, linha);
+        doc.line(266, 395, 266, linha);
+        doc.line(322, 395, 322, linha);
+        doc.line(381, 395, 381, linha);
+        doc.line(433, 395, 433, linha);
+        doc.line(485, 395, 485, linha);
         doc.line(485, linha, 80, linha);
 
         if (M22 != undefined) {
 
-            doc.text(`O canal 1 foi superior a 70 1/s, e usando um fator de correção de ${fatorvalue}%,`, 80, 369);
-            doc.text(`tem-se:`, 80, 382);
+            doc.text(`O canal 1 foi superior a 70 1/s, e usando um fator de correção de ${fatorvalue}%,`, 80, 519);
+            doc.text(`tem-se:`, 80, 532);
 
-            doc.line(485, 400, 80, 400);
+            doc.line(485, 550, 80, 550);
 
-            doc.text('n', 87, 412);
-            doc.text('e', 117, 412);
-            doc.text('V1 (m/s)', 155, 412);
-            doc.text('V2 (m/s)', 215, 412);
-            doc.text('Dhd (m)', 274, 412);
-            doc.text('Dhl (m)', 331, 412);
-            doc.text('Dht (m)', 387, 412);
-            doc.text('G (1/s)', 440, 412);
+            doc.text('n', 87, 562);
+            doc.text('e', 117, 562);
+            doc.text('V1 (m/s)', 155, 562);
+            doc.text('V2 (m/s)', 215, 562);
+            doc.text('Dhd (m)', 274, 562);
+            doc.text('Dhl (m)', 331, 562);
+            doc.text('Dht (m)', 387, 562);
+            doc.text('G (1/s)', 440, 562);
 
-            linha = 430;
+            linha = 580;
 
             for (var i = 0; i < props.ncvalue; i++) {
                 doc.text(`${V21[i].toFixed(0)}`, 84, linha);
@@ -604,61 +653,69 @@ const Result: React.FC<ResultsProps> = (props) => {
                 linha = linha + 15;
             }
             linha = linha - 5;
-            doc.line(80, 400, 80, linha);
-            doc.line(100, 400, 100, linha);
-            doc.line(148, 400, 148, linha);
-            doc.line(208, 400, 208, linha);
-            doc.line(266, 400, 266, linha);
-            doc.line(322, 400, 322, linha);
-            doc.line(381, 400, 381, linha);
-            doc.line(433, 400, 433, linha);
-            doc.line(485, 400, 485, linha);
+            doc.line(80, 550, 80, linha);
+            doc.line(100, 550, 100, linha);
+            doc.line(148, 550, 148, linha);
+            doc.line(208, 550, 208, linha);
+            doc.line(266, 550, 266, linha);
+            doc.line(322, 550, 322, linha);
+            doc.line(381, 550, 381, linha);
+            doc.line(433, 550, 433, linha);
+            doc.line(485, 550, 485, linha);
             doc.line(485, linha, 80, linha);
 
-            doc.text('Legenda: ', 80, 520);
-            doc.text('n = Número de espaçamento entre chicanas em cada câmara', 80, 533);
-            doc.text('e = Espaçamento entre chicanas', 80, 546);
-            doc.text('V1 (m/s) = Velocidade nos trechos retos', 80, 559);
-            doc.text('V2 (m/s) = Velocidade nos trechos curvos', 80, 571);
-            doc.text('Dhd (m) = Perda de carga distribuída(m)', 80, 584);
-            doc.text('Dhl (m) = Perda de carga localizada', 80, 597);
-            doc.text('Dht (m) = Perda de carga total', 80, 610);
-            doc.text('G (1/s) = Gradiente de velocidade', 80, 623);
+            doc.text('Legenda: ', 80, 670);
+            doc.text('n = Número de espaçamento entre chicanas em cada câmara', 80, 683);
+            doc.text('e = Espaçamento entre chicanas', 80, 696);
+            doc.text('V1 (m/s) = Velocidade nos trechos retos', 80, 709);
+            doc.text('V2 (m/s) = Velocidade nos trechos curvos', 80, 721);
+            doc.text('Dhd (m) = Perda de carga distribuída(m)', 80, 734);
+            doc.text('Dhl (m) = Perda de carga localizada', 80, 747);
+            doc.text('Dht (m) = Perda de carga total', 80, 760);
+            doc.text('G (1/s) = Gradiente de velocidade', 80, 773);
         } else {
-            doc.text('Legenda: ', 80, 460);
-            doc.text('n = Número de espaçamento entre chicanas em cada câmara', 80, 473);
-            doc.text('e = Espaçamento entre chicanas', 80, 486);
-            doc.text('V1 (m/s) = Velocidade nos trechos retos', 80, 499);
-            doc.text('V2 (m/s) = Velocidade nos trechos curvos', 80, 512);
-            doc.text('Dhd (m) = Perda de carga distribuída(m)', 80, 525);
-            doc.text('Dhl (m) = Perda de carga localizada', 80, 538);
-            doc.text('Dht (m) = Perda de carga total', 80, 551);
-            doc.text('G (1/s) = Gradiente de velocidade', 80, 564);
+            doc.text('Legenda: ', 80, 610);
+            doc.text('n = Número de espaçamento entre chicanas em cada câmara', 80, 623);
+            doc.text('e = Espaçamento entre chicanas', 80, 636);
+            doc.text('V1 (m/s) = Velocidade nos trechos retos', 80, 649);
+            doc.text('V2 (m/s) = Velocidade nos trechos curvos', 80, 662);
+            doc.text('Dhd (m) = Perda de carga distribuída(m)', 80, 675);
+            doc.text('Dhl (m) = Perda de carga localizada', 80, 688);
+            doc.text('Dht (m) = Perda de carga total', 80, 701);
+            doc.text('G (1/s) = Gradiente de velocidade', 80, 714);
         }
 
         if (canvas.current != null) {
             doc.addPage();
-            doc.text('Universidade Federal Rural do SemiÁrido - UFERSA', 80, 50);
+            doc.text('Universidade Federal Rural do Semi-Árido - UFERSA', 80, 50);
             doc.text('Este programa é destinado à realização do pré-dimensionamento da', 80, 63);
-            doc.text('unidade de floculação hidráulica (fluxo vertical) em estações do tratamento de água do tipo convencional', 80, 76);
+            doc.text('unidade de floculação hidráulica (fluxo vertical) em estações do', 80, 76);
+            doc.text('tratamento de água do tipo convencional', 80, 89);
 
             doc.setLineWidth(0.5);
-            doc.line(485, 89, 80, 89);
-            doc.text('Detalhamento do pré-dimensionamento da unidade de Floculação', 80, 110);
-            doc.addImage(canvas.current.toDataURL(), 'PNG', 15, 130, 620, 430);
+            doc.line(485, 95, 80, 95);
+            doc.text('Detalhamento do pré-dimensionamento da unidade de Floculação', 80, 115);
+            doc.addImage(canvas.current.toDataURL(), 'PNG', 15, 130, 580, 420);
         }
-        doc.save('Resultados Floculação.pdf');
-        // doc.output('dataurlnewwindow');
+        // doc.save('Resultados Floculação.pdf');
+        doc.output('dataurlnewwindow');
     }
 
 
 
-    const [image, setImage] = useState(null) as any;
-    const canvas = useRef<HTMLCanvasElement>(null);
+    
 
     useEffect(() => {
         const img = new Image();
-        img.src = Img1;
+        if(props.ncvalue === 3){
+            img.src = Img3;
+        }else{
+            if(props.ncvalue === 4){
+                img.src = Img4;
+            }else{
+                img.src = Img5;
+            }
+        }
         if (img !== null) {
             img.onload = () => setImage(img);
         }
@@ -691,19 +748,29 @@ const Result: React.FC<ResultsProps> = (props) => {
                 ctx.fillText(`a = ${Number(a).toFixed(4)}m`, 7, 50);
                 ctx.fillText(`a = ${Number(a).toFixed(4)}m`, 20, 90);
                 ctx.fillText(`a = ${Number(a).toFixed(4)}m`, 20, 130);
-                ctx.fillText(`a = ${Number(a).toFixed(4)}m`, 20, 170);
+                if(props.ncvalue === 4){
+                    ctx.fillText(`a = ${Number(a).toFixed(4)}m`, 20, 170);
+                    ctx.fillText(`e = ${V12[3]?.toFixed(4)}m`, 135, 160);
+                }
+                if(props.ncvalue === 5){
+                    ctx.fillText(`a = ${Number(a).toFixed(4)}m`, 20, 170);
+                    ctx.fillText(`a = ${Number(a).toFixed(4)}m`, 20, 210);
+                    ctx.fillText(`e = ${V12[3]?.toFixed(4)}m`, 135, 160);
+                    ctx.fillText(`e = ${V12[4]}m`, 135, 203);
+                }
                 ctx.fillText(`e = ${V12[0]?.toFixed(4)}m`, 105, 40);
                 ctx.fillText(`e = ${V12[1]?.toFixed(4)}m`, 120, 80);
                 ctx.fillText(`e = ${V12[2]?.toFixed(4)}m`, 120, 120);
-                ctx.fillText(`e = ${V12[3]?.toFixed(4)}m`, 135, 160);
                 ctx.font = `9px Roboto`;
                 ctx.fillText(`H =     ${props.profvalue} m`, 525, 320);
                 ctx.font = `10px Roboto`;
+                ctx.fillText(`1,5 e =`, 490, 375);
+                ctx.fillText(`1,00 m`, 490, 390);
                 ctx.fillText(`V1 = ${v1.toFixed(4)} m³`, 20, 320);
                 ctx.fillText(`V1`, 107, 340);
                 ctx.font = `7px Roboto`;
                 ctx.fillText(`V2 = ${((2 / 3) * v1).toFixed(4)} m/s`, 105, 280);
-                ctx.fillText(`${V24[3]?.toFixed(2)}`, 140, 385);
+                ctx.fillText(`0.10`, 140, 385);
             }
         }
     }, [image, canvas]);
@@ -713,7 +780,7 @@ const Result: React.FC<ResultsProps> = (props) => {
             <Canvas id="canvas">
                 <canvas width={650} height={450} ref={canvas}></canvas>
             </Canvas>
-            <button onClick={() => download()}>Download</button>
+            <PDFButton onClick={() => download()}>Download</PDFButton>
             <Resultados>
                 <CardResultados>
                     <TitleCard>Velocidades Obtidas (m/s)</TitleCard>
@@ -887,7 +954,11 @@ const Result: React.FC<ResultsProps> = (props) => {
                     </CardResultados>
                 }
                 {
-                    secondTableCalculated <= 70 && fatorvalueCalculated > 0 &&
+                    (secondTableCalculated <= 70 && V18[0] <= 70) &&
+                    <PDFButton onClick={jsPdfGenerator}>Gerar PDF</PDFButton>
+                }
+                {
+                    fatorAcept &&
                     <PDFButton onClick={jsPdfGenerator}>Gerar PDF</PDFButton>
                 }
             </Resultados>

@@ -25,9 +25,9 @@ export default function Perfil(){
     return(
         <>
             <User>
-                <Link to="/perfil">
+                <div>
                     <UserImg />
-                </Link>
+                </div>
             </User>
         </>
     );

@@ -250,12 +250,12 @@ class Login extends Component{
                                     <Input type="checkbox"/> Lembrar-me
                                 </div>
                                 
-                                <LinkSenha to="/emsenha">Esqueci minha senha</LinkSenha>
+                                <LinkSenha to="/">Esqueci minha senha</LinkSenha>
                             </InputBottom>
                         </Form>
-                        <Button to="/home" className="Login">Login</Button>
-                        <Button to="/home" className="Facebook">Facebook</Button>
-                        <Button to="/home" className="Google">Google</Button>
+                        <Button to="/" className="Login">Login</Button>
+                        <Button to="/" className="Facebook">Facebook</Button>
+                        <Button to="/" className="Google">Google</Button>
                     </Card>
                 </LoginContainer>
             </PageTemplate>

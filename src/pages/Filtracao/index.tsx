@@ -55,6 +55,8 @@ const Title = styled.h2`
     text-align: center;
     font-size: 1.2rem;
     color: var(--gray-dark);
+    position: relative;
+    display: inline-block;
 
     .tooltipvalue {
         visibility: hidden;
@@ -243,7 +245,7 @@ const Button = styled.button`
 
 `
 const Resultados = styled.div`
-    margin-top: 100px;
+    margin-top: 40px;
     padding: 0 10px;
     width: 100%;
     display: flex;
@@ -272,6 +274,7 @@ const CardResultados = styled.div`
 const Canvas = styled.div`
     width: 650px;
     height: 450px;
+    margin-top: 20px;
     background-color: #909090;
 `
 const TitleCard = styled.h2`
@@ -300,8 +303,7 @@ const Right = styled.div`
 const PDFButton = styled.button`
     width: 100px;
     height: 40px;
-    margin-right: 20px;
-    margin-left: auto;
+    margin: 0 auto;
     background-color: var(--primaria);
     border-radius: 8px;
     border: none;
@@ -347,72 +349,101 @@ const Result: React.FC<ResultsProps> = (props) => {
         var doc = new jsPDF('p', 'pt');
         doc.setFont('courier');
         doc.setFontSize(10);
-        doc.text('Universidade Federal Rural do SemiÁrido - UFERSA', 80, 50);
+        doc.text('Universidade Federal Rural do Semi-Árido - UFERSA', 80, 50);
         doc.text('Este programa é destinado à realização do pré-dimensionamento da', 80, 63);
-        doc.text('unidade de filtração rápida (camada dupla de antracito e areia) em estações do tratamento de água do tipo convencional', 80, 76);
+        doc.text('unidade de filtração rápida (camada dupla de antracito e areia)', 80, 76);
+        doc.text('em estações do tratamento de água do tipo convencional', 80, 89);
 
         doc.setLineWidth(0.5);
-        doc.line(485, 89, 80, 89);
-        doc.text('Relatório analítico da unidade de Filtração', 80, 105);
+        doc.line(485, 95, 80, 95);
 
-        doc.text('Velocidades Obtidas (m/s)', 80, 135);
+        doc.text('Dados de entrada = ', 80, 128);
+        doc.text('Vazão (m³/s) = ' + props.Q, 100, 148);
+        doc.text('Taxa de Filtração (m³/m²dia) = ' + props.taxaFiltracao, 100, 161);
+        doc.text('Número de decantadores = ' + props.ndecantadores, 100, 173);
+        doc.text('Largura do decantador (m) = ' + props.ldecantador, 100, 186);
+        doc.text('Largura da calha de lavagem (m) = ' + props.lCalhaLavagem, 100, 199);
+        doc.text('Número de calhas = ' + props.lCalhaLavagem, 100, 211);
+        doc.text('Vazão de ar q (l/s/m²) = ' + props.vazaoAr, 100, 224);
+        doc.text('Taxa de Filtração (m³/m²dia) = ' + props.taxaFiltracao, 100, 237);
+        doc.text('Altura = ' + props.ndecantadores, 360, 148);
+        doc.text('Porosidade = ' + props.ldecantador, 360, 161);
+        doc.text('C. Esfericidade = ' + props.lCalhaLavagem, 360, 173);
+        doc.text('d10 (mm) = ' + props.lCalhaLavagem, 360, 186);
+        doc.text('d60 (mm) = ' + props.lCalhaLavagem, 360, 199);
 
-        doc.text(`Área total de filtração (m²) = ${V4[0]}`, 100, 158);
-        doc.text(`Número de filtros = ${V4[1]}`, 100, 171);
-        doc.text(`Área de cada filtro (m²) = ${V4[2]}`, 100, 184);
-        doc.text(`Dimensões do filtro L (m) = ${V4[3]}`, 100, 197);
-        doc.text(`Dimensões do filtro Y (m) = ${V4[4]?.toFixed(4)} `, 100, 210);
+        doc.text('areia: ', 80, 260);
+        doc.text('Altura (m) = ' + props.a1, 100, 273);
+        doc.text('Def (mm) = ' + props.a2, 100, 286);
+        doc.text('C.U = ' + props.a3, 100, 299);
+        doc.text('Massa Específica (kg/m³) = ' + props.a4, 100, 312);
+        doc.text('Porosidade = ' + props.a5, 100, 325);
+        doc.text('C. esfericidade = ' + props.a6, 100, 338);
+        doc.text('d10 (mm) = ' + props.a7, 100, 351);
 
-        doc.line(485, 220, 80, 220);
+        doc.text('Antracito: ', 340, 260);
+        doc.text('Altura (m) = ' + props.an1, 360, 273);
+        doc.text('Def (mm) = ' + props.an2, 360, 286);
+        doc.text('C.U = ' + props.an3, 360, 299);
+        doc.text('Massa Específica (kg/m³) = ' + props.an4, 360, 312);
+        doc.text('Porosidade = ' + props.an5, 360, 325);
+        doc.text('C. esfericidade = ' + props.an6, 360, 338);
+        doc.text('d10 (mm) = ' + props.an7, 360, 351);
 
-        doc.text('Lavagem de filtros / Lâmina mínima de água sobre o leito filtrante', 80, 240);
+        doc.text('Relatório analítico da unidade de Filtração', 80, 371);
 
-        doc.text(`Vazão de água de lavagem (m³/s) = ${V1[0]?.toFixed(4)}`, 100, 260);
-        doc.text(`Volume de lavagem (m³) = ${V1[1]?.toFixed(4)}`, 100, 273);
-        doc.text(`Volume de reservação (m³) = ${V1[2]?.toFixed(4)}`, 100, 286);
-        doc.text(`Tubulação de água de lavagem (mm) = ${V1[3]}`, 100, 299);
-        doc.text(`Vazão de ar (L/s) = ${V1[4]} `, 100, 312);
-        doc.text(`Lâmina da água (m) = ${V1[5]?.toFixed(4)} `, 100, 325);
+        doc.text('Velocidades Obtidas (m/s)', 80, 391);
 
-        doc.line(485, 345, 80, 345);
+        doc.text(`Área total de filtração (m²) = ${V4[0]}`, 100, 406);
+        doc.text(`Número de filtros = ${V4[1]}`, 100, 419);
+        doc.text(`Área de cada filtro (m²) = ${V4[2]}`, 100, 432);
+        doc.text(`Dimensões do filtro L (m) = ${V4[3]}`, 100, 445);
+        doc.text(`Dimensões do filtro Y (m) = ${V4[4]?.toFixed(4)} `, 100, 458);
 
-        doc.text('Calhas de água de lavagem', 80, 365);
+        doc.text('Lavagem de filtros / Lâmina mínima de água sobre o leito filtrante', 80, 483);
 
-        doc.text(`Dimenssões de calha B (m) = ${V2[0]?.toFixed(4)}`, 100, 385);
-        doc.text(`Dimenssões de calha h (m) = ${V2[1]?.toFixed(4)}`, 100, 398);
-        doc.text(`Consideração = ${V2[2]} - H0 - ${V2[3]}`, 100, 411);
-        doc.text(`Consideração = ${V2[4]?.toFixed(4)} - S - ${V2[5]}`, 100, 424);
-        doc.text(`S entre calhas (m) = ${V2[6]?.toFixed(4)}`, 100, 437);
+        doc.text(`Vazão de água de lavagem (m³/s) = ${V1[0]?.toFixed(4)}`, 100, 498);
+        doc.text(`Volume de lavagem (m³) = ${V1[1]?.toFixed(4)}`, 100, 511);
+        doc.text(`Volume de reservação (m³) = ${V1[2]?.toFixed(4)}`, 100, 524);
+        doc.text(`Tubulação de água de lavagem (mm) = ${V1[3]}`, 100, 537);
+        doc.text(`Vazão de ar (L/s) = ${V1[4]} `, 100, 550);
+        doc.text(`Lâmina da água (m) = ${V1[5]?.toFixed(4)} `, 100, 563);
 
-        doc.line(485, 457, 80, 457);
+        doc.text('Calhas de água de lavagem', 80, 588);
 
-        doc.text('Perdas de carga', 80, 477);
+        doc.text(`Dimenssões de calha B (m) = ${V2[0]?.toFixed(4)}`, 100, 603);
+        doc.text(`Dimenssões de calha h (m) = ${V2[1]?.toFixed(4)}`, 100, 616);
+        doc.text(`Consideração = ${V2[2]} - H0 - ${V2[3]}`, 100, 629);
+        doc.text(`Consideração = ${V2[4]?.toFixed(4)} - S - ${V2[5]}`, 100, 642);
+        doc.text(`S entre calhas (m) = ${V2[6]?.toFixed(4)}`, 100, 655);
 
-        doc.text(`Areia = ${hf[0]?.toFixed(4)}`, 100, 497);
-        doc.text(`Antracito = ${hf[1]?.toFixed(4)}`, 100, 510);
-        doc.text(`Total = ${hf[2]?.toFixed(4)}`, 100, 523);
-        doc.text(`Camada Suporte = ${hf[3]?.toFixed(4)}`, 100, 536);
+        doc.text('Perdas de carga', 80, 680);
 
-        doc.line(485, 556, 80, 556);
+        doc.text(`Areia = ${hf[0]?.toFixed(4)}`, 100, 695);
+        doc.text(`Antracito = ${hf[1]?.toFixed(4)}`, 100, 708);
+        doc.text(`Total = ${hf[2]?.toFixed(4)}`, 100, 721);
+        doc.text(`Camada Suporte = ${hf[3]?.toFixed(4)}`, 100, 734);
 
-        doc.text('Velocidade mpinima de fluidificação (m/s)', 80, 576);
+        doc.text('Velocidade mpinima de fluidificação (m/s)', 80, 756);
 
-        doc.text(`Areia = ${vMf[0]?.toFixed(4)}`, 100, 596);
-        doc.text(`Antracito = ${vMf[1]?.toFixed(4)}`, 100, 609);
-        doc.text(`Bifásico = ${vMf[2]?.toFixed(4)}`, 100, 621);
+        doc.text(`Areia = ${vMf[0]?.toFixed(4)}`, 100, 771);
+        doc.text(`Antracito = ${vMf[1]?.toFixed(4)}`, 100, 784);
+        doc.text(`Bifásico = ${vMf[2]?.toFixed(4)}`, 100, 797);
+        
         if(canvas.current != null){
             doc.addPage();
-            doc.text('Universidade Federal Rural do SemiÁrido - UFERSA', 80, 50);
+            doc.text('Universidade Federal Rural do Semi-Árido - UFERSA', 80, 50);
             doc.text('Este programa é destinado à realização do pré-dimensionamento da', 80, 63);
-            doc.text('unidade de filtração rápida (camada dupla de antracito e areia) em estações do tratamento de água do tipo convencional', 80, 76);
+            doc.text('unidade de filtração rápida (camada dupla de antracito e areia)', 80, 76);
+            doc.text('em estações do tratamento de água do tipo convencional', 80, 89);
 
             doc.setLineWidth(0.5);
-            doc.line(485, 89, 80, 89);
-            doc.text('Detalhamento do pré-dimensionamento da unidade de Filtração', 80, 110);
+            doc.line(485, 95, 80, 95);
+            doc.text('Detalhamento do pré-dimensionamento da unidade de Filtração', 80, 115);
             doc.addImage(canvas.current.toDataURL(), 'PNG', 15, 130, 550, 350);
         }
-        doc.save('Resultados Filtração.pdf');
-        // doc.output('dataurlnewwindow');
+        // doc.save('Resultados Filtração.pdf');
+        doc.output('dataurlnewwindow');
     }
     const [image, setImage] = useState(null) as any;
     const canvas = useRef<HTMLCanvasElement>(null);
@@ -468,7 +499,7 @@ const Result: React.FC<ResultsProps> = (props) => {
             <Canvas id="canvas">
                 <canvas width={650} height={450} ref={canvas}></canvas>
             </Canvas>
-            <button onClick={() => download()}>Download</button>
+            <PDFButton onClick={() => download()}>Download</PDFButton>
             <Resultados>
                 <ResultContainer>
                     <CardResultados>
@@ -789,7 +820,8 @@ export default function Coagulacao() {
                 <Card>
                     <TopCard>
                         <Item>
-                            <Title>Vazão (m³/s)</Title>
+                            <Title>
+                                Vazão (m³/s)</Title>
                             <InputCard
                                 type="number"
                                 onChange={(e) => setVazao(e.target.value)}
@@ -803,7 +835,10 @@ export default function Coagulacao() {
                             />
                         </Item>
                         <Item>
-                            <Title>Nº de decantadores</Title>
+                            <Title>
+                                <span className="tooltipvalue">Número de decantadores</span>
+                                Nº de decantadores
+                                </Title>
                             <InputCard
                                 type="number"
                                 onChange={(e) => setDecantadores(e.target.value)}
@@ -962,7 +997,10 @@ export default function Coagulacao() {
                                     />
                                 </Item>
                                 <Item>
-                                    <Title>Nº de calhas</Title>
+                                    <Title>
+                                        <span className="tooltipvalue">Número de calhas</span>
+                                        Nº de calhas
+                                    </Title>
                                     <InputCard
                                         type="number"
                                         onChange={(e) => setCalhas(e.target.value)}

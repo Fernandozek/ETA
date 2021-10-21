@@ -261,7 +261,6 @@ export default function Menu() {
             }
             <Menus open={open}>
                 <MenuList>
-                    <Lista><Link to="/home" className="MenuLink" >início</Link></Lista>
                     <Lista><Link to="/coagulacao" className="MenuLink" >Coagulação</Link></Lista>
                     <Lista><Link to="/floculacao" className="MenuLink" >Floculação</Link></Lista>
                     <Lista><Link to="/decantacao" className="MenuLink" >Decantação</Link></Lista>

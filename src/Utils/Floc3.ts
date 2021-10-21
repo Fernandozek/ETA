@@ -77,7 +77,7 @@ export default {
         var M11 = M1;
 
         if (Gg1 <= 70 && Gg2 <= 70 && Gg3 <= 70) {
-            alert("Dimensionamento realizado com sucesso");
+            console.log("Dimensionamento realizado com sucesso");
         }
         var M22;
         var M2;

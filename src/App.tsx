@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
-import Home from './pages/Home';
-import Login from './pages/Login';
+// import Home from './pages/Home';
+// import Login from './pages/Login';
 import Error404 from './pages/Error404';
 import Coagulacao from './pages/Coagulacao';
 import Eta2 from './pages/Decantacao';
@@ -13,8 +13,7 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/" component={Login} exact />
-        <Route path="/home" component={Home} />
+        <Route path="/" component={Coagulacao} exact />
         <Route path="/coagulacao" component={Coagulacao}/>
         <Route path="/decantacao" component={Eta2} />
         <Route path="/floculacao" component={Eta3} />
